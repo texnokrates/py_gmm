@@ -8,22 +8,22 @@ USE basicsubs
 ! INDICE DELLE SUBROUTINE CONTENUTE NEL MODULO
 ! $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 ! Indice Subroutines
-!1) nstop_sp(lambda,ref_index,v_req,m_epseq,nstop,nmx)
+!1) nstop_sp(lambd,ref_index,v_req,m_epseq,nstop,nmx)
 !	COMMENT: calculates number of multipolar expansions for single particles
 !
 !	VARS:
-! 		lambda,ref_index: actual wavelength and refraction index of the embedding medium INPUT
+! 		lambd,ref_index: actual wavelength and refraction index of the embedding medium INPUT
 !		v_req: vector containing radii of equivalent spheres INPUT
 ! 		m_epseq: matrix containing dielectric function for equivalent spheres INPUT
 ! 		nstop,nmx: numbers for multipolar expansion of single particles OUTPUT
 !
 !	ERROR: no error flags
 !
-!2) coeff_sp(lambda,ref_index,v_req,m_epseq,nstop,nmx,neq,m_a,m_b,error)
+!2) coeff_sp(lambd,ref_index,v_req,m_epseq,nstop,nmx,neq,m_a,m_b,error)
 !	COMMENT: calculates coefficents a and b of multipolar expansions for single particles
 !
 !	VARS:
-! 		lambda,ref_index: actual wavelength and refraction index of the embedding medium INPUT
+! 		lambd,ref_index: actual wavelength and refraction index of the embedding medium INPUT
 !		v_req: vector containing radii of equivalent spheres INPUT
 ! 		m_epseq: matrix containing dielectric function for equivalent spheres INPUT
 ! 		nstop,nmx: numbers for multipolar expansion of single particles INPUT
@@ -1569,18 +1569,18 @@ END FUNCTION l_sub
 !******************************************************************************************
 !******************************************************************************************
 !******************************************************************************************
-SUBROUTINE coeff_sp2(lambda,ref_index,v_req,m_epseq,nstop,neq,m_a,m_b,error) 
+SUBROUTINE coeff_sp2(lambd,ref_index,v_req,m_epseq,nstop,neq,m_a,m_b,error) 
 
 IMPLICIT NONE
 
 ! Dichiarazione dei dummy argument
-REAL(dbl), INTENT(IN) :: lambda,ref_index				! Lunghezza d'onda in questione e ref index
-REAL(dbl), DIMENSION(:), INTENT(IN) :: v_req			! Vettore raggi equivalenti
-REAL(dbl), DIMENSION(:,:), INTENT(IN) ::m_epseq			! Matrice funzioni dielettriche
+REAL(dbl), INTENT(IN) :: lambd,ref_index				! Lunghezza d'onda in questione e ref index
+REAL(dbl), DIMENSION(neq), INTENT(IN) :: v_req			! Vettore raggi equivalenti
+REAL(dbl), DIMENSION(neq,2), INTENT(IN) ::m_epseq			! Matrice funzioni dielettriche
 INTEGER(lo), INTENT(IN) :: nstop  					! Numero Espansioni multipolari	
 INTEGER(lo), INTENT(IN) :: neq						! Numero sfere eq
 
-COMPLEX(dbl), DIMENSION(:,:), INTENT(OUT) :: m_a,m_b	! Matrici coeff. singola sfera
+COMPLEX(dbl), DIMENSION(nstop,neq), INTENT(OUT) :: m_a,m_b	! Matrici coeff. singola sfera
 INTEGER(lo), INTENT(OUT) :: error		       			! Controllo errore
 
 
@@ -1604,7 +1604,7 @@ v_epsc_do: DO j=1,neq
 END DO v_epsc_do
 
 !Calcolo il vettore per i size parameters
-v_x=(2*pi_d*ref_index*v_req)/lambda
+v_x=(2*pi_d*ref_index*v_req)/lambd
 !WRITE(*,*) "x: ", v_x
 
 !Calcolo l'indice di rifrazione normalizzato e il vettore mx
@@ -1676,12 +1676,12 @@ END SUBROUTINE coeff_sp2
 !******************************************************************************************
 !******************************************************************************************
 !******************************************************************************************
-SUBROUTINE coeff_sp2_dip(lambda,ref_index,v_req,m_epseq,nstop,neq,m_a,m_b,error) 
+SUBROUTINE coeff_sp2_dip(lambd,ref_index,v_req,m_epseq,nstop,neq,m_a,m_b,error) 
 
 IMPLICIT NONE
 
 ! Dichiarazione dei dummy argument
-REAL(dbl), INTENT(IN) :: lambda,ref_index				! Lunghezza d'onda in questione e ref index
+REAL(dbl), INTENT(IN) :: lambd,ref_index				! Lunghezza d'onda in questione e ref index
 REAL(dbl), DIMENSION(:), INTENT(IN) :: v_req			! Vettore raggi equivalenti
 REAL(dbl), DIMENSION(:,:), INTENT(IN) ::m_epseq			! Matrice funzioni dielettriche
 INTEGER(lo), INTENT(IN) :: nstop  					! Numero Espansioni multipolari	
@@ -1711,7 +1711,7 @@ v_epsc_do: DO j=1,neq
 END DO v_epsc_do
 
 !Calcolo il vettore per i size parameters
-v_x=(2*pi_d*ref_index*v_req)/lambda
+v_x=(2*pi_d*ref_index*v_req)/lambd
 
 !Calcolo l'indice di rifrazione normalizzato e il vettore mx
 v_m=SQRT(v_epsc)/CMPLX(ref_index,KIND=dbl)
@@ -1795,12 +1795,12 @@ END SUBROUTINE coeff_sp2_dip
 !******************************************************************************************
 !******************************************************************************************
 !******************************************************************************************
-SUBROUTINE coeff_sp3(lambda,ref_index,v_req,m_epseq,nstop,neq,m_a,m_b,m_c,m_d,error) 
+SUBROUTINE coeff_sp3(lambd,ref_index,v_req,m_epseq,nstop,neq,m_a,m_b,m_c,m_d,error) 
 
 IMPLICIT NONE
 
 ! Dichiarazione dei dummy argument
-REAL(dbl), INTENT(IN) :: lambda,ref_index					! Lunghezza d'onda in questione e ref index
+REAL(dbl), INTENT(IN) :: lambd,ref_index					! Lunghezza d'onda in questione e ref index
 REAL(dbl), DIMENSION(:), INTENT(IN) :: v_req				! Vettore raggi equivalenti
 REAL(dbl), DIMENSION(:,:), INTENT(IN) ::m_epseq				! Matrice funzioni dielettriche
 INTEGER(lo), INTENT(IN) :: nstop  					! Numero Espansioni multipolari
@@ -1832,7 +1832,7 @@ v_epsc_do: DO j=1,neq
 END DO v_epsc_do
 
 !Calcolo il vettore per i size parameters
-v_x=(2*pi_d*ref_index*v_req)/lambda
+v_x=(2*pi_d*ref_index*v_req)/lambd
 
 
 !Calcolo l'indice di rifrazione normalizzato e il vettore mx
@@ -1945,12 +1945,12 @@ END SUBROUTINE coeff_sp3
 !******************************************************************************
 !******************************************************************************
 !******************************************************************************
-SUBROUTINE coeff_ad_ca(lambda,ref_index,v_req,m_epseq,nstop,neq,m_da,m_cb,error) 
+SUBROUTINE coeff_ad_ca(lambd,ref_index,v_req,m_epseq,nstop,neq,m_da,m_cb,error) 
 
 IMPLICIT NONE
 
 ! Dichiarazione dei dummy argument
-REAL(dbl), INTENT(IN) :: lambda,ref_index				! Lunghezza d'onda in questione e ref index
+REAL(dbl), INTENT(IN) :: lambd,ref_index				! Lunghezza d'onda in questione e ref index
 REAL(dbl), DIMENSION(:), INTENT(IN) :: v_req			! Vettore raggi equivalenti
 REAL(dbl), DIMENSION(:,:), INTENT(IN) ::m_epseq			! Matrice funzioni dielettriche
 INTEGER(lo), INTENT(IN) :: nstop						! Numero Espansioni multipolari	
@@ -1981,7 +1981,7 @@ v_epsc_do: DO j=1,neq
 END DO v_epsc_do
 
 !Calcolo il vettore per i size parameters
-v_x=(2*pi_d*ref_index*v_req)/lambda
+v_x=(2*pi_d*ref_index*v_req)/lambd
 
 !Calcolo l'indice di rifrazione normalizzato e il vettore mx
 v_m=SQRT(v_epsc)/CMPLX(ref_index,KIND=dbl)
@@ -2070,12 +2070,12 @@ END SUBROUTINE coeff_ad_ca
 !******************************************************************************
 !******************************************************************************
 !******************************************************************************
-SUBROUTINE coeff_ad_ca_dip(lambda,ref_index,v_req,m_epseq,nstop,neq,m_da,m_cb,error) 
+SUBROUTINE coeff_ad_ca_dip(lambd,ref_index,v_req,m_epseq,nstop,neq,m_da,m_cb,error) 
 
 IMPLICIT NONE
 
 ! Dichiarazione dei dummy argument
-REAL(dbl), INTENT(IN) :: lambda,ref_index				! Lunghezza d'onda in questione e ref index
+REAL(dbl), INTENT(IN) :: lambd,ref_index				! Lunghezza d'onda in questione e ref index
 REAL(dbl), DIMENSION(:), INTENT(IN) :: v_req			! Vettore raggi equivalenti
 REAL(dbl), DIMENSION(:,:), INTENT(IN) ::m_epseq			! Matrice funzioni dielettriche
 INTEGER(lo), INTENT(IN) :: nstop						! Numero Espansioni multipolari	
@@ -2106,7 +2106,7 @@ v_epsc_do: DO j=1,neq
 END DO v_epsc_do
 
 !Calcolo il vettore per i size parameters
-v_x=(2*pi_d*ref_index*v_req)/lambda
+v_x=(2*pi_d*ref_index*v_req)/lambd
 
 !Calcolo l'indice di rifrazione normalizzato e il vettore mx
 v_m=SQRT(v_epsc)/CMPLX(ref_index,KIND=dbl)
@@ -2230,13 +2230,13 @@ END SUBROUTINE coeff_ad_ca_dip
 !******************************************************************************
 !******************************************************************************
 !******************************************************************************
-SUBROUTINE coeff_shell(lambda,ref_index,v_req,m_epseq,v_p,nstop,neq,matrixside,v_qa,v_qb,v_gamma, &
+SUBROUTINE coeff_shell(lambd,ref_index,v_req,m_epseq,v_p,nstop,neq,matrixside,v_qa,v_qb,v_gamma, &
 			   & m_t1,m_u1,m_t2,m_u2,v_dc0,error) 
 
 IMPLICIT NONE
 
 ! Dichiarazione dei dummy argument
-REAL(dbl), INTENT(IN) :: lambda,ref_index				! Lunghezza d'onda in questione e ref index
+REAL(dbl), INTENT(IN) :: lambd,ref_index				! Lunghezza d'onda in questione e ref index
 REAL(dbl), DIMENSION(:), INTENT(IN) :: v_req			! Vettore raggi equivalenti
 REAL(dbl), DIMENSION(:,:), INTENT(IN) ::m_epseq			! Matrice funzioni dielettriche
 COMPLEX(dbl), DIMENSION(:), INTENT(IN) :: v_p			! Vettore espensioni campo incidente
@@ -2277,12 +2277,12 @@ END DO v_epsc_do
 
 
 !Calcolo il vettore per i size parameters
-v_x(1)=(2*pi_d*ref_index*v_req(2))/lambda
-v_x(2)=(2*pi_d*ref_index*v_req(1))/lambda
+v_x(1)=(2*pi_d*ref_index*v_req(2))/lambd
+v_x(2)=(2*pi_d*ref_index*v_req(1))/lambd
 
 !Calcolo il vettore per i wavevectors
-v_k(0)=(2*pi_d*ref_index)/lambda
-v_k(1:neq)=(2*pi_d*SQRT(v_epsc))/lambda
+v_k(0)=(2*pi_d*ref_index)/lambd
+v_k(1:neq)=(2*pi_d*SQRT(v_epsc))/lambd
 
 !Calcolo l'indice di rifrazione normalizzato e il vettore mx
 v_m(0)=(1.0D0,0.0D0)
@@ -2454,12 +2454,12 @@ END SUBROUTINE coeff_shell
 !******************************************************************************
 !******************************************************************************
 !******************************************************************************
-SUBROUTINE coeff_shell_borghese(lambda,ref_index,v_req,m_epseq,nstop,neq,v_Rn,v_Vn,v_Zn,error) 
+SUBROUTINE coeff_shell_borghese(lambd,ref_index,v_req,m_epseq,nstop,neq,v_Rn,v_Vn,v_Zn,error) 
 
 IMPLICIT NONE
 
 ! Dichiarazione dei dummy argument
-REAL(dbl), INTENT(IN) :: lambda,ref_index			! Wavelength and ref index
+REAL(dbl), INTENT(IN) :: lambd,ref_index			! Wavelength and ref index
 REAL(dbl), DIMENSION(:), INTENT(IN) :: v_req			! Vector of equals r
 REAL(dbl), DIMENSION(:,:), INTENT(IN) ::m_epseq			! Dielectri Function Matrix
 INTEGER(lo), INTENT(IN) :: nstop				! Multipolar expansions
@@ -2494,12 +2494,12 @@ END DO v_epsc_do
 
 
 !Size parameters
-v_x(1)=(2*pi_d*ref_index*v_req(2))/lambda
-v_x(2)=(2*pi_d*ref_index*v_req(1))/lambda
+v_x(1)=(2*pi_d*ref_index*v_req(2))/lambd
+v_x(2)=(2*pi_d*ref_index*v_req(1))/lambd
 
 !Wavevectors
-v_k(0)=(2*pi_d*ref_index)/lambda
-v_k(1:neq)=(2*pi_d*SQRT(v_epsc))/lambda
+v_k(0)=(2*pi_d*ref_index)/lambd
+v_k(1:neq)=(2*pi_d*SQRT(v_epsc))/lambd
 
 !Normalized ref index
 v_m(0)=(1.0D0,0.0D0)
@@ -2586,13 +2586,13 @@ END SUBROUTINE coeff_shell_borghese
 !******************************************************************************
 !******************************************************************************
 !******************************************************************************
-SUBROUTINE coeff_shell_dip(lambda,ref_index,v_req,m_epseq,v_p,nstop,neq,matrixside,tflag,v_qa,v_qb,v_gamma, &
+SUBROUTINE coeff_shell_dip(lambd,ref_index,v_req,m_epseq,v_p,nstop,neq,matrixside,tflag,v_qa,v_qb,v_gamma, &
 			   & m_t1,m_u1,m_t2,m_u2,v_dc0,error) 
 
 IMPLICIT NONE
 
 ! Dichiarazione dei dummy argument
-REAL(dbl), INTENT(IN) :: lambda,ref_index				! Lunghezza d'onda in questione e ref index
+REAL(dbl), INTENT(IN) :: lambd,ref_index				! Lunghezza d'onda in questione e ref index
 REAL(dbl), DIMENSION(:), INTENT(IN) :: v_req			! Vettore raggi equivalenti
 REAL(dbl), DIMENSION(:,:), INTENT(IN) ::m_epseq			! Matrice funzioni dielettriche
 COMPLEX(dbl), DIMENSION(:), INTENT(IN) :: v_p			! Vettore espensioni campo incidente
@@ -2634,12 +2634,12 @@ END DO v_epsc_do
 
 
 !Calcolo il vettore per i size parameters
-v_x(1)=(2*pi_d*ref_index*v_req(2))/lambda
-v_x(2)=(2*pi_d*ref_index*v_req(1))/lambda
+v_x(1)=(2*pi_d*ref_index*v_req(2))/lambd
+v_x(2)=(2*pi_d*ref_index*v_req(1))/lambd
 
 !Calcolo il vettore per i wavevectors
-v_k(0)=(2*pi_d*ref_index)/lambda
-v_k(1:neq-1)=(2*pi_d*SQRT(v_epsc))/lambda
+v_k(0)=(2*pi_d*ref_index)/lambd
+v_k(1:neq-1)=(2*pi_d*SQRT(v_epsc))/lambd
 
 !Calcolo l'indice di rifrazione normalizzato e il vettore mx
 v_m(0)=(1.0D0,0.0D0)
@@ -2800,12 +2800,12 @@ END SUBROUTINE coeff_shell_dip
 !******************************************************************************
 !******************************************************************************
 !******************************************************************************
-SUBROUTINE coeff_shell_dip_borghese(lambda,ref_index,v_req,m_epseq,nstop,neq,v_Rn,v_Vn,v_Zn,error)
+SUBROUTINE coeff_shell_dip_borghese(lambd,ref_index,v_req,m_epseq,nstop,neq,v_Rn,v_Vn,v_Zn,error)
 
 IMPLICIT NONE
 
 ! Dichiarazione dei dummy argument
-REAL(dbl), INTENT(IN) :: lambda,ref_index			! Wavelength and ref index
+REAL(dbl), INTENT(IN) :: lambd,ref_index			! Wavelength and ref index
 REAL(dbl), DIMENSION(:), INTENT(IN) :: v_req			! Vector of equals r
 REAL(dbl), DIMENSION(:,:), INTENT(IN) ::m_epseq			! Dielectri Function Matrix
 INTEGER(lo), INTENT(IN) :: nstop				! Multipolar expansions
@@ -2838,12 +2838,12 @@ v_epsc_do: DO j=1,neq-1
 END DO v_epsc_do
 
 !Size parameters
-v_x(1)=(2*pi_d*ref_index*v_req(2))/lambda
-v_x(2)=(2*pi_d*ref_index*v_req(1))/lambda
+v_x(1)=(2*pi_d*ref_index*v_req(2))/lambd
+v_x(2)=(2*pi_d*ref_index*v_req(1))/lambd
 
 !Wavevectors, again neq->neq-1
-v_k(0)=(2*pi_d*ref_index)/lambda
-v_k(1:neq-1)=(2*pi_d*SQRT(v_epsc))/lambda
+v_k(0)=(2*pi_d*ref_index)/lambd
+v_k(1:neq-1)=(2*pi_d*SQRT(v_epsc))/lambd
 
 !Normalized ref index, again neq->neq-1
 v_m(0)=(1.0D0,0.0D0)
