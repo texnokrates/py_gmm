@@ -13,3 +13,4 @@ doi:10.1016/j.msec.2006.07.025"
 
 import py_gmm.gmm_py as gmm_py
 import py_gmm.mat as mat
+import py_gmm.gaunt as gaunt
