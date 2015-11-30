@@ -1,32 +1,32 @@
-!!    -*- f90 -*-
-!! Note: the context of this file is case sensitive.
-!
-!python module gmm ! in 
-!    interface  ! in :gmm
-!        module kinds ! in :gmm:kinds.f90
-!            integer, parameter,optional :: short_bn=selected_int_kind(4)
+!    -*- f90 -*-
+! Note: the context of this file is case sensitive.
+
+python module gmm ! in 
+    interface  ! in :gmm
+        module kinds ! in :gmm:kinds.f90
+            integer, parameter,optional :: short_bn=selected_int_kind(4)
 !            real(kind=4), parameter,optional :: sqrt2=1.4142135623730951
 !            real(kind=4), parameter,optional :: twopi=6.283185307179586
-!            integer, parameter,optional :: dbl=selected_real_kind(p=15,r=307)
+            integer, parameter,optional :: dbl=selected_real_kind(p=15,r=307)
 !            real(kind=4), parameter,optional :: pio2=1.5707963267948966
 !            real(kind=4), parameter,optional :: pi=3.141592653589793
 !            real(kind=8), parameter,optional :: twopi_d=6.283185307179586
-!            integer, parameter,optional :: sgl=selected_real_kind(p=6,r=37)
+            integer, parameter,optional :: sgl=selected_real_kind(p=6,r=37)
 !            real(kind=8), parameter,optional :: euler_d=0.5772156649015329
 !            real(kind=8), parameter,optional :: me=9.109382616e-31
 !            real(kind=8), parameter,optional :: zerodbl=0.0d0
 !            real(kind=8), parameter,optional :: pio2_d=1.5707963267948966
 !            real(kind=8), parameter,optional :: pi_d=3.141592653589793
-!            integer, parameter,optional :: lo=selected_int_kind(9)
+            integer, parameter,optional :: lo=selected_int_kind(9)
 !            real(kind=4), parameter,optional :: euler=0.5772156649015329
 !            real(kind=8), parameter,optional :: e0=8.854187817e-12
-!            integer, parameter,optional :: length=30
+            integer, parameter,optional :: length=30
 !            real(kind=8), parameter,optional :: c=299792458.0
 !            real(kind=8), parameter,optional :: sqrt2_d=1.4142135623730951
-!            integer, parameter,optional :: long_bn=selected_int_kind(9)
-!            integer, parameter,optional :: vshort=selected_int_kind(2)
+            integer, parameter,optional :: long_bn=selected_int_kind(9)
+            integer, parameter,optional :: vshort=selected_int_kind(2)
 !            real(kind=8), parameter,optional :: e=1.6021765314e-19
-!        end module kinds
+        end module kinds
 !        module datatypes ! in :gmm:datatypes.f90
 !            use kinds
 !            type unknown_type ! in :gmm:datatypes.f90:datatypes
@@ -824,11 +824,11 @@
 !                integer(kind=4) :: error
 !            end subroutine coeff_shell_dip_borghese
 !        end module sing_part
-!        module vec_trans ! in :gmm:vec_trans.f90
-!            use shared_data
-!            use kinds
-!            use sing_part
-!            use basicsubs
+        module vec_trans ! in :gmm:vec_trans.f90
+            use shared_data
+            use kinds
+            use sing_part
+            use basicsubs
 !            function j3minimum(j1,j2,m1,m2) ! in :gmm:vec_trans.f90:vec_trans
 !                real(kind=8) intent(in) :: j1
 !                real(kind=8) intent(in) :: j2
@@ -884,15 +884,15 @@
 !                integer(kind=4) intent(in) :: j3max
 !                real(kind=8) dimension(j3max-j3min+1),depend(j3min,j3max) :: v_w3jm
 !            end subroutine wigner3jm
-!            subroutine gaunt_cz(m,n,mu,nu,qmaxa,v_aq,error) ! in :gmm:vec_trans.f90:vec_trans
-!                real(kind=8) intent(in) :: m
-!                real(kind=8) intent(in) :: n
-!                real(kind=8) intent(in) :: mu
-!                real(kind=8) intent(in) :: nu
-!                integer(kind=4) intent(in) :: qmaxa
-!                real(kind=8) dimension(qmaxa + 1),depend(qmaxa) :: v_aq
-!                integer(kind=4) :: error
-!            end subroutine gaunt_cz
+            subroutine gaunt_cz(m,n,mu,nu,qmaxa,v_aq,error) ! in :gmm:vec_trans.f90:vec_trans
+                real(dbl) intent(in) :: m
+                real(dbl) intent(in) :: n
+                real(dbl) intent(in) :: mu
+                real(dbl) intent(in) :: nu
+                integer(lo) intent(in) :: qmaxa
+                real(dbl) intent(out),dimension(qmaxa + 1),depend(qmaxa) :: v_aq
+                integer(lo) intent(out) :: error
+            end subroutine gaunt_cz
 !            subroutine aqbq_cz(m,n,mu,nu,qmaxa,v_aq,qmaxb,v_bq,error) ! in :gmm:vec_trans.f90:vec_trans
 !                real(kind=8) intent(in) :: m
 !                real(kind=8) intent(in) :: n
@@ -972,15 +972,15 @@
 !                real(kind=8) dimension(qmax + 1),depend(qmax) :: v_aq
 !                integer(kind=4) :: error
 !            end subroutine gaunt_xu2
-!            subroutine gaunt_xu(m,n,mu,nu,qmax,v_aq,error) ! in :gmm:vec_trans.f90:vec_trans
-!                real(kind=8) intent(in) :: m
-!                real(kind=8) intent(in) :: n
-!                real(kind=8) intent(in) :: mu
-!                real(kind=8) intent(in) :: nu
-!                integer(kind=4) intent(in) :: qmax
-!                real(kind=8) dimension(qmax + 1),depend(qmax) :: v_aq
-!                integer(kind=4) :: error
-!            end subroutine gaunt_xu
+            subroutine gaunt_xu(m,n,mu,nu,qmax,v_aq,error) ! in :gmm:vec_trans.f90:vec_trans
+                real(dbl) intent(in) :: m
+                real(dbl) intent(in) :: n
+                real(dbl) intent(in) :: mu
+                real(dbl) intent(in) :: nu
+                integer(lo) intent(in) :: qmax
+                real(dbl) intent(out),dimension(qmax + 1),depend(qmax) :: v_aq
+                integer(lo) intent(out) :: error
+            end subroutine gaunt_xu
 !            subroutine legendre(nmin,nmax,m,mm,theta,v_leg,error) ! in :gmm:vec_trans.f90:vec_trans
 !                integer(kind=4) intent(in) :: nmin
 !                integer(kind=4) intent(in) :: nmax
@@ -2394,7 +2394,7 @@
 !                complex(kind=8) dimension(:) :: v_ab_host
 !                integer(kind=4) :: error
 !            end subroutine field_exp_shell_dip_borghese
-!        end module vec_trans
+        end module vec_trans
 !        module local_field ! in :gmm:local_field.f90
 !            use shared_data
 !            use datatypes
@@ -3123,8 +3123,8 @@
 !                complex(kind=8) dimension(:),intent(inout) :: v_x
 !            end subroutine precond_gen
 !        end module linear_solver
-!    end interface 
-!end python module gmm
-!
-!! This file was auto-generated with f2py (version:2).
-!! See http://cens.ioc.ee/projects/f2py2e/
+    end interface 
+end python module gmm
+
+! This file was auto-generated with f2py (version:2).
+! See http://cens.ioc.ee/projects/f2py2e/
