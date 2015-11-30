@@ -1,0 +1,1559 @@
+!!    -*- f90 -*-
+!! Note: the context of this file is case sensitive.
+!
+!python module gmm ! in 
+!    interface  ! in :gmm
+!        module kinds ! in :gmm:kinds.f90
+!            real(kind=8), parameter,optional :: e0=8.854187817e-12
+!            real(kind=8), parameter,optional :: pio2_d=1.5707963267948966
+!            real(kind=8), parameter,optional :: pi_d=3.141592653589793
+!            real(kind=8), parameter,optional :: me=9.109382616e-31
+!            real(kind=4), parameter,optional :: twopi=6.283185307179586
+!            integer, parameter,optional :: long_bn=selected_int_kind(9)
+!            integer, parameter,optional :: short_bn=selected_int_kind(4)
+!            integer, parameter,optional :: lo=selected_int_kind(9)
+!            real(kind=4), parameter,optional :: pio2=1.5707963267948966
+!            real(kind=8), parameter,optional :: sqrt2_d=1.4142135623730951
+!            real(kind=4), parameter,optional :: pi=3.141592653589793
+!            integer, parameter,optional :: length=30
+!            real(kind=4), parameter,optional :: euler=0.5772156649015329
+!            integer, parameter,optional :: sgl=selected_real_kind(p=6,r=37)
+!            real(kind=8), parameter,optional :: c=299792458.0
+!            integer, parameter,optional :: vshort=selected_int_kind(2)
+!            real(kind=4), parameter,optional :: sqrt2=1.4142135623730951
+!            real(kind=8), parameter,optional :: zerodbl=0.0d0
+!            real(kind=8), parameter,optional :: twopi_d=6.283185307179586
+!            real(kind=8), parameter,optional :: e=1.6021765314e-19
+!            integer, parameter,optional :: dbl=selected_real_kind(p=15,r=307)
+!            real(kind=8), parameter,optional :: euler_d=0.5772156649015329
+!        end module kinds
+!        module datatypes ! in :gmm:datatypes.f90
+!            use kinds
+!            type unknown_type ! in :gmm:datatypes.f90:datatypes
+!                real(kind=8) :: value
+!                character(len=30) :: text
+!            end type unknown_type
+!            type unknown_type ! in :gmm:datatypes.f90:datatypes
+!                real(kind=4) :: value
+!                type(node_sgl_real), pointer :: next
+!            end type unknown_type
+!            type unknown_type ! in :gmm:datatypes.f90:datatypes
+!                real(kind=8) :: value
+!                type(node_dbl_real), pointer :: next
+!            end type unknown_type
+!            type unknown_type ! in :gmm:datatypes.f90:datatypes
+!                complex(kind=4) :: value
+!                type(node_sgl_cmplx), pointer :: next
+!            end type unknown_type
+!            type unknown_type ! in :gmm:datatypes.f90:datatypes
+!                complex(kind=8) :: value
+!                type(node_dbl_cmplx), pointer :: next
+!            end type unknown_type
+!            type unknown_type ! in :gmm:datatypes.f90:datatypes
+!                integer(kind=2) :: value
+!                type(node_short_int), pointer :: next
+!            end type unknown_type
+!            type unknown_type ! in :gmm:datatypes.f90:datatypes
+!                integer(kind=4) :: value
+!                type(node_long_int), pointer :: next
+!            end type unknown_type
+!            type unknown_type ! in :gmm:datatypes.f90:datatypes
+!                character(len=30) :: value
+!                type(node_char), pointer :: next
+!            end type unknown_type
+!            type unknown_type ! in :gmm:datatypes.f90:datatypes
+!                type(rdbl_char) :: value
+!                type(node_rdbl_char), pointer :: next
+!            end type unknown_type
+!        end module datatypes
+!        module operators ! in :gmm:operators.f90
+!            use kinds
+!            use datatypes
+!            function equals_rdbl_char(left_hand,right_hand) ! in :gmm:operators.f90:operators
+!                type(rdbl_char) intent(in) :: left_hand
+!                type(rdbl_char) intent(in) :: right_hand
+!                logical :: equals_rdbl_char
+!            end function equals_rdbl_char
+!        end module operators
+!        module shared_data ! in :gmm:shared_data.f90
+!            use kinds
+!            complex(kind=8), allocatable,dimension(:) :: v_sbij
+!            complex(kind=8), allocatable,dimension(:) :: v_saijh
+!            integer(kind=4), allocatable,dimension(:) :: v_iblock
+!            real(kind=8) dimension(401) :: v_oner
+!            integer(kind=4), allocatable,dimension(:) :: v_jblock_rhs
+!            complex(kind=8) dimension(401) :: v_ic
+!            complex(kind=8), allocatable,dimension(:) :: v_sb
+!            integer(kind=4), allocatable,dimension(:,:) :: m_jabij_rhs
+!            integer(kind=4), allocatable,dimension(:) :: v_idij
+!            integer(kind=4) :: namin
+!            integer(kind=4) :: namax
+!            integer(kind=4), allocatable,dimension(:) :: v_iabij_template
+!            complex(kind=8), allocatable,dimension(:,:) :: m_ab
+!            real(kind=8), allocatable,dimension(:,:) :: m_dij_rhs
+!            complex(kind=8), allocatable,dimension(:,:) :: m_saij
+!            integer(kind=4), allocatable,dimension(:) :: v_iblock_rhs
+!            integer(kind=4), allocatable,dimension(:) :: v_jaabb
+!            real(kind=8) :: bx
+!            integer(kind=4), allocatable,dimension(:) :: v_ituij
+!            integer(kind=4), allocatable,dimension(:) :: v_im
+!            complex(kind=8), allocatable,dimension(:,:) :: m_exphi_rhs
+!            integer(kind=4), allocatable,dimension(:) :: v_jabij_template
+!            integer(kind=4), allocatable,dimension(:) :: v_jab
+!            complex(kind=8), allocatable,dimension(:,:) :: m_abj
+!            complex(kind=8), allocatable,dimension(:) :: v_st1ij
+!            integer(kind=4), allocatable,dimension(:) :: v_iaabb
+!            complex(kind=8), allocatable,dimension(:) :: v_sm
+!            complex(kind=8), allocatable,dimension(:) :: v_st2ij
+!            complex(kind=8), allocatable,dimension(:) :: v_exphi
+!            real(kind=8) dimension(121,121) :: m_fact
+!            integer(kind=4), allocatable,dimension(:) :: v_iab
+!            complex(kind=8), allocatable,dimension(:) :: v_sa
+!            integer(kind=4) :: imin
+!            real(kind=8) :: by
+!            integer(kind=4), allocatable,dimension(:,:) :: m_idij
+!            integer(kind=4), allocatable,dimension(:,:) :: m_iabij_rhs
+!            integer(kind=4), allocatable,dimension(:,:) :: m_idij_rhs
+!            real(kind=8) :: ax
+!            complex(kind=8), allocatable,dimension(:,:) :: m_saij_sca
+!            integer(kind=4), allocatable,dimension(:) :: v_jblock_sca
+!            complex(kind=8), allocatable,dimension(:) :: v_sm_dip
+!            real(kind=8) :: bz
+!            integer(kind=4), allocatable,dimension(:,:) :: m_iabij
+!            integer(kind=4), allocatable,dimension(:) :: v_jm
+!            integer(kind=4) :: jmax
+!            complex(kind=8), allocatable,dimension(:,:) :: m_b
+!            integer(kind=4) :: nstop
+!            complex(kind=8), allocatable,dimension(:,:) :: m_ab_swap
+!            integer(kind=4), allocatable,dimension(:) :: v_jabij
+!            integer(kind=4), allocatable,dimension(:,:) :: m_jdij_sca
+!            integer(kind=4) :: nbcell
+!            integer(kind=4), allocatable,dimension(:,:) :: m_jdij_rhs
+!            complex(kind=8), allocatable,dimension(:,:) :: m_sbij
+!            complex(kind=8), allocatable,dimension(:) :: v_stuij
+!            real(kind=8), allocatable,dimension(:,:) :: m_dij_sca
+!            integer(kind=4) :: ns
+!            real(kind=8) :: ay
+!            integer(kind=4) :: ns_ant
+!            complex(kind=8), allocatable,dimension(:,:) :: m_c
+!            integer(kind=4), allocatable,dimension(:) :: v_jdij
+!            integer(kind=4), allocatable,dimension(:) :: v_jm_dip
+!            integer(kind=4) :: nsc
+!            integer(kind=4) :: nbmax
+!            complex(kind=8), allocatable,dimension(:,:) :: m_d
+!            integer(kind=4), allocatable,dimension(:) :: v_iabij
+!            real(kind=8), allocatable,dimension(:,:) :: m_dij
+!            integer(kind=4), allocatable,dimension(:) :: v_jblock
+!            complex(kind=8), allocatable,dimension(:) :: v_su2ij
+!            complex(kind=8), allocatable,dimension(:,:) :: m_sbij_rhs
+!            integer(kind=4), allocatable,dimension(:) :: v_patt
+!            integer(kind=4) :: imax
+!            integer(kind=4) :: nbmin
+!            complex(kind=8), allocatable,dimension(:) :: v_precond_shell
+!            integer(kind=4) :: jmin
+!            complex(kind=8), allocatable,dimension(:,:) :: m_sbij_sca
+!            complex(kind=8), allocatable,dimension(:) :: v_saabb
+!            complex(kind=8), allocatable,dimension(:) :: v_mask
+!            real(kind=8), allocatable,dimension(:) :: v_sdij
+!            integer(kind=4), allocatable,dimension(:) :: v_jtuij
+!            integer(kind=4), allocatable,dimension(:,:) :: m_jabij
+!            complex(kind=8), allocatable,dimension(:,:) :: m_exphi
+!            integer(kind=4), allocatable,dimension(:,:) :: m_idij_sca
+!            integer(kind=4) :: ncell
+!            complex(kind=8), allocatable,dimension(:) :: v_sbijh
+!            complex(kind=8), allocatable,dimension(:,:) :: m_a
+!            integer(kind=4), allocatable,dimension(:) :: v_iblock_sca
+!            complex(kind=8), allocatable,dimension(:,:) :: m_saij_rhs
+!            integer(kind=4), allocatable,dimension(:) :: v_im_dip
+!            real(kind=8) :: az
+!            integer(kind=4) :: ndip
+!            integer(kind=4), allocatable,dimension(:,:) :: m_jdij
+!            complex(kind=8), allocatable,dimension(:) :: v_su1ij
+!            integer(kind=4) :: nacell
+!            complex(kind=8), allocatable,dimension(:) :: v_saij
+!            complex(kind=8), optional :: a1mie=-2.0d0*(0.0d0,1.0d0)/3.0d0
+!        end module shared_data
+!        module basicsubs ! in :gmm:basicsubs.f90
+!            use operators
+!            use kinds
+!            use datatypes
+!            subroutine addnode_r_sgl(head,input,error) ! in :gmm:basicsubs.f90:basicsubs
+!                type(node_sgl_real), pointer :: head
+!                real(kind=4) intent(in) :: input
+!                integer(kind=4) :: error
+!            end subroutine addnode_r_sgl
+!            subroutine addnode_r_dbl(head,input,error) ! in :gmm:basicsubs.f90:basicsubs
+!                type(node_dbl_real), pointer :: head
+!                real(kind=8) intent(in) :: input
+!                integer(kind=4) :: error
+!            end subroutine addnode_r_dbl
+!            subroutine addnode_c_sgl(head,input,error) ! in :gmm:basicsubs.f90:basicsubs
+!                type(node_sgl_cmplx), pointer :: head
+!                complex(kind=4) intent(in) :: input
+!                integer(kind=4) :: error
+!            end subroutine addnode_c_sgl
+!            subroutine addnode_c_dbl(head,input,error) ! in :gmm:basicsubs.f90:basicsubs
+!                type(node_dbl_cmplx), pointer :: head
+!                complex(kind=8) intent(in) :: input
+!                integer(kind=4) :: error
+!            end subroutine addnode_c_dbl
+!            subroutine addnode_i_short(head,input,error) ! in :gmm:basicsubs.f90:basicsubs
+!                type(node_short_int), pointer :: head
+!                integer(kind=2) intent(in) :: input
+!                integer(kind=4) :: error
+!            end subroutine addnode_i_short
+!            subroutine addnode_i_long(head,input,error) ! in :gmm:basicsubs.f90:basicsubs
+!                type(node_long_int), pointer :: head
+!                integer(kind=4) intent(in) :: input
+!                integer(kind=4) :: error
+!            end subroutine addnode_i_long
+!            subroutine addnode_char(head,input,error) ! in :gmm:basicsubs.f90:basicsubs
+!                type(node_char), pointer :: head
+!                character*30 intent(in) :: input
+!                integer(kind=4) :: error
+!            end subroutine addnode_char
+!            subroutine addnode_rdbl_char(head,input,error) ! in :gmm:basicsubs.f90:basicsubs
+!                type(node_rdbl_char), pointer :: head
+!                type(rdbl_char) intent(in) :: input
+!                integer(kind=4) :: error
+!            end subroutine addnode_rdbl_char
+!            subroutine lldest_r_sgl(head,error) ! in :gmm:basicsubs.f90:basicsubs
+!                type(node_sgl_real), pointer :: head
+!                integer(kind=4) :: error
+!            end subroutine lldest_r_sgl
+!            subroutine lldest_r_dbl(head,error) ! in :gmm:basicsubs.f90:basicsubs
+!                type(node_dbl_real), pointer :: head
+!                integer(kind=4) :: error
+!            end subroutine lldest_r_dbl
+!            subroutine lldest_c_sgl(head,error) ! in :gmm:basicsubs.f90:basicsubs
+!                type(node_sgl_cmplx), pointer :: head
+!                integer(kind=4) :: error
+!            end subroutine lldest_c_sgl
+!            subroutine lldest_c_dbl(head,error) ! in :gmm:basicsubs.f90:basicsubs
+!                type(node_dbl_cmplx), pointer :: head
+!                integer(kind=4) :: error
+!            end subroutine lldest_c_dbl
+!            subroutine lldest_i_short(head,error) ! in :gmm:basicsubs.f90:basicsubs
+!                type(node_short_int), pointer :: head
+!                integer(kind=4) :: error
+!            end subroutine lldest_i_short
+!            subroutine lldest_i_long(head,error) ! in :gmm:basicsubs.f90:basicsubs
+!                type(node_long_int), pointer :: head
+!                integer(kind=4) :: error
+!            end subroutine lldest_i_long
+!            subroutine lldest_char(head,error) ! in :gmm:basicsubs.f90:basicsubs
+!                type(node_char), pointer :: head
+!                integer(kind=4) :: error
+!            end subroutine lldest_char
+!            subroutine lldest_rdbl_char(head,error) ! in :gmm:basicsubs.f90:basicsubs
+!                type(node_rdbl_char), pointer :: head
+!                integer(kind=4) :: error
+!            end subroutine lldest_rdbl_char
+!            subroutine c_addnode_r_sgl(head,input,error,ncount) ! in :gmm:basicsubs.f90:basicsubs
+!                type(node_sgl_real), pointer :: head
+!                real(kind=4) intent(in) :: input
+!                integer(kind=4) :: error
+!                integer(kind=4), optional :: ncount
+!            end subroutine c_addnode_r_sgl
+!            subroutine c_addnode_r_dbl(head,input,error,ncount) ! in :gmm:basicsubs.f90:basicsubs
+!                type(node_dbl_real), pointer :: head
+!                real(kind=8) intent(in) :: input
+!                integer(kind=4) :: error
+!                integer(kind=4), optional :: ncount
+!            end subroutine c_addnode_r_dbl
+!            subroutine c_addnode_c_sgl(head,input,error,ncount) ! in :gmm:basicsubs.f90:basicsubs
+!                type(node_sgl_cmplx), pointer :: head
+!                complex(kind=4) intent(in) :: input
+!                integer(kind=4) :: error
+!                integer(kind=4), optional :: ncount
+!            end subroutine c_addnode_c_sgl
+!            subroutine c_addnode_c_dbl(head,input,error,ncount) ! in :gmm:basicsubs.f90:basicsubs
+!                type(node_dbl_cmplx), pointer :: head
+!                complex(kind=8) intent(in) :: input
+!                integer(kind=4) :: error
+!                integer(kind=4), optional :: ncount
+!            end subroutine c_addnode_c_dbl
+!            subroutine c_addnode_i_short(head,input,error,ncount) ! in :gmm:basicsubs.f90:basicsubs
+!                type(node_short_int), pointer :: head
+!                integer(kind=2) intent(in) :: input
+!                integer(kind=4) :: error
+!                integer(kind=4), optional :: ncount
+!            end subroutine c_addnode_i_short
+!            subroutine c_addnode_i_long(head,input,error,ncount) ! in :gmm:basicsubs.f90:basicsubs
+!                type(node_long_int), pointer :: head
+!                integer(kind=4) intent(in) :: input
+!                integer(kind=4) :: error
+!                integer(kind=4), optional :: ncount
+!            end subroutine c_addnode_i_long
+!            subroutine c_addnode_char(head,input,error,ncount) ! in :gmm:basicsubs.f90:basicsubs
+!                type(node_char), pointer :: head
+!                character*30 intent(in) :: input
+!                integer(kind=4) :: error
+!                integer(kind=4), optional :: ncount
+!            end subroutine c_addnode_char
+!            subroutine pattern(head1,input,head2,ncount,h_req,h_epseq,error) ! in :gmm:basicsubs.f90:basicsubs
+!                type(node_rdbl_char), pointer :: head1
+!                type(rdbl_char) intent(in) :: input
+!                type(node_long_int), pointer :: head2
+!                integer(kind=4) :: ncount
+!                type(node_dbl_real), pointer :: h_req
+!                type(node_char), pointer :: h_epseq
+!                integer(kind=4) :: error
+!            end subroutine pattern
+!            subroutine pattern_shell(head1,head1_shell,input,input_shell,head2,ncount,h_req,h_epseq,h_req_shell,h_epseq_shell,error) ! in :gmm:basicsubs.f90:basicsubs
+!                type(node_rdbl_char), pointer :: head1
+!                type(node_rdbl_char), pointer :: head1_shell
+!                type(rdbl_char) intent(in) :: input
+!                type(rdbl_char) intent(in) :: input_shell
+!                type(node_long_int), pointer :: head2
+!                integer(kind=4) :: ncount
+!                type(node_dbl_real), pointer :: h_req
+!                type(node_char), pointer :: h_epseq
+!                type(node_dbl_real), pointer :: h_req_shell
+!                type(node_char), pointer :: h_epseq_shell
+!                integer(kind=4) :: error
+!            end subroutine pattern_shell
+!            function dist_r_sgl(r1,r2) ! in :gmm:basicsubs.f90:basicsubs
+!                real(kind=4) dimension(:),intent(in) :: r1
+!                real(kind=4) dimension(:),intent(in) :: r2
+!                real(kind=4), pure :: dist_r_sgl
+!            end function dist_r_sgl
+!            function dist_r_dbl(r1,r2) ! in :gmm:basicsubs.f90:basicsubs
+!                real(kind=8) dimension(:),intent(in) :: r1
+!                real(kind=8) dimension(:),intent(in) :: r2
+!                real(kind=8), pure :: dist_r_dbl
+!            end function dist_r_dbl
+!            subroutine cart_spher_r_sgl_v(x,y,z,r,theta,phi,error) ! in :gmm:basicsubs.f90:basicsubs
+!                real(kind=4) dimension(:),intent(in) :: x
+!                real(kind=4) dimension(:),intent(in) :: y
+!                real(kind=4) dimension(:),intent(in) :: z
+!                real(kind=4) dimension(:) :: r
+!                real(kind=4) dimension(:) :: theta
+!                real(kind=4) dimension(:) :: phi
+!                integer(kind=4) :: error
+!            end subroutine cart_spher_r_sgl_v
+!            subroutine cart_spher_r_dbl_v(x,y,z,r,theta,phi,error) ! in :gmm:basicsubs.f90:basicsubs
+!                real(kind=8) dimension(:),intent(in) :: x
+!                real(kind=8) dimension(:),intent(in) :: y
+!                real(kind=8) dimension(:),intent(in) :: z
+!                real(kind=8) dimension(:) :: r
+!                real(kind=8) dimension(:) :: theta
+!                real(kind=8) dimension(:) :: phi
+!                integer(kind=4) :: error
+!            end subroutine cart_spher_r_dbl_v
+!            subroutine cart_spher_r_sgl(x,y,z,r,theta,phi,error) ! in :gmm:basicsubs.f90:basicsubs
+!                real(kind=4) intent(in) :: x
+!                real(kind=4) intent(in) :: y
+!                real(kind=4) intent(in) :: z
+!                real(kind=4) :: r
+!                real(kind=4) :: theta
+!                real(kind=4) :: phi
+!                integer(kind=4) :: error
+!            end subroutine cart_spher_r_sgl
+!            subroutine cart_spher_r_dbl(x,y,z,r,theta,phi,error) ! in :gmm:basicsubs.f90:basicsubs
+!                real(kind=8) intent(in) :: x
+!                real(kind=8) intent(in) :: y
+!                real(kind=8) intent(in) :: z
+!                real(kind=8) :: r
+!                real(kind=8) :: theta
+!                real(kind=8) :: phi
+!                integer(kind=4) :: error
+!            end subroutine cart_spher_r_dbl
+!            subroutine cart_spher_r_dbl1(x,y,z,r,theta,phi,error) ! in :gmm:basicsubs.f90:basicsubs
+!                real(kind=8) intent(in) :: x
+!                real(kind=8) intent(in) :: y
+!                real(kind=8) intent(in) :: z
+!                real(kind=8) :: r
+!                real(kind=8) :: theta
+!                real(kind=8) :: phi
+!                integer(kind=4) :: error
+!            end subroutine cart_spher_r_dbl1
+!            subroutine spher_cart_r_dbl(r,theta,phi,x,y,z,error) ! in :gmm:basicsubs.f90:basicsubs
+!                real(kind=8) intent(in) :: r
+!                real(kind=8) intent(in) :: theta
+!                real(kind=8) intent(in) :: phi
+!                real(kind=8) :: x
+!                real(kind=8) :: y
+!                real(kind=8) :: z
+!                integer(kind=4) :: error
+!            end subroutine spher_cart_r_dbl
+!            function lnf(z,ierr) ! in :gmm:basicsubs.f90:basicsubs
+!                real(kind=8) intent(in) :: z
+!                integer(kind=4) intent(inout) :: ierr
+!                real(kind=8) :: lnf
+!            end function lnf
+!            function lpoch(x,n,ierr) ! in :gmm:basicsubs.f90:basicsubs
+!                real(kind=8) intent(in) :: x
+!                real(kind=8) intent(in) :: n
+!                integer(kind=4) :: ierr
+!                real(kind=8) :: lpoch
+!            end function lpoch
+!            function fatt(n) ! in :gmm:basicsubs.f90:basicsubs
+!                real(kind=8) intent(in) :: n
+!                real(kind=8) :: fatt
+!            end function fatt
+!            function fact2(n) ! in :gmm:basicsubs.f90:basicsubs
+!                real(kind=8) intent(in) :: n
+!                real(kind=8) :: fact2
+!            end function fact2
+!            subroutine interp(x0,x1,x2,y1,y2,error) ! in :gmm:basicsubs.f90:basicsubs
+!                real(kind=8) intent(in) :: x0
+!                real(kind=8) intent(in) :: x1
+!                real(kind=8) intent(in) :: x2
+!                real(kind=8) intent(in) :: y1
+!                real(kind=8) intent(inout) :: y2
+!                integer(kind=4) :: error
+!            end subroutine interp
+!            subroutine weigths(nalpha,nbeta,v_walpha,v_xalpha,v_wbeta,v_xbeta,error) ! in :gmm:basicsubs.f90:basicsubs
+!                integer(kind=4) intent(in) :: nalpha
+!                integer(kind=4) intent(in) :: nbeta
+!                real(kind=8) dimension(:) :: v_walpha
+!                real(kind=8) dimension(:) :: v_xalpha
+!                real(kind=8) dimension(:) :: v_wbeta
+!                real(kind=8) dimension(:) :: v_xbeta
+!                integer(kind=4) :: error
+!            end subroutine weigths
+!            subroutine weigths1(nalpha,nbeta,v_walpha,v_xalpha,v_wbeta,v_xbeta,error) ! in :gmm:basicsubs.f90:basicsubs
+!                integer(kind=4) intent(in) :: nalpha
+!                integer(kind=4) intent(in) :: nbeta
+!                real(kind=8) dimension(:),intent(inout) :: v_walpha
+!                real(kind=8) dimension(:),intent(inout) :: v_xalpha
+!                real(kind=8) dimension(:),intent(inout) :: v_wbeta
+!                real(kind=8) dimension(:),intent(inout) :: v_xbeta
+!                integer(kind=4) :: error
+!            end subroutine weigths1
+!        end module basicsubs
+!        module gmmsubs ! in :gmm:gmmsubs.f90
+!            use operators
+!            use kinds
+!            use datatypes
+!            use basicsubs
+!            subroutine openinfo(filename,unit_in,h_eps,h_patt,h_req,h_epseq,nspheres,neps,neq,error) ! in :gmm:gmmsubs.f90:gmmsubs
+!                character*(*) intent(in) :: filename
+!                integer(kind=4) intent(in) :: unit_in
+!                type(node_char), pointer :: h_eps
+!                type(node_long_int), pointer :: h_patt
+!                type(node_dbl_real), pointer :: h_req
+!                type(node_char), pointer :: h_epseq
+!                integer(kind=4) :: nspheres
+!                integer(kind=4) :: neps
+!                integer(kind=4) :: neq
+!                integer(kind=4) :: error
+!            end subroutine openinfo
+!            subroutine openinfo_shell(filename,unit_in,h_eps,h_patt,h_req,h_epseq,h_req_shell,h_epseq_shell,nspheres,neps,neq,error) ! in :gmm:gmmsubs.f90:gmmsubs
+!                character*(*) intent(in) :: filename
+!                integer(kind=4) intent(in) :: unit_in
+!                type(node_char), pointer :: h_eps
+!                type(node_long_int), pointer :: h_patt
+!                type(node_dbl_real), pointer :: h_req
+!                type(node_char), pointer :: h_epseq
+!                type(node_dbl_real), pointer :: h_req_shell
+!                type(node_char), pointer :: h_epseq_shell
+!                integer(kind=4) :: nspheres
+!                integer(kind=4) :: neps
+!                integer(kind=4) :: neq
+!                integer(kind=4) :: error
+!            end subroutine openinfo_shell
+!            subroutine intspheres(r,xyz,ns,error) ! in :gmm:gmmsubs.f90:gmmsubs
+!                real(kind=8) dimension(:),intent(in) :: r
+!                real(kind=8) dimension(:,:),intent(in) :: xyz
+!                integer(kind=4) intent(in) :: ns
+!                integer(kind=4) :: error
+!            end subroutine intspheres
+!            subroutine intshells(r,xyz,ns,error) ! in :gmm:gmmsubs.f90:gmmsubs
+!                real(kind=8) dimension(:),intent(in) :: r
+!                real(kind=8) dimension(:,:),intent(in) :: xyz
+!                integer(kind=4) intent(in) :: ns
+!                integer(kind=4) :: error
+!            end subroutine intshells
+!            subroutine fillarray(unit_in,ns,neps,neq,h_patt,h_eps,h_req,h_epseq,v_r,v_req,m_xyz,v_unit_in,v_patt,v_eps,v_epsg,v_epseq,error) ! in :gmm:gmmsubs.f90:gmmsubs
+!                integer(kind=4) intent(in) :: unit_in
+!                integer(kind=4) intent(in) :: ns
+!                integer(kind=4) intent(in) :: neps
+!                integer(kind=4) intent(in) :: neq
+!                type(node_long_int), pointer :: h_patt
+!                type(node_char), pointer :: h_eps
+!                type(node_dbl_real), pointer :: h_req
+!                type(node_char), pointer :: h_epseq
+!                real(kind=8) dimension(:) :: v_r
+!                real(kind=8) dimension(:) :: v_req
+!                real(kind=8) dimension(:,:) :: m_xyz
+!                integer(kind=4) dimension(:) :: v_unit_in
+!                integer(kind=4) dimension(:) :: v_patt
+!                character(len=*) dimension(:) :: v_eps
+!                character(len=*) dimension(:) :: v_epsg
+!                character(len=*) dimension(:) :: v_epseq
+!                integer(kind=4) :: error
+!            end subroutine fillarray
+!            subroutine fillarray_shell(unit_in,ns,neps,neq,h_patt,h_eps,h_req,h_epseq,h_req_shell,h_epseq_shell,v_r,v_req,v_r_shell,v_req_shell,m_xyz,v_unit_in,v_patt,v_eps,v_epsg,v_epseq,v_epsg_shell,v_epseq_shell,error) ! in :gmm:gmmsubs.f90:gmmsubs
+!                integer(kind=4) intent(in) :: unit_in
+!                integer(kind=4) intent(in) :: ns
+!                integer(kind=4) intent(in) :: neps
+!                integer(kind=4) intent(in) :: neq
+!                type(node_long_int), pointer :: h_patt
+!                type(node_char), pointer :: h_eps
+!                type(node_dbl_real), pointer :: h_req
+!                type(node_char), pointer :: h_epseq
+!                type(node_dbl_real), pointer :: h_req_shell
+!                type(node_char), pointer :: h_epseq_shell
+!                real(kind=8) dimension(:) :: v_r
+!                real(kind=8) dimension(:) :: v_req
+!                real(kind=8) dimension(:) :: v_r_shell
+!                real(kind=8) dimension(:) :: v_req_shell
+!                real(kind=8) dimension(:,:) :: m_xyz
+!                integer(kind=4) dimension(:) :: v_unit_in
+!                integer(kind=4) dimension(:) :: v_patt
+!                character(len=*) dimension(:) :: v_eps
+!                character(len=*) dimension(:) :: v_epsg
+!                character(len=*) dimension(:) :: v_epseq
+!                character(len=*) dimension(:) :: v_epsg_shell
+!                character(len=*) dimension(:) :: v_epseq_shell
+!                integer(kind=4) :: error
+!            end subroutine fillarray_shell
+!            subroutine checkepsilon(v_unit_in,neps,error) ! in :gmm:gmmsubs.f90:gmmsubs
+!                integer(kind=4) dimension(:),intent(in) :: v_unit_in
+!                integer(kind=4) intent(in) :: neps
+!                integer(kind=4) :: error
+!            end subroutine checkepsilon
+!            subroutine correps(lambda,e1,e2,r,par) ! in :gmm:gmmsubs.f90:gmmsubs
+!                real(kind=8) intent(in) :: lambda
+!                real(kind=8) intent(inout) :: e1
+!                real(kind=8) intent(inout) :: e2
+!                real(kind=8) intent(in) :: r
+!                real(kind=8) dimension(:),intent(in) :: par
+!            end subroutine correps
+!            subroutine correps_shell(lambda,e1,e2,r,r_shell,par) ! in :gmm:gmmsubs.f90:gmmsubs
+!                real(kind=8) intent(in) :: lambda
+!                real(kind=8) intent(inout) :: e1
+!                real(kind=8) intent(inout) :: e2
+!                real(kind=8) intent(in) :: r
+!                real(kind=8) intent(in) :: r_shell
+!                real(kind=8) dimension(:),intent(in) :: par
+!            end subroutine correps_shell
+!            subroutine lambdaepsilon(lambda,neps,neq,v_eps,v_epseq,v_req,m_eps,m_par,correction,m_epseq) ! in :gmm:gmmsubs.f90:gmmsubs
+!                real(kind=8) intent(in) :: lambda
+!                integer(kind=4) intent(in) :: neps
+!                integer(kind=4) intent(in) :: neq
+!                character(len=*) dimension(:),intent(in) :: v_eps
+!                character(len=*) dimension(:),intent(in) :: v_epseq
+!                real(kind=8) dimension(:),intent(in) :: v_req
+!                real(kind=8) dimension(:,:),intent(in) :: m_eps
+!                real(kind=8) dimension(:,:),intent(in) :: m_par
+!                character*(*) intent(in) :: correction
+!                real(kind=8) dimension(:,:) :: m_epseq
+!            end subroutine lambdaepsilon
+!            subroutine lambdaepsilon_singleshell(lambda,neps,neq,v_eps,v_epseq,v_req,m_eps,m_par,correction,m_epseq) ! in :gmm:gmmsubs.f90:gmmsubs
+!                real(kind=8) intent(in) :: lambda
+!                integer(kind=4) intent(in) :: neps
+!                integer(kind=4) intent(in) :: neq
+!                character(len=*) dimension(:),intent(in) :: v_eps
+!                character(len=*) dimension(:),intent(in) :: v_epseq
+!                real(kind=8) dimension(:),intent(in) :: v_req
+!                real(kind=8) dimension(:,:),intent(in) :: m_eps
+!                real(kind=8) dimension(:,:),intent(in) :: m_par
+!                character*(*) intent(in) :: correction
+!                real(kind=8) dimension(:,:) :: m_epseq
+!            end subroutine lambdaepsilon_singleshell
+!            subroutine lambdaepsilon_shell(lambda,neps,neq,v_eps,v_epseq,v_epseq_shell,v_req,v_req_shell,m_eps,m_par,correction,correction_shell,m_epseq,m_epseq_shell) ! in :gmm:gmmsubs.f90:gmmsubs
+!                real(kind=8) intent(in) :: lambda
+!                integer(kind=4) intent(in) :: neps
+!                integer(kind=4) intent(in) :: neq
+!                character(len=*) dimension(:),intent(in) :: v_eps
+!                character(len=*) dimension(:),intent(in) :: v_epseq
+!                character(len=*) dimension(:),intent(in) :: v_epseq_shell
+!                real(kind=8) dimension(:),intent(in) :: v_req
+!                real(kind=8) dimension(:),intent(in) :: v_req_shell
+!                real(kind=8) dimension(:,:),intent(in) :: m_eps
+!                real(kind=8) dimension(:,:),intent(in) :: m_par
+!                character*(*) intent(in) :: correction
+!                character*(*) intent(in) :: correction_shell
+!                real(kind=8) dimension(:,:) :: m_epseq
+!                real(kind=8) dimension(:,:) :: m_epseq_shell
+!            end subroutine lambdaepsilon_shell
+!        end module gmmsubs
+!        module sing_part ! in :gmm:sing_part.f90
+!            use basicsubs
+!            use kinds
+!            subroutine besselj_d_sub(nstop,x,v_besj,error) ! in :gmm:sing_part.f90:sing_part
+!                integer(kind=4) intent(in) :: nstop
+!                real(kind=8) intent(in) :: x
+!                real(kind=8) dimension(nstop + 1),depend(nstop) :: v_besj
+!                integer(kind=4) :: error
+!            end subroutine besselj_d_sub
+!            subroutine besselj_z_sub(nstop,z,v_besj,error) ! in :gmm:sing_part.f90:sing_part
+!                integer(kind=4) intent(in) :: nstop
+!                complex(kind=8) intent(in) :: z
+!                complex(kind=8) dimension(nstop + 1),depend(nstop) :: v_besj
+!                integer(kind=4) :: error
+!            end subroutine besselj_z_sub
+!            subroutine bessely_d_sub(nstop,x,v_besy,error) ! in :gmm:sing_part.f90:sing_part
+!                integer(kind=4) intent(in) :: nstop
+!                real(kind=8) intent(in) :: x
+!                real(kind=8) dimension(nstop + 1),depend(nstop) :: v_besy
+!                integer(kind=4) :: error
+!            end subroutine bessely_d_sub
+!            subroutine bessely_z_sub(nstop,z,v_besy,error) ! in :gmm:sing_part.f90:sing_part
+!                integer(kind=4) intent(in) :: nstop
+!                complex(kind=8) intent(in) :: z
+!                complex(kind=8) dimension(nstop + 1),depend(nstop) :: v_besy
+!                integer(kind=4) :: error
+!            end subroutine bessely_z_sub
+!            subroutine hankel1_d_sub(nstop,x,v_hank1,error) ! in :gmm:sing_part.f90:sing_part
+!                integer(kind=4) intent(in) :: nstop
+!                real(kind=8) intent(in) :: x
+!                complex(kind=8) dimension(nstop + 1),depend(nstop) :: v_hank1
+!                integer(kind=4) :: error
+!            end subroutine hankel1_d_sub
+!            subroutine hankel1_z_sub(nstop,z,v_hank1,error) ! in :gmm:sing_part.f90:sing_part
+!                integer(kind=4) intent(in) :: nstop
+!                complex(kind=8) intent(in) :: z
+!                complex(kind=8) dimension(nstop + 1),depend(nstop) :: v_hank1
+!                integer(kind=4) :: error
+!            end subroutine hankel1_z_sub
+!            subroutine eta_d_sub(nstop,r,v_eta,error) ! in :gmm:sing_part.f90:sing_part
+!                integer(kind=4) intent(in) :: nstop
+!                real(kind=8) intent(in) :: r
+!                real(kind=8) dimension(nstop + 1),depend(nstop) :: v_eta
+!                integer(kind=4) :: error
+!            end subroutine eta_d_sub
+!            subroutine eta_z_sub(nstop,z,v_eta,error) ! in :gmm:sing_part.f90:sing_part
+!                integer(kind=4) intent(in) :: nstop
+!                complex(kind=8) intent(in) :: z
+!                complex(kind=8) dimension(nstop + 1),depend(nstop) :: v_eta
+!                integer(kind=4) :: error
+!            end subroutine eta_z_sub
+!            subroutine rn_d_sub(low_b,up_b,x,v_rn,error) ! in :gmm:sing_part.f90:sing_part
+!                integer(kind=4) intent(in) :: low_b
+!                integer(kind=4) intent(in) :: up_b
+!                real(kind=8) intent(in) :: x
+!                real(kind=8) dimension(up_b-low_b+1),depend(low_b,up_b) :: v_rn
+!                integer(kind=4) :: error
+!            end subroutine rn_d_sub
+!            subroutine rn_z_sub(low_b,up_b,x,v_rn,error) ! in :gmm:sing_part.f90:sing_part
+!                integer(kind=4) intent(in) :: low_b
+!                integer(kind=4) intent(in) :: up_b
+!                complex(kind=8) intent(in) :: x
+!                complex(kind=8) dimension(up_b-low_b+1),depend(low_b,up_b) :: v_rn
+!                integer(kind=4) :: error
+!            end subroutine rn_z_sub
+!            subroutine qn_d_sub(low_b,up_b,r,v_qn,error) ! in :gmm:sing_part.f90:sing_part
+!                integer(kind=4) intent(in) :: low_b
+!                integer(kind=4) intent(in) :: up_b
+!                real(kind=8) intent(in) :: r
+!                real(kind=8) dimension(up_b-low_b+1),depend(low_b,up_b) :: v_qn
+!                integer(kind=4) :: error
+!            end subroutine qn_d_sub
+!            subroutine qn_z_sub(low_b,up_b,z,v_qn,error) ! in :gmm:sing_part.f90:sing_part
+!                integer(kind=4) intent(in) :: low_b
+!                integer(kind=4) intent(in) :: up_b
+!                complex(kind=8) intent(in) :: z
+!                complex(kind=8) dimension(up_b-low_b+1),depend(low_b,up_b) :: v_qn
+!                integer(kind=4) :: error
+!            end subroutine qn_z_sub
+!            subroutine psi_d_sub(nstop,x,v_psi,error) ! in :gmm:sing_part.f90:sing_part
+!                integer(kind=4) intent(in) :: nstop
+!                real(kind=8) intent(in) :: x
+!                real(kind=8) dimension(nstop + 1),depend(nstop) :: v_psi
+!                integer(kind=4) :: error
+!            end subroutine psi_d_sub
+!            subroutine psi_z_sub(nstop,z,v_psi,error) ! in :gmm:sing_part.f90:sing_part
+!                integer(kind=4) intent(in) :: nstop
+!                complex(kind=8) intent(in) :: z
+!                complex(kind=8) dimension(nstop + 1),depend(nstop) :: v_psi
+!                integer(kind=4) :: error
+!            end subroutine psi_z_sub
+!            subroutine chi_d_sub(nstop,x,v_chi,error) ! in :gmm:sing_part.f90:sing_part
+!                integer(kind=4) intent(in) :: nstop
+!                real(kind=8) intent(in) :: x
+!                real(kind=8) dimension(nstop + 1),depend(nstop) :: v_chi
+!                integer(kind=4) :: error
+!            end subroutine chi_d_sub
+!            subroutine chi_z_sub(nstop,z,v_chi,error) ! in :gmm:sing_part.f90:sing_part
+!                integer(kind=4) intent(in) :: nstop
+!                complex(kind=8) intent(in) :: z
+!                complex(kind=8) dimension(nstop + 1),depend(nstop) :: v_chi
+!                integer(kind=4) :: error
+!            end subroutine chi_z_sub
+!            subroutine csi_d_sub(nstop,x,v_csi,error) ! in :gmm:sing_part.f90:sing_part
+!                integer(kind=4) intent(in) :: nstop
+!                real(kind=8) intent(in) :: x
+!                complex(kind=8) dimension(nstop + 1),depend(nstop) :: v_csi
+!                integer(kind=4) :: error
+!            end subroutine csi_d_sub
+!            subroutine csi_z_sub(nstop,z,v_csi,error) ! in :gmm:sing_part.f90:sing_part
+!                integer(kind=4) intent(in) :: nstop
+!                complex(kind=8) intent(in) :: z
+!                complex(kind=8) dimension(nstop + 1),depend(nstop) :: v_csi
+!                integer(kind=4) :: error
+!            end subroutine csi_z_sub
+!            subroutine dlog_d_sub(nstop,x,v_dlog,error) ! in :gmm:sing_part.f90:sing_part
+!                integer(kind=4) intent(in) :: nstop
+!                real(kind=8) intent(in) :: x
+!                real(kind=8) dimension(nstop + 1),depend(nstop) :: v_dlog
+!                integer(kind=4) :: error
+!            end subroutine dlog_d_sub
+!            subroutine dlog_z_sub(nstop,z,v_dlog,error) ! in :gmm:sing_part.f90:sing_part
+!                integer(kind=4) intent(in) :: nstop
+!                complex(kind=8) intent(in) :: z
+!                complex(kind=8) dimension(nstop + 1),depend(nstop) :: v_dlog
+!                integer(kind=4) :: error
+!            end subroutine dlog_z_sub
+!            function l_sub(n,x) ! in :gmm:sing_part.f90:sing_part
+!                integer(kind=4) intent(in) :: n
+!                complex(kind=8) intent(in) :: x
+!                real(kind=8) :: l_sub
+!            end function l_sub
+!            subroutine coeff_sp2(lambda,ref_index,v_req,m_epseq,nstop,neq,m_a,m_b,error) ! in :gmm:sing_part.f90:sing_part
+!                real(kind=8) intent(in) :: lambda
+!                real(kind=8) intent(in) :: ref_index
+!                real(kind=8) dimension(:),intent(in) :: v_req
+!                real(kind=8) dimension(:,:),intent(in) :: m_epseq
+!                integer(kind=4) intent(in) :: nstop
+!                integer(kind=4) intent(in) :: neq
+!                complex(kind=8) dimension(:,:) :: m_a
+!                complex(kind=8) dimension(:,:) :: m_b
+!                integer(kind=4) :: error
+!            end subroutine coeff_sp2
+!            subroutine coeff_sp2_dip(lambda,ref_index,v_req,m_epseq,nstop,neq,m_a,m_b,error) ! in :gmm:sing_part.f90:sing_part
+!                real(kind=8) intent(in) :: lambda
+!                real(kind=8) intent(in) :: ref_index
+!                real(kind=8) dimension(:),intent(in) :: v_req
+!                real(kind=8) dimension(:,:),intent(in) :: m_epseq
+!                integer(kind=4) intent(in) :: nstop
+!                integer(kind=4) intent(in) :: neq
+!                complex(kind=8) dimension(:,:) :: m_a
+!                complex(kind=8) dimension(:,:) :: m_b
+!                integer(kind=4) :: error
+!            end subroutine coeff_sp2_dip
+!            subroutine coeff_sp3(lambda,ref_index,v_req,m_epseq,nstop,neq,m_a,m_b,m_c,m_d,error) ! in :gmm:sing_part.f90:sing_part
+!                real(kind=8) intent(in) :: lambda
+!                real(kind=8) intent(in) :: ref_index
+!                real(kind=8) dimension(:),intent(in) :: v_req
+!                real(kind=8) dimension(:,:),intent(in) :: m_epseq
+!                integer(kind=4) intent(in) :: nstop
+!                integer(kind=4) intent(in) :: neq
+!                complex(kind=8) dimension(:,:) :: m_a
+!                complex(kind=8) dimension(:,:) :: m_b
+!                complex(kind=8) dimension(:,:) :: m_c
+!                complex(kind=8) dimension(:,:) :: m_d
+!                integer(kind=4) :: error
+!            end subroutine coeff_sp3
+!            subroutine coeff_ad_ca(lambda,ref_index,v_req,m_epseq,nstop,neq,m_da,m_cb,error) ! in :gmm:sing_part.f90:sing_part
+!                real(kind=8) intent(in) :: lambda
+!                real(kind=8) intent(in) :: ref_index
+!                real(kind=8) dimension(:),intent(in) :: v_req
+!                real(kind=8) dimension(:,:),intent(in) :: m_epseq
+!                integer(kind=4) intent(in) :: nstop
+!                integer(kind=4) intent(in) :: neq
+!                complex(kind=8) dimension(:,:) :: m_da
+!                complex(kind=8) dimension(:,:) :: m_cb
+!                integer(kind=4) :: error
+!            end subroutine coeff_ad_ca
+!            subroutine coeff_ad_ca_dip(lambda,ref_index,v_req,m_epseq,nstop,neq,m_da,m_cb,error) ! in :gmm:sing_part.f90:sing_part
+!                real(kind=8) intent(in) :: lambda
+!                real(kind=8) intent(in) :: ref_index
+!                real(kind=8) dimension(:),intent(in) :: v_req
+!                real(kind=8) dimension(:,:),intent(in) :: m_epseq
+!                integer(kind=4) intent(in) :: nstop
+!                integer(kind=4) intent(in) :: neq
+!                complex(kind=8) dimension(:,:) :: m_da
+!                complex(kind=8) dimension(:,:) :: m_cb
+!                integer(kind=4) :: error
+!            end subroutine coeff_ad_ca_dip
+!            subroutine coeff_shell(lambda,ref_index,v_req,m_epseq,v_p,nstop,neq,matrixside,v_qa,v_qb,v_gamma,m_t1,m_u1,m_t2,m_u2,v_dc0,error) ! in :gmm:sing_part.f90:sing_part
+!                real(kind=8) intent(in) :: lambda
+!                real(kind=8) intent(in) :: ref_index
+!                real(kind=8) dimension(:),intent(in) :: v_req
+!                real(kind=8) dimension(:,:),intent(in) :: m_epseq
+!                complex(kind=8) dimension(:),intent(in) :: v_p
+!                integer(kind=4) intent(in) :: nstop
+!                integer(kind=4) intent(in) :: neq
+!                integer(kind=4) intent(in) :: matrixside
+!                complex(kind=8) dimension(:) :: v_qa
+!                complex(kind=8) dimension(:) :: v_qb
+!                complex(kind=8) dimension(:) :: v_gamma
+!                complex(kind=8) dimension(:,:) :: m_t1
+!                complex(kind=8) dimension(:,:) :: m_u1
+!                complex(kind=8) dimension(:,:) :: m_t2
+!                complex(kind=8) dimension(:,:) :: m_u2
+!                complex(kind=8) dimension(:) :: v_dc0
+!                integer(kind=4) :: error
+!            end subroutine coeff_shell
+!            subroutine coeff_shell_borghese(lambda,ref_index,v_req,m_epseq,nstop,neq,v_rn,v_vn,v_zn,error) ! in :gmm:sing_part.f90:sing_part
+!                real(kind=8) intent(in) :: lambda
+!                real(kind=8) intent(in) :: ref_index
+!                real(kind=8) dimension(:),intent(in) :: v_req
+!                real(kind=8) dimension(:,:),intent(in) :: m_epseq
+!                integer(kind=4) intent(in) :: nstop
+!                integer(kind=4) intent(in) :: neq
+!                complex(kind=8) dimension(:) :: v_rn
+!                complex(kind=8) dimension(:) :: v_vn
+!                complex(kind=8) dimension(:) :: v_zn
+!                integer(kind=4) :: error
+!            end subroutine coeff_shell_borghese
+!            subroutine coeff_shell_dip(lambda,ref_index,v_req,m_epseq,v_p,nstop,neq,matrixside,tflag,v_qa,v_qb,v_gamma,m_t1,m_u1,m_t2,m_u2,v_dc0,error) ! in :gmm:sing_part.f90:sing_part
+!                real(kind=8) intent(in) :: lambda
+!                real(kind=8) intent(in) :: ref_index
+!                real(kind=8) dimension(:),intent(in) :: v_req
+!                real(kind=8) dimension(:,:),intent(in) :: m_epseq
+!                complex(kind=8) dimension(:),intent(in) :: v_p
+!                integer(kind=4) intent(in) :: nstop
+!                integer(kind=4) intent(in) :: neq
+!                integer(kind=4) intent(in) :: matrixside
+!                integer(kind=4) intent(in) :: tflag
+!                complex(kind=8) dimension(:) :: v_qa
+!                complex(kind=8) dimension(:) :: v_qb
+!                complex(kind=8) dimension(:) :: v_gamma
+!                complex(kind=8) dimension(:,:) :: m_t1
+!                complex(kind=8) dimension(:,:) :: m_u1
+!                complex(kind=8) dimension(:,:) :: m_t2
+!                complex(kind=8) dimension(:,:) :: m_u2
+!                complex(kind=8) dimension(:) :: v_dc0
+!                integer(kind=4) :: error
+!            end subroutine coeff_shell_dip
+!            subroutine coeff_shell_dip_borghese(lambda,ref_index,v_req,m_epseq,nstop,neq,v_rn,v_vn,v_zn,error) ! in :gmm:sing_part.f90:sing_part
+!                real(kind=8) intent(in) :: lambda
+!                real(kind=8) intent(in) :: ref_index
+!                real(kind=8) dimension(:),intent(in) :: v_req
+!                real(kind=8) dimension(:,:),intent(in) :: m_epseq
+!                integer(kind=4) intent(in) :: nstop
+!                integer(kind=4) intent(in) :: neq
+!                complex(kind=8) dimension(:) :: v_rn
+!                complex(kind=8) dimension(:) :: v_vn
+!                complex(kind=8) dimension(:) :: v_zn
+!                integer(kind=4) :: error
+!            end subroutine coeff_shell_dip_borghese
+!        end module sing_part
+!        module local_field ! in :gmm:local_field.f90
+!            use sing_part
+!            use kinds
+!            use vec_trans
+!            use shared_data
+!            use basicsubs
+!            use datatypes
+!            subroutine emn_sub(nstop,v_emn,error) ! in :gmm:local_field.f90:local_field
+!                integer(kind=4) intent(in) :: nstop
+!                complex(kind=8) dimension(:) :: v_emn
+!                integer(kind=4) :: error
+!            end subroutine emn_sub
+!            subroutine int_field(v_dmncmn,v_emn,nstop,rho,theta,phi,er,etheta,ephi,error) ! in :gmm:local_field.f90:local_field
+!                complex(kind=8) dimension(:),intent(in) :: v_dmncmn
+!                complex(kind=8) dimension(:),intent(in) :: v_emn
+!                integer(kind=4) intent(in) :: nstop
+!                complex(kind=8) intent(in) :: rho
+!                real(kind=8) intent(in) :: theta
+!                real(kind=8) intent(in) :: phi
+!                complex(kind=8) :: er
+!                complex(kind=8) :: etheta
+!                complex(kind=8) :: ephi
+!                integer(kind=4) :: error
+!            end subroutine int_field
+!            subroutine inc_field(v_pmnqmn,v_emn,nstop,rho,theta,phi,er,etheta,ephi,error) ! in :gmm:local_field.f90:local_field
+!                complex(kind=8) dimension(:),intent(in) :: v_pmnqmn
+!                complex(kind=8) dimension(:),intent(in) :: v_emn
+!                integer(kind=4) intent(in) :: nstop
+!                real(kind=8) intent(in) :: rho
+!                real(kind=8) intent(in) :: theta
+!                real(kind=8) intent(in) :: phi
+!                complex(kind=8) :: er
+!                complex(kind=8) :: etheta
+!                complex(kind=8) :: ephi
+!                integer(kind=4) :: error
+!            end subroutine inc_field
+!            subroutine ext_field(v_amnbmn,v_emn,nstop,rho,theta,phi,er,etheta,ephi,error) ! in :gmm:local_field.f90:local_field
+!                complex(kind=8) dimension(:),intent(in) :: v_amnbmn
+!                complex(kind=8) dimension(:),intent(in) :: v_emn
+!                integer(kind=4) intent(in) :: nstop
+!                real(kind=8) intent(in) :: rho
+!                real(kind=8) intent(in) :: theta
+!                real(kind=8) intent(in) :: phi
+!                complex(kind=8) :: er
+!                complex(kind=8) :: etheta
+!                complex(kind=8) :: ephi
+!                integer(kind=4) :: error
+!            end subroutine ext_field
+!            subroutine exyz_sub(v_kinc,v_einc,flaginc,nstop,ratio,lambda,x,y,z,v_amnbmn,v_dmncmn,v_emn,m_xyz,m_epseq,v_req,ref_index,v_patt,ex,ey,ez,error) ! in :gmm:local_field.f90:local_field
+!                real(kind=8) dimension(3),intent(in) :: v_kinc
+!                real(kind=8) dimension(3),intent(in) :: v_einc
+!                character*3 intent(in) :: flaginc
+!                integer(kind=4) intent(in) :: nstop
+!                integer(kind=4) intent(in) :: ratio
+!                real(kind=8) intent(in) :: lambda
+!                real(kind=8) intent(in) :: x
+!                real(kind=8) intent(in) :: y
+!                real(kind=8) intent(in) :: z
+!                complex(kind=8) dimension(:),intent(in) :: v_amnbmn
+!                complex(kind=8) dimension(:),intent(in) :: v_dmncmn
+!                complex(kind=8) dimension(:),intent(in) :: v_emn
+!                real(kind=8) dimension(:,:),intent(in) :: m_xyz
+!                real(kind=8) dimension(:,:),intent(in) :: m_epseq
+!                real(kind=8) dimension(:),intent(in) :: v_req
+!                real(kind=8) intent(in) :: ref_index
+!                integer(kind=4) dimension(:),intent(in) :: v_patt
+!                complex(kind=8) :: ex
+!                complex(kind=8) :: ey
+!                complex(kind=8) :: ez
+!                integer(kind=4) :: error
+!            end subroutine exyz_sub
+!            subroutine exyz_per_sub(v_kinc,v_einc,flaginc,nstop,ratio,lambda,x,y,z,v_amnbmn,v_dmncmn,v_emn,m_xyz,m_epseq,v_req,ref_index,v_patt,ex,ey,ez,error) ! in :gmm:local_field.f90:local_field
+!                real(kind=8) dimension(3),intent(in) :: v_kinc
+!                real(kind=8) dimension(3),intent(in) :: v_einc
+!                character*3 intent(in) :: flaginc
+!                integer(kind=4) intent(in) :: nstop
+!                integer(kind=4) intent(in) :: ratio
+!                real(kind=8) intent(in) :: lambda
+!                real(kind=8) intent(in) :: x
+!                real(kind=8) intent(in) :: y
+!                real(kind=8) intent(in) :: z
+!                complex(kind=8) dimension(:),intent(in) :: v_amnbmn
+!                complex(kind=8) dimension(:),intent(in) :: v_dmncmn
+!                complex(kind=8) dimension(:),intent(in) :: v_emn
+!                real(kind=8) dimension(:,:),intent(in) :: m_xyz
+!                real(kind=8) dimension(:,:),intent(in) :: m_epseq
+!                real(kind=8) dimension(:),intent(in) :: v_req
+!                real(kind=8) intent(in) :: ref_index
+!                integer(kind=4) dimension(:),intent(in) :: v_patt
+!                complex(kind=8) :: ex
+!                complex(kind=8) :: ey
+!                complex(kind=8) :: ez
+!                integer(kind=4) :: error
+!            end subroutine exyz_per_sub
+!            subroutine efield_sub(v_kinc,v_einc,flaginc,xmin,xmax,xstep,ymin,ymax,ystep,zmin,zmax,zstep,nstop,ratio,lambda,v_amnbmn,v_dmncmn,v_emn,m_xyz,m_epseq,v_req,ref_index,v_patt,m_e,error) ! in :gmm:local_field.f90:local_field
+!                real(kind=8) dimension(3),intent(in) :: v_kinc
+!                real(kind=8) dimension(3),intent(in) :: v_einc
+!                character*3 intent(in) :: flaginc
+!                real(kind=8) intent(in) :: xmin
+!                real(kind=8) intent(in) :: xmax
+!                integer(kind=4) intent(in) :: xstep
+!                real(kind=8) intent(in) :: ymin
+!                real(kind=8) intent(in) :: ymax
+!                integer(kind=4) intent(in) :: ystep
+!                real(kind=8) intent(in) :: zmin
+!                real(kind=8) intent(in) :: zmax
+!                integer(kind=4) intent(in) :: zstep
+!                integer(kind=4) intent(in) :: nstop
+!                integer(kind=4) intent(in) :: ratio
+!                real(kind=8) intent(in) :: lambda
+!                complex(kind=8) dimension(:),intent(in) :: v_amnbmn
+!                complex(kind=8) dimension(:),intent(in) :: v_dmncmn
+!                complex(kind=8) dimension(:),intent(in) :: v_emn
+!                real(kind=8) dimension(:,:),intent(in) :: m_xyz
+!                real(kind=8) dimension(:,:),intent(in) :: m_epseq
+!                real(kind=8) dimension(:),intent(in) :: v_req
+!                real(kind=8) intent(in) :: ref_index
+!                integer(kind=4) dimension(:),intent(in) :: v_patt
+!                complex(kind=8) dimension(:,:,:) :: m_e
+!                integer(kind=4) :: error
+!            end subroutine efield_sub
+!            subroutine efield_per_sub(v_kinc,v_einc,flaginc,xmin,xmax,xstep,ymin,ymax,ystep,zmin,zmax,zstep,nstop,ratio,lambda,v_amnbmn,v_dmncmn,v_emn,m_xyz,m_epseq,v_req,ref_index,v_patt,m_e,error) ! in :gmm:local_field.f90:local_field
+!                real(kind=8) dimension(3),intent(in) :: v_kinc
+!                real(kind=8) dimension(3),intent(in) :: v_einc
+!                character*3 intent(in) :: flaginc
+!                real(kind=8) intent(in) :: xmin
+!                real(kind=8) intent(in) :: xmax
+!                integer(kind=4) intent(in) :: xstep
+!                real(kind=8) intent(in) :: ymin
+!                real(kind=8) intent(in) :: ymax
+!                integer(kind=4) intent(in) :: ystep
+!                real(kind=8) intent(in) :: zmin
+!                real(kind=8) intent(in) :: zmax
+!                integer(kind=4) intent(in) :: zstep
+!                integer(kind=4) intent(in) :: nstop
+!                integer(kind=4) intent(in) :: ratio
+!                real(kind=8) intent(in) :: lambda
+!                complex(kind=8) dimension(:),intent(in) :: v_amnbmn
+!                complex(kind=8) dimension(:),intent(in) :: v_dmncmn
+!                complex(kind=8) dimension(:),intent(in) :: v_emn
+!                real(kind=8) dimension(:,:),intent(in) :: m_xyz
+!                real(kind=8) dimension(:,:),intent(in) :: m_epseq
+!                real(kind=8) dimension(:),intent(in) :: v_req
+!                real(kind=8) intent(in) :: ref_index
+!                integer(kind=4) dimension(:),intent(in) :: v_patt
+!                complex(kind=8) dimension(:,:,:) :: m_e
+!                integer(kind=4) :: error
+!            end subroutine efield_per_sub
+!            subroutine exyz_ext_sub(nstop,ratio,lambda,x,y,z,v_amnbmn,v_dmncmn,v_emn,m_xyz,m_epseq,v_req,ref_index,v_patt,ex,ey,ez,error) ! in :gmm:local_field.f90:local_field
+!                integer(kind=4) intent(in) :: nstop
+!                integer(kind=4) intent(in) :: ratio
+!                real(kind=8) intent(in) :: lambda
+!                real(kind=8) intent(in) :: x
+!                real(kind=8) intent(in) :: y
+!                real(kind=8) intent(in) :: z
+!                complex(kind=8) dimension(:),intent(in) :: v_amnbmn
+!                complex(kind=8) dimension(:),intent(in) :: v_dmncmn
+!                complex(kind=8) dimension(:),intent(in) :: v_emn
+!                real(kind=8) dimension(:,:),intent(in) :: m_xyz
+!                real(kind=8) dimension(:,:),intent(in) :: m_epseq
+!                real(kind=8) dimension(:),intent(in) :: v_req
+!                real(kind=8) intent(in) :: ref_index
+!                integer(kind=4) dimension(:),intent(in) :: v_patt
+!                complex(kind=8) :: ex
+!                complex(kind=8) :: ey
+!                complex(kind=8) :: ez
+!                integer(kind=4) :: error
+!            end subroutine exyz_ext_sub
+!            subroutine efar_sub(k,phimin,phimax,phistep,thetastep,betap,v_amnbmn,m_xyz,m_sc,scatot,error) ! in :gmm:local_field.f90:local_field
+!                real(kind=8) intent(in) :: k
+!                real(kind=8) intent(in) :: phimin
+!                real(kind=8) intent(in) :: phimax
+!                integer(kind=4) intent(in) :: phistep
+!                integer(kind=4) intent(in) :: thetastep
+!                real(kind=8) intent(inout) :: betap
+!                complex(kind=8) dimension(:),intent(in) :: v_amnbmn
+!                real(kind=8) dimension(:,:),intent(in) :: m_xyz
+!                complex(kind=8) dimension(:,:,:) :: m_sc
+!                real(kind=8) :: scatot
+!                integer(kind=4) :: error
+!            end subroutine efar_sub
+!            subroutine efar_sub_w(k,phistep,thetastep,betap,v_amnbmn,m_xyz,m_sc,scatot,error) ! in :gmm:local_field.f90:local_field
+!                real(kind=8) intent(in) :: k
+!                integer(kind=4) intent(in) :: phistep
+!                integer(kind=4) intent(in) :: thetastep
+!                real(kind=8) intent(inout) :: betap
+!                complex(kind=8) dimension(:),intent(in) :: v_amnbmn
+!                real(kind=8) dimension(:,:),intent(in) :: m_xyz
+!                complex(kind=8) dimension(:,:,:) :: m_sc
+!                real(kind=8) :: scatot
+!                integer(kind=4) :: error
+!            end subroutine efar_sub_w
+!            subroutine efar_sub_poynting(k,phimin,phimax,phistep,thetastep,betap,v_amnbmn,m_xyz,m_sc,scatot,error) ! in :gmm:local_field.f90:local_field
+!                real(kind=8) intent(in) :: k
+!                real(kind=8) intent(in) :: phimin
+!                real(kind=8) intent(in) :: phimax
+!                integer(kind=4) intent(in) :: phistep
+!                integer(kind=4) intent(in) :: thetastep
+!                real(kind=8) intent(inout) :: betap
+!                complex(kind=8) dimension(:),intent(in) :: v_amnbmn
+!                real(kind=8) dimension(:,:),intent(in) :: m_xyz
+!                complex(kind=8) dimension(:,:,:) :: m_sc
+!                real(kind=8) :: scatot
+!                integer(kind=4) :: error
+!            end subroutine efar_sub_poynting
+!            subroutine efar_sub_poynting_per(k,phimin,phimax,phistep,thetamin,thetamax,thetastep,betap,v_amnbmn,m_xyz,m_sc,scatot,error) ! in :gmm:local_field.f90:local_field
+!                real(kind=8) intent(in) :: k
+!                real(kind=8) intent(in) :: phimin
+!                real(kind=8) intent(in) :: phimax
+!                integer(kind=4) intent(in) :: phistep
+!                real(kind=8) intent(in) :: thetamin
+!                real(kind=8) intent(in) :: thetamax
+!                integer(kind=4) intent(in) :: thetastep
+!                real(kind=8) intent(inout) :: betap
+!                complex(kind=8) dimension(:),intent(in) :: v_amnbmn
+!                real(kind=8) dimension(:,:),intent(in) :: m_xyz
+!                complex(kind=8) dimension(:,:,:) :: m_sc
+!                real(kind=8) :: scatot
+!                integer(kind=4) :: error
+!            end subroutine efar_sub_poynting_per
+!            subroutine rad_sub_poynting_per(k,phiin,thetain,v_amnbmn,m_xyz,rad,error) ! in :gmm:local_field.f90:local_field
+!                real(kind=8) intent(in) :: k
+!                real(kind=8) intent(in) :: phiin
+!                real(kind=8) intent(in) :: thetain
+!                complex(kind=8) dimension(:),intent(in) :: v_amnbmn
+!                real(kind=8) dimension(:,:),intent(in) :: m_xyz
+!                real(kind=8) :: rad
+!                integer(kind=4) :: error
+!            end subroutine rad_sub_poynting_per
+!            subroutine efar_sub_per(k,phimin,phimax,phistep,thetastep,betap,v_amnbmn,m_xyz,m_sc,scatot,error) ! in :gmm:local_field.f90:local_field
+!                real(kind=8) intent(in) :: k
+!                real(kind=8) intent(in) :: phimin
+!                real(kind=8) intent(in) :: phimax
+!                integer(kind=4) intent(in) :: phistep
+!                integer(kind=4) intent(in) :: thetastep
+!                real(kind=8) intent(inout) :: betap
+!                complex(kind=8) dimension(:),intent(in) :: v_amnbmn
+!                real(kind=8) dimension(:,:),intent(in) :: m_xyz
+!                complex(kind=8) dimension(:,:,:) :: m_sc
+!                real(kind=8) :: scatot
+!                integer(kind=4) :: error
+!            end subroutine efar_sub_per
+!            subroutine ext_field_shell(v_amnbmn,v_emn,nstop,rho,theta,phi,er,etheta,ephi,error) ! in :gmm:local_field.f90:local_field
+!                complex(kind=8) dimension(:),intent(in) :: v_amnbmn
+!                complex(kind=8) dimension(:),intent(in) :: v_emn
+!                integer(kind=4) intent(in) :: nstop
+!                complex(kind=8) intent(in) :: rho
+!                real(kind=8) intent(in) :: theta
+!                real(kind=8) intent(in) :: phi
+!                complex(kind=8) :: er
+!                complex(kind=8) :: etheta
+!                complex(kind=8) :: ephi
+!                integer(kind=4) :: error
+!            end subroutine ext_field_shell
+!            subroutine exyz_ss_sub(v_kinc,v_einc,flaginc,nstop,ratio,lambda,x,y,z,v_amnbmn,v_amnbmn_shell,v_dmncmn_shell,v_dmncmn,v_emn,m_xyz,m_epseq,v_req,ref_index,v_patt,ex,ey,ez,error) ! in :gmm:local_field.f90:local_field
+!                real(kind=8) dimension(3),intent(in) :: v_kinc
+!                real(kind=8) dimension(3),intent(in) :: v_einc
+!                character*3 intent(in) :: flaginc
+!                integer(kind=4) intent(in) :: nstop
+!                integer(kind=4) intent(in) :: ratio
+!                real(kind=8) intent(in) :: lambda
+!                real(kind=8) intent(in) :: x
+!                real(kind=8) intent(in) :: y
+!                real(kind=8) intent(in) :: z
+!                complex(kind=8) dimension(:),intent(in) :: v_amnbmn
+!                complex(kind=8) dimension(:),intent(in) :: v_amnbmn_shell
+!                complex(kind=8) dimension(:),intent(in) :: v_dmncmn_shell
+!                complex(kind=8) dimension(:),intent(in) :: v_dmncmn
+!                complex(kind=8) dimension(:),intent(in) :: v_emn
+!                real(kind=8) dimension(:,:),intent(in) :: m_xyz
+!                real(kind=8) dimension(:,:),intent(in) :: m_epseq
+!                real(kind=8) dimension(:),intent(in) :: v_req
+!                real(kind=8) intent(in) :: ref_index
+!                integer(kind=4) dimension(:),intent(in) :: v_patt
+!                complex(kind=8) :: ex
+!                complex(kind=8) :: ey
+!                complex(kind=8) :: ez
+!                integer(kind=4) :: error
+!            end subroutine exyz_ss_sub
+!            subroutine efield_ss_sub(v_kinc,v_einc,flaginc,m_euler,xmin,xmax,xstep,ymin,ymax,ystep,zmin,zmax,zstep,nstop,ratio,lambda,v_amnbmn,v_amnbmn_shell,v_dmncmn_shell,v_dmncmn,v_emn,m_xyz,m_epseq,v_req,ref_index,v_patt,m_e,error) ! in :gmm:local_field.f90:local_field
+!                real(kind=8) dimension(3),intent(in) :: v_kinc
+!                real(kind=8) dimension(3),intent(in) :: v_einc
+!                character*3 intent(in) :: flaginc
+!                real(kind=8) dimension(:,:),intent(in) :: m_euler
+!                real(kind=8) intent(in) :: xmin
+!                real(kind=8) intent(in) :: xmax
+!                integer(kind=4) intent(in) :: xstep
+!                real(kind=8) intent(in) :: ymin
+!                real(kind=8) intent(in) :: ymax
+!                integer(kind=4) intent(in) :: ystep
+!                real(kind=8) intent(in) :: zmin
+!                real(kind=8) intent(in) :: zmax
+!                integer(kind=4) intent(in) :: zstep
+!                integer(kind=4) intent(in) :: nstop
+!                integer(kind=4) intent(in) :: ratio
+!                real(kind=8) intent(in) :: lambda
+!                complex(kind=8) dimension(:),intent(in) :: v_amnbmn
+!                complex(kind=8) dimension(:),intent(in) :: v_amnbmn_shell
+!                complex(kind=8) dimension(:),intent(in) :: v_dmncmn_shell
+!                complex(kind=8) dimension(:),intent(in) :: v_dmncmn
+!                complex(kind=8) dimension(:),intent(in) :: v_emn
+!                real(kind=8) dimension(:,:),intent(in) :: m_xyz
+!                real(kind=8) dimension(:,:),intent(in) :: m_epseq
+!                real(kind=8) dimension(:),intent(in) :: v_req
+!                real(kind=8) intent(in) :: ref_index
+!                integer(kind=4) dimension(:),intent(in) :: v_patt
+!                complex(kind=8) dimension(:,:,:) :: m_e
+!                integer(kind=4) :: error
+!            end subroutine efield_ss_sub
+!            subroutine efar_ss_sub(k,phimin,phimax,phistep,thetastep,betap,v_amnbmn,v_xyz,m_euler,m_sc,scatot,error) ! in :gmm:local_field.f90:local_field
+!                real(kind=8) intent(in) :: k
+!                real(kind=8) intent(in) :: phimin
+!                real(kind=8) intent(in) :: phimax
+!                integer(kind=4) intent(in) :: phistep
+!                integer(kind=4) intent(in) :: thetastep
+!                real(kind=8) intent(inout) :: betap
+!                complex(kind=8) dimension(:),intent(in) :: v_amnbmn
+!                real(kind=8) dimension(:),intent(in) :: v_xyz
+!                real(kind=8) dimension(:,:) :: m_euler
+!                complex(kind=8) dimension(:,:,:) :: m_sc
+!                real(kind=8) :: scatot
+!                integer(kind=4) :: error
+!            end subroutine efar_ss_sub
+!            subroutine efar_ss_sub_poynting(k,phimin,phimax,phistep,thetastep,v_amnbmn,v_xyz,m_euler,m_sc,scatot,error) ! in :gmm:local_field.f90:local_field
+!                real(kind=8) intent(in) :: k
+!                real(kind=8) intent(in) :: phimin
+!                real(kind=8) intent(in) :: phimax
+!                integer(kind=4) intent(in) :: phistep
+!                integer(kind=4) intent(in) :: thetastep
+!                complex(kind=8) dimension(:),intent(in) :: v_amnbmn
+!                real(kind=8) dimension(:),intent(in) :: v_xyz
+!                real(kind=8) dimension(:,:) :: m_euler
+!                complex(kind=8) dimension(:,:,:) :: m_sc
+!                real(kind=8) :: scatot
+!                integer(kind=4) :: error
+!            end subroutine efar_ss_sub_poynting
+!            subroutine exyz_ss_sub_dip(v_kinc,v_einc,flaginc,dip_flag,nstop,ratio,lambda,x,y,z,v_amnbmn,v_amnbmn_shell,v_dmncmn_shell,v_dmncmn,v_amnbmn_rhs,v_emn,m_xyz,m_epseq,v_req,ref_index,v_patt,ex,ey,ez,error) ! in :gmm:local_field.f90:local_field
+!                real(kind=8) dimension(3),intent(in) :: v_kinc
+!                real(kind=8) dimension(3),intent(in) :: v_einc
+!                character*3 intent(in) :: flaginc
+!                integer(kind=4) intent(in) :: dip_flag
+!                integer(kind=4) intent(in) :: nstop
+!                integer(kind=4) intent(in) :: ratio
+!                real(kind=8) intent(in) :: lambda
+!                real(kind=8) intent(in) :: x
+!                real(kind=8) intent(in) :: y
+!                real(kind=8) intent(in) :: z
+!                complex(kind=8) dimension(:),intent(in) :: v_amnbmn
+!                complex(kind=8) dimension(:),intent(in) :: v_amnbmn_shell
+!                complex(kind=8) dimension(:),intent(in) :: v_dmncmn_shell
+!                complex(kind=8) dimension(:),intent(in) :: v_dmncmn
+!                complex(kind=8) dimension(:),intent(in) :: v_amnbmn_rhs
+!                complex(kind=8) dimension(:),intent(in) :: v_emn
+!                real(kind=8) dimension(:,:),intent(in) :: m_xyz
+!                real(kind=8) dimension(:,:),intent(in) :: m_epseq
+!                real(kind=8) dimension(:),intent(in) :: v_req
+!                real(kind=8) intent(in) :: ref_index
+!                integer(kind=4) dimension(:),intent(in) :: v_patt
+!                complex(kind=8) :: ex
+!                complex(kind=8) :: ey
+!                complex(kind=8) :: ez
+!                integer(kind=4) :: error
+!            end subroutine exyz_ss_sub_dip
+!            subroutine efield_ss_sub_dip(v_kinc,v_einc,flaginc,dip_flag,m_euler,xmin,xmax,xstep,ymin,ymax,ystep,zmin,zmax,zstep,nstop,ratio,lambda,v_amnbmn,v_amnbmn_shell,v_dmncmn_shell,v_dmncmn,v_amnbmn_rhs,v_emn,m_xyz,m_epseq,v_req,ref_index,v_patt,m_e,error) ! in :gmm:local_field.f90:local_field
+!                real(kind=8) dimension(3),intent(in) :: v_kinc
+!                real(kind=8) dimension(3),intent(in) :: v_einc
+!                character*3 intent(in) :: flaginc
+!                integer(kind=4) intent(in) :: dip_flag
+!                real(kind=8) dimension(:,:) :: m_euler
+!                real(kind=8) intent(in) :: xmin
+!                real(kind=8) intent(in) :: xmax
+!                integer(kind=4) intent(in) :: xstep
+!                real(kind=8) intent(in) :: ymin
+!                real(kind=8) intent(in) :: ymax
+!                integer(kind=4) intent(in) :: ystep
+!                real(kind=8) intent(in) :: zmin
+!                real(kind=8) intent(in) :: zmax
+!                integer(kind=4) intent(in) :: zstep
+!                integer(kind=4) intent(in) :: nstop
+!                integer(kind=4) intent(in) :: ratio
+!                real(kind=8) intent(in) :: lambda
+!                complex(kind=8) dimension(:),intent(in) :: v_amnbmn
+!                complex(kind=8) dimension(:),intent(in) :: v_amnbmn_shell
+!                complex(kind=8) dimension(:),intent(in) :: v_dmncmn_shell
+!                complex(kind=8) dimension(:),intent(in) :: v_dmncmn
+!                complex(kind=8) dimension(:),intent(in) :: v_amnbmn_rhs
+!                complex(kind=8) dimension(:),intent(in) :: v_emn
+!                real(kind=8) dimension(:,:),intent(in) :: m_xyz
+!                real(kind=8) dimension(:,:),intent(in) :: m_epseq
+!                real(kind=8) dimension(:),intent(in) :: v_req
+!                real(kind=8) intent(in) :: ref_index
+!                integer(kind=4) dimension(:),intent(in) :: v_patt
+!                complex(kind=8) dimension(:,:,:) :: m_e
+!                integer(kind=4) :: error
+!            end subroutine efield_ss_sub_dip
+!        end module local_field
+!        module linear_solver ! in :gmm:linear_solver.f90
+!            use kinds
+!            use vec_trans
+!            use shared_data
+!            subroutine rot1_sub(nstop,next,v_x,v_y) ! in :gmm:linear_solver.f90:linear_solver
+!                integer(kind=4) intent(in) :: nstop
+!                integer(kind=4) intent(in) :: next
+!                complex(kind=8) dimension(:),intent(in) :: v_x
+!                complex(kind=8) dimension(:) :: v_y
+!            end subroutine rot1_sub
+!            subroutine rot1_sub_rhs(nstop,next,v_x,v_y) ! in :gmm:linear_solver.f90:linear_solver
+!                integer(kind=4) intent(in) :: nstop
+!                integer(kind=4) intent(in) :: next
+!                complex(kind=8) dimension(:),intent(in) :: v_x
+!                complex(kind=8) dimension(:) :: v_y
+!            end subroutine rot1_sub_rhs
+!            subroutine rot2_sub(nstop,next,v_x,v_y) ! in :gmm:linear_solver.f90:linear_solver
+!                integer(kind=4) intent(in) :: nstop
+!                integer(kind=4) intent(in) :: next
+!                complex(kind=8) dimension(:),intent(inout) :: v_x
+!                complex(kind=8) dimension(:) :: v_y
+!            end subroutine rot2_sub
+!            subroutine rot2_sub_rhs(nstop,next,v_x,v_y) ! in :gmm:linear_solver.f90:linear_solver
+!                integer(kind=4) intent(in) :: nstop
+!                integer(kind=4) intent(in) :: next
+!                complex(kind=8) dimension(:),intent(inout) :: v_x
+!                complex(kind=8) dimension(:) :: v_y
+!            end subroutine rot2_sub_rhs
+!            subroutine trasl_sub(nstop,next,v_a,v_b,v_y) ! in :gmm:linear_solver.f90:linear_solver
+!                integer(kind=4) intent(in) :: nstop
+!                integer(kind=4) intent(in) :: next
+!                complex(kind=8) dimension(:),intent(in) :: v_a
+!                complex(kind=8) dimension(:),intent(in) :: v_b
+!                complex(kind=8) dimension(:) :: v_y
+!            end subroutine trasl_sub
+!            subroutine trasl_sub_sca(nstop,next,v_a,v_b,v_y) ! in :gmm:linear_solver.f90:linear_solver
+!                integer(kind=4) intent(in) :: nstop
+!                integer(kind=4) intent(in) :: next
+!                complex(kind=8) dimension(:),intent(in) :: v_a
+!                complex(kind=8) dimension(:),intent(in) :: v_b
+!                complex(kind=8) dimension(:) :: v_y
+!            end subroutine trasl_sub_sca
+!            subroutine trasl_sub_rhs(nstop,next,v_a,v_b,v_y) ! in :gmm:linear_solver.f90:linear_solver
+!                integer(kind=4) intent(in) :: nstop
+!                integer(kind=4) intent(in) :: next
+!                complex(kind=8) dimension(:),intent(in) :: v_a
+!                complex(kind=8) dimension(:),intent(in) :: v_b
+!                complex(kind=8) dimension(:) :: v_y
+!            end subroutine trasl_sub_rhs
+!            subroutine trasl_sub_shell1(nstop,v_d,v_c,v_y) ! in :gmm:linear_solver.f90:linear_solver
+!                integer(kind=4) intent(in) :: nstop
+!                complex(kind=8) dimension(:),intent(in) :: v_d
+!                complex(kind=8) dimension(:),intent(in) :: v_c
+!                complex(kind=8) dimension(:) :: v_y
+!            end subroutine trasl_sub_shell1
+!            subroutine trasl_sub_shell2(nstop,v_d,v_c,v_y) ! in :gmm:linear_solver.f90:linear_solver
+!                integer(kind=4) intent(in) :: nstop
+!                complex(kind=8) dimension(:),intent(in) :: v_d
+!                complex(kind=8) dimension(:),intent(in) :: v_c
+!                complex(kind=8) dimension(:) :: v_y
+!            end subroutine trasl_sub_shell2
+!            subroutine trasl_sub_shell(nstop,v_a,v_b,v_y) ! in :gmm:linear_solver.f90:linear_solver
+!                integer(kind=4) intent(in) :: nstop
+!                complex(kind=8) dimension(:),intent(in) :: v_a
+!                complex(kind=8) dimension(:),intent(in) :: v_b
+!                complex(kind=8) dimension(:) :: v_y
+!            end subroutine trasl_sub_shell
+!            subroutine matvec(matrixside,v_x,v_y) ! in :gmm:linear_solver.f90:linear_solver
+!                integer(kind=4) intent(in) :: matrixside
+!                complex(kind=8) dimension(:),intent(in) :: v_x
+!                complex(kind=8) dimension(:) :: v_y
+!            end subroutine matvec
+!            subroutine matvec_sca(matrixside,v_x,v_y) ! in :gmm:linear_solver.f90:linear_solver
+!                integer(kind=4) intent(in) :: matrixside
+!                complex(kind=8) dimension(:),intent(in) :: v_x
+!                complex(kind=8) dimension(:) :: v_y
+!            end subroutine matvec_sca
+!            subroutine matvec_sca_dip(matrixside,v_x,v_y) ! in :gmm:linear_solver.f90:linear_solver
+!                integer(kind=4) intent(in) :: matrixside
+!                complex(kind=8) dimension(:),intent(in) :: v_x
+!                complex(kind=8) dimension(:) :: v_y
+!            end subroutine matvec_sca_dip
+!            subroutine matvec_rhs(matrixside,v_x,v_y) ! in :gmm:linear_solver.f90:linear_solver
+!                integer(kind=4) intent(in) :: matrixside
+!                complex(kind=8) dimension(:),intent(in) :: v_x
+!                complex(kind=8) dimension(:) :: v_y
+!            end subroutine matvec_rhs
+!            subroutine matvec_rhs_dip(matrixside,v_x,v_y) ! in :gmm:linear_solver.f90:linear_solver
+!                integer(kind=4) intent(in) :: matrixside
+!                complex(kind=8) dimension(:),intent(in) :: v_x
+!                complex(kind=8) dimension(:) :: v_y
+!            end subroutine matvec_rhs_dip
+!            subroutine matvec_sca_dipant(matrixside,v_x,v_y) ! in :gmm:linear_solver.f90:linear_solver
+!                integer(kind=4) intent(in) :: matrixside
+!                complex(kind=8) dimension(:),intent(in) :: v_x
+!                complex(kind=8) dimension(:) :: v_y
+!            end subroutine matvec_sca_dipant
+!            subroutine matvec_dip(matrixside,v_x,v_y) ! in :gmm:linear_solver.f90:linear_solver
+!                integer(kind=4) intent(in) :: matrixside
+!                complex(kind=8) dimension(:),intent(in) :: v_x
+!                complex(kind=8) dimension(:) :: v_y
+!            end subroutine matvec_dip
+!            subroutine matvec_shell(matrixside,v_x,v_y) ! in :gmm:linear_solver.f90:linear_solver
+!                integer(kind=4) intent(in) :: matrixside
+!                complex(kind=8) dimension(:),intent(in) :: v_x
+!                complex(kind=8) dimension(:) :: v_y
+!            end subroutine matvec_shell
+!            subroutine matvec_trasl_shell(matrixside,v_x,v_y) ! in :gmm:linear_solver.f90:linear_solver
+!                integer(kind=4) intent(in) :: matrixside
+!                complex(kind=8) dimension(:),intent(in) :: v_x
+!                complex(kind=8) dimension(:) :: v_y
+!            end subroutine matvec_trasl_shell
+!            subroutine precond(matrixside,v_x) ! in :gmm:linear_solver.f90:linear_solver
+!                integer(kind=4) intent(in) :: matrixside
+!                complex(kind=8) dimension(:),intent(inout) :: v_x
+!            end subroutine precond
+!            subroutine precond_dip(matrixside,v_x) ! in :gmm:linear_solver.f90:linear_solver
+!                integer(kind=4) intent(in) :: matrixside
+!                complex(kind=8) dimension(:),intent(inout) :: v_x
+!            end subroutine precond_dip
+!            subroutine precond_shell(matrixside,v_x) ! in :gmm:linear_solver.f90:linear_solver
+!                integer(kind=4) intent(in) :: matrixside
+!                complex(kind=8) dimension(:),intent(inout) :: v_x
+!            end subroutine precond_shell
+!            subroutine zbcg2(print_resid,l,n,x,nonzero_x,rhs,toler,mxmatvec,work,info) ! in :gmm:linear_solver.f90:linear_solver
+!                logical intent(in) :: print_resid
+!                integer(kind=4) intent(in) :: l
+!                integer(kind=4) intent(in) :: n
+!                complex(kind=8) dimension(:),intent(inout) :: x
+!                logical intent(in) :: nonzero_x
+!                complex(kind=8) dimension(:),intent(in) :: rhs
+!                real(kind=8) intent(inout) :: toler
+!                integer(kind=4) intent(inout) :: mxmatvec
+!                complex(kind=8) dimension(:,:) :: work
+!                integer(kind=4) :: info
+!            end subroutine zbcg2
+!            subroutine zbcg2_dip(print_resid,l,n,x,nonzero_x,rhs,toler,mxmatvec,work,info) ! in :gmm:linear_solver.f90:linear_solver
+!                logical intent(in) :: print_resid
+!                integer(kind=4) intent(in) :: l
+!                integer(kind=4) intent(in) :: n
+!                complex(kind=8) dimension(:),intent(inout) :: x
+!                logical intent(in) :: nonzero_x
+!                complex(kind=8) dimension(:),intent(in) :: rhs
+!                real(kind=8) intent(inout) :: toler
+!                integer(kind=4) intent(inout) :: mxmatvec
+!                complex(kind=8) dimension(:,:) :: work
+!                integer(kind=4) :: info
+!            end subroutine zbcg2_dip
+!            subroutine zbcg2_shell(print_resid,l,n,x,nonzero_x,rhs,toler,mxmatvec,work,info) ! in :gmm:linear_solver.f90:linear_solver
+!                logical intent(in) :: print_resid
+!                integer(kind=4) intent(in) :: l
+!                integer(kind=4) intent(in) :: n
+!                complex(kind=8) dimension(:),intent(inout) :: x
+!                logical intent(in) :: nonzero_x
+!                complex(kind=8) dimension(:),intent(in) :: rhs
+!                real(kind=8) intent(inout) :: toler
+!                integer(kind=4) intent(inout) :: mxmatvec
+!                complex(kind=8) dimension(:,:) :: work
+!                integer(kind=4) :: info
+!            end subroutine zbcg2_shell
+!            subroutine field_exp_shell(lambda,ref_index,v_req,m_epseq,v_p,v_dc_shell2,nstop,neq,matrixside,r_ih,v_qa,v_qb,v_ab_shell2,v_dc_shell1,v_ab_shell1,v_dc_core,v_ab_host,error) ! in :gmm:linear_solver.f90:linear_solver
+!                real(kind=8) intent(in) :: lambda
+!                real(kind=8) intent(in) :: ref_index
+!                real(kind=8) dimension(:),intent(in) :: v_req
+!                real(kind=8) dimension(:,:),intent(in) :: m_epseq
+!                complex(kind=8) dimension(:),intent(in) :: v_p
+!                complex(kind=8) dimension(:),intent(in) :: v_dc_shell2
+!                integer(kind=4) intent(in) :: nstop
+!                integer(kind=4) intent(in) :: neq
+!                integer(kind=4) intent(in) :: matrixside
+!                real(kind=8) intent(in) :: r_ih
+!                complex(kind=8) dimension(:),intent(in) :: v_qa
+!                complex(kind=8) dimension(:),intent(in) :: v_qb
+!                complex(kind=8) dimension(:) :: v_ab_shell2
+!                complex(kind=8) dimension(:) :: v_dc_shell1
+!                complex(kind=8) dimension(:) :: v_ab_shell1
+!                complex(kind=8) dimension(:) :: v_dc_core
+!                complex(kind=8) dimension(:) :: v_ab_host
+!                integer(kind=4) :: error
+!            end subroutine field_exp_shell
+!            subroutine field_exp_shell_dip(lambda,ref_index,v_req,m_epseq,v_p,v_dc_shell1,nstop,neq,matrixside,r_ih,v_qa,v_qb,tflag,v_ab_shell1,v_dc_shell2,v_ab_shell2,v_dc_core,v_ab_host,error) ! in :gmm:linear_solver.f90:linear_solver
+!                real(kind=8) intent(in) :: lambda
+!                real(kind=8) intent(in) :: ref_index
+!                real(kind=8) dimension(:),intent(in) :: v_req
+!                real(kind=8) dimension(:,:),intent(in) :: m_epseq
+!                complex(kind=8) dimension(:),intent(in) :: v_p
+!                complex(kind=8) dimension(:),intent(in) :: v_dc_shell1
+!                integer(kind=4) intent(in) :: nstop
+!                integer(kind=4) intent(in) :: neq
+!                integer(kind=4) intent(in) :: matrixside
+!                real(kind=8) intent(in) :: r_ih
+!                complex(kind=8) dimension(:),intent(in) :: v_qa
+!                complex(kind=8) dimension(:),intent(in) :: v_qb
+!                integer(kind=4) intent(in) :: tflag
+!                complex(kind=8) dimension(:) :: v_ab_shell1
+!                complex(kind=8) dimension(:) :: v_dc_shell2
+!                complex(kind=8) dimension(:) :: v_ab_shell2
+!                complex(kind=8) dimension(:) :: v_dc_core
+!                complex(kind=8) dimension(:) :: v_ab_host
+!                integer(kind=4) :: error
+!            end subroutine field_exp_shell_dip
+!            subroutine matvec_rhs_ss_dip(matrixside,v_x,v_y) ! in :gmm:linear_solver.f90:linear_solver
+!                integer(kind=4) intent(in) :: matrixside
+!                complex(kind=8) dimension(:),intent(in) :: v_x
+!                complex(kind=8) dimension(:) :: v_y
+!            end subroutine matvec_rhs_ss_dip
+!            subroutine matvec_singleblock_axial(matrixside,v_saij,v_sbij,v_iabij,v_jabij,v_x,v_y) ! in :gmm:linear_solver.f90:linear_solver
+!                integer(kind=4) intent(in) :: matrixside
+!                complex(kind=8) dimension(:),intent(in) :: v_saij
+!                complex(kind=8) dimension(:),intent(in) :: v_sbij
+!                integer(kind=4) dimension(:),intent(in) :: v_iabij
+!                integer(kind=4) dimension(:),intent(in) :: v_jabij
+!                complex(kind=8) dimension(:),intent(in) :: v_x
+!                complex(kind=8) dimension(:) :: v_y
+!            end subroutine matvec_singleblock_axial
+!            subroutine trasl_singleblock(nstop,v_saij,v_sbij,v_iabij,v_jabij,v_a,v_b,v_y) ! in :gmm:linear_solver.f90:linear_solver
+!                integer(kind=4) intent(in) :: nstop
+!                complex(kind=8) dimension(:),intent(in) :: v_saij
+!                complex(kind=8) dimension(:),intent(in) :: v_sbij
+!                integer(kind=4) dimension(:),intent(in) :: v_iabij
+!                integer(kind=4) dimension(:),intent(in) :: v_jabij
+!                complex(kind=8) dimension(:),intent(in) :: v_a
+!                complex(kind=8) dimension(:),intent(in) :: v_b
+!                complex(kind=8) dimension(:) :: v_y
+!            end subroutine trasl_singleblock
+!            subroutine rot1_singleblock(nstop,v_sdij,v_idij,v_jdij,v_exphi,v_x,v_y) ! in :gmm:linear_solver.f90:linear_solver
+!                integer(kind=4), optional,intent(in),check((len(v_exphi)-1)/(2)>=nstop),depend(v_exphi) :: nstop=(len(v_exphi)-1)/(2)
+!                real(kind=8) dimension(:),intent(in) :: v_sdij
+!                integer(kind=4) dimension(:),intent(in) :: v_idij
+!                integer(kind=4) dimension(:),intent(in) :: v_jdij
+!                complex(kind=8) dimension(2 * nstop + 1),intent(in) :: v_exphi
+!                complex(kind=8) dimension(:),intent(in) :: v_x
+!                complex(kind=8) dimension(:) :: v_y
+!            end subroutine rot1_singleblock
+!            subroutine rot2_singleblock(nstop,v_sdij,v_idij,v_jdij,v_exphi,v_x,v_y) ! in :gmm:linear_solver.f90:linear_solver
+!                integer(kind=4), optional,intent(in),check((len(v_exphi)-1)/(2)>=nstop),depend(v_exphi) :: nstop=(len(v_exphi)-1)/(2)
+!                real(kind=8) dimension(:),intent(in) :: v_sdij
+!                integer(kind=4) dimension(:),intent(in) :: v_idij
+!                integer(kind=4) dimension(:),intent(in) :: v_jdij
+!                complex(kind=8) dimension(2 * nstop + 1),intent(in) :: v_exphi
+!                complex(kind=8) dimension(:),intent(inout) :: v_x
+!                complex(kind=8) dimension(:) :: v_y
+!            end subroutine rot2_singleblock
+!            subroutine matvec_gen(nstop,blockside,imin,imax,jmin,jmax,v_iblock,v_jblock,m_dij,m_idij,m_jdij,m_exphi,m_aij,m_bij,m_iabij,m_jabij,v_diag,v_x,v_y,error) ! in :gmm:linear_solver.f90:linear_solver
+!                integer(kind=4) intent(in) :: nstop
+!                integer(kind=4) intent(in) :: blockside
+!                integer(kind=4) intent(in) :: imin
+!                integer(kind=4) intent(in) :: imax
+!                integer(kind=4) intent(in) :: jmin
+!                integer(kind=4) intent(in) :: jmax
+!                integer(kind=4) dimension(:),intent(in) :: v_iblock
+!                integer(kind=4) dimension(:),intent(in) :: v_jblock
+!                real(kind=8) dimension(:,:),intent(in) :: m_dij
+!                integer(kind=4) dimension(:,:),intent(in) :: m_idij
+!                integer(kind=4) dimension(:,:),intent(in) :: m_jdij
+!                complex(kind=8) dimension(:,:),intent(in) :: m_exphi
+!                complex(kind=8) dimension(:,:),intent(in) :: m_aij
+!                complex(kind=8) dimension(:,:),intent(in) :: m_bij
+!                integer(kind=4) dimension(:,:),intent(in) :: m_iabij
+!                integer(kind=4) dimension(:,:),intent(in) :: m_jabij
+!                complex(kind=8) dimension(:),intent(in) :: v_diag
+!                complex(kind=8) dimension(:),intent(in) :: v_x
+!                complex(kind=8) dimension(:) :: v_y
+!                integer(kind=4) :: error
+!            end subroutine matvec_gen
+!            subroutine zbistbl(l,n,blockside,imin,imax,jmin,jmax,v_iblock,v_jblock,m_dij,m_idij,m_jdij,m_exphi,m_aij,m_bij,m_iabij,m_jabij,v_diag,x,b,tol,mxmv,work,ldw,rwork,ldrw,iwork,info) ! in :gmm:linear_solver.f90:linear_solver
+!                integer(kind=4) intent(inout) :: l
+!                integer(kind=4) intent(inout) :: n
+!                integer(kind=4) intent(in) :: blockside
+!                integer(kind=4) intent(in) :: imin
+!                integer(kind=4) intent(in) :: imax
+!                integer(kind=4) intent(in) :: jmin
+!                integer(kind=4) intent(in) :: jmax
+!                integer(kind=4) dimension(:),intent(in) :: v_iblock
+!                integer(kind=4) dimension(:),intent(in) :: v_jblock
+!                real(kind=8) dimension(:,:),intent(in) :: m_dij
+!                integer(kind=4) dimension(:,:),intent(in) :: m_idij
+!                integer(kind=4) dimension(:,:),intent(in) :: m_jdij
+!                complex(kind=8) dimension(:,:),intent(in) :: m_exphi
+!                complex(kind=8) dimension(:,:),intent(in) :: m_aij
+!                complex(kind=8) dimension(:,:),intent(in) :: m_bij
+!                integer(kind=4) dimension(:,:),intent(in) :: m_iabij
+!                integer(kind=4) dimension(:,:),intent(in) :: m_jabij
+!                complex(kind=8) dimension(:),intent(in) :: v_diag
+!                complex(kind=8) dimension(:),intent(inout) :: x
+!                complex(kind=8) dimension(:),intent(in) :: b
+!                real(kind=8) intent(inout) :: tol
+!                integer(kind=4) intent(inout) :: mxmv
+!                complex(kind=8) dimension(:,:) :: work
+!                integer(kind=4) intent(inout) :: ldw
+!                complex(kind=8) dimension(:,:) :: rwork
+!                integer(kind=4) intent(inout) :: ldrw
+!                integer(kind=4) dimension(:),intent(inout) :: iwork
+!                integer(kind=4) intent(inout) :: info
+!            end subroutine zbistbl
+!            subroutine zbcg2_gen(nstop,print_resid,nonzero_x,l,n,blockside,imin,imax,jmin,jmax,v_iblock,v_jblock,m_dij,m_idij,m_jdij,m_exphi,m_aij,m_bij,m_iabij,m_jabij,v_diag,x,rhs,toler,mxmatvec,work,info) ! in :gmm:linear_solver.f90:linear_solver
+!                integer(kind=4) intent(in) :: nstop
+!                logical intent(in) :: print_resid
+!                logical intent(in) :: nonzero_x
+!                integer(kind=4) intent(in) :: l
+!                integer(kind=4) intent(in) :: n
+!                integer(kind=4) intent(in) :: blockside
+!                integer(kind=4) intent(in) :: imin
+!                integer(kind=4) intent(in) :: imax
+!                integer(kind=4) intent(in) :: jmin
+!                integer(kind=4) intent(in) :: jmax
+!                integer(kind=4) dimension(:),intent(in) :: v_iblock
+!                integer(kind=4) dimension(:),intent(in) :: v_jblock
+!                real(kind=8) dimension(:,:),intent(in) :: m_dij
+!                integer(kind=4) dimension(:,:),intent(in) :: m_idij
+!                integer(kind=4) dimension(:,:),intent(in) :: m_jdij
+!                complex(kind=8) dimension(:,:),intent(in) :: m_exphi
+!                complex(kind=8) dimension(:,:),intent(in) :: m_aij
+!                complex(kind=8) dimension(:,:),intent(in) :: m_bij
+!                integer(kind=4) dimension(:,:),intent(in) :: m_iabij
+!                integer(kind=4) dimension(:,:),intent(in) :: m_jabij
+!                complex(kind=8) dimension(:),intent(in) :: v_diag
+!                complex(kind=8) dimension(:),intent(inout) :: x
+!                complex(kind=8) dimension(:),intent(in) :: rhs
+!                real(kind=8) intent(inout) :: toler
+!                integer(kind=4) intent(inout) :: mxmatvec
+!                complex(kind=8) dimension(:,:) :: work
+!                integer(kind=4) :: info
+!            end subroutine zbcg2_gen
+!            subroutine precond_gen(blockside,imin,imax,v_diag,v_x) ! in :gmm:linear_solver.f90:linear_solver
+!                integer(kind=4) intent(in) :: blockside
+!                integer(kind=4) intent(in) :: imin
+!                integer(kind=4) intent(in) :: imax
+!                complex(kind=8) dimension(:),intent(in) :: v_diag
+!                complex(kind=8) dimension(:),intent(inout) :: v_x
+!            end subroutine precond_gen
+!        end module linear_solver
+!    end interface 
+!end python module gmm
+!
+!! This file was auto-generated with f2py (version:2).
+!! See http://cens.ioc.ee/projects/f2py2e/
