@@ -981,27 +981,29 @@ python module gmm ! in
                 real(dbl) intent(out),dimension(qmax + 1),depend(qmax) :: v_aq
                 integer(lo) intent(out) :: error
             end subroutine gaunt_xu
-!            subroutine legendre(nmin,nmax,m,mm,theta,v_leg,error) ! in :gmm:vec_trans.f90:vec_trans
-!                integer(kind=4) intent(in) :: nmin
-!                integer(kind=4) intent(in) :: nmax
-!                integer(kind=4) intent(in) :: m
-!                integer(kind=4) intent(in) :: mm
-!                real(kind=8) intent(in) :: theta
-!                real(kind=8) dimension(nmax-nmin+1),depend(nmin,nmax) :: v_leg
-!                integer(kind=4) :: error
-!            end subroutine legendre
+            subroutine legendre(nmin,nmax,m,mm,theta,v_leg,error) ! in :gmm:vec_trans.f90:vec_trans
+                integer(kind=4) intent(in) :: nmin
+                integer(kind=4) intent(in) :: nmax
+                integer(kind=4) intent(in) :: m
+                integer(kind=4) intent(in) :: mm
+                real(kind=8) intent(in) :: theta
+                real(kind=8) intent(out),dimension(nmax-nmin+1),depend(nmin,nmax) :: v_leg
+                integer(kind=4) intent(out) :: error
+            end subroutine legendre
+! Wrapping pi_mn, tau_mn does not work because of assumed shape output array (perhaps
+! I could fix this in the vec_trans.f90 source).
 !            subroutine pi_mn(nstop,theta,v_pimn,error) ! in :gmm:vec_trans.f90:vec_trans
 !                integer(kind=4) intent(in) :: nstop
 !                real(kind=8) intent(in) :: theta
-!                real(kind=8) dimension(:) :: v_pimn
-!                integer(kind=4) :: error
+!                real(kind=8) dimension(:),intent(out) :: v_pimn
+!                integer(kind=4) intent(out) :: error
 !            end subroutine pi_mn
 !            subroutine tau_mn(nstop,theta,v_pimn,v_taumn,error) ! in :gmm:vec_trans.f90:vec_trans
 !                integer(kind=4) intent(in) :: nstop
 !                real(kind=8) intent(in) :: theta
 !                real(kind=8) dimension(:),intent(in) :: v_pimn
-!                real(kind=8) dimension(:) :: v_taumn
-!                integer(kind=4) :: error
+!                real(kind=8) dimension(:),intent(out) :: v_taumn
+!                integer(kind=4) intent(out) :: error
 !            end subroutine tau_mn
 !            subroutine pi_mnsca(nstop,theta,v_pimn,error) ! in :gmm:vec_trans.f90:vec_trans
 !                integer(kind=4) intent(in) :: nstop
