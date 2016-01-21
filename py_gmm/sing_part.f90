@@ -1576,6 +1576,7 @@ IMPLICIT NONE
 ! Dichiarazione dei dummy argument
 REAL(dbl), INTENT(IN) :: lambda,ref_index				! Lunghezza d'onda in questione e ref index
 REAL(dbl), DIMENSION(:), INTENT(IN) :: v_req			! Vettore raggi equivalenti
+! ^^^ in fact, probably sphere radii?
 REAL(dbl), DIMENSION(:,:), INTENT(IN) ::m_epseq			! Matrice funzioni dielettriche
 INTEGER(lo), INTENT(IN) :: nstop  					! Numero Espansioni multipolari	
 INTEGER(lo), INTENT(IN) :: neq						! Numero sfere eq
@@ -1594,6 +1595,9 @@ COMPLEX(dbl), DIMENSION(1:nstop) :: v_rn				! Matrici funzioni bessel
 INTEGER(lo) :: n,j									! indici
 COMPLEX(dbl) :: nc										! Indice complessificato
 
+! přídavky pro f2py
+!f2py complex(dbl), dimension(:,:), intent(out) :: m_a,m_b
+!f2py integer(lo), intent(out) :: error
 
 
 ! Inizio della procedura vera e propria

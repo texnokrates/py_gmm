@@ -1616,7 +1616,8 @@ error_if: IF ((ABS(m)>n) .OR. (ABS(mu)>nu)) THEN
 			WRITE(*,*)
 			WRITE(*,*) "Si e' verificato un errore nella subroutine gaunt_xu:"
 			WRITE(*,*) "|m|>n oppure |mu|>nu, la subroutine si ferma!!!"
-			WRITE(*,*)
+			WRITE(*,*) "m,n,mu,nu:", m,n,mu,nu
+
 			error=1
 			RETURN
 END IF error_if

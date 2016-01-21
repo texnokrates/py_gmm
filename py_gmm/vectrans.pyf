@@ -1,0 +1,1605 @@
+!    -*- f90 -*-
+! Note: the context of this file is case sensitive.
+
+python module gmm ! in 
+    interface  ! in :gmm
+        module kinds ! in :gmm:kinds.f90
+            real(kind=8), parameter,optional :: twopi_d=6.283185307179586
+            real(kind=4), parameter,optional :: euler=0.5772156649015329
+            integer, parameter,optional :: long_bn=selected_int_kind(9)
+            real(kind=8), parameter,optional :: e=1.6021765314e-19
+            integer, parameter,optional :: length=30
+            real(kind=8), parameter,optional :: me=9.109382616e-31
+            real(kind=4), parameter,optional :: sqrt2=1.4142135623730951
+            integer, parameter,optional :: lo=selected_int_kind(9)
+            integer, parameter,optional :: sgl=selected_real_kind(p=6,r=37)
+            real(kind=4), parameter,optional :: twopi=6.283185307179586
+            real(kind=8), parameter,optional :: c=299792458.0
+            real(kind=4), parameter,optional :: pi=3.141592653589793
+            real(kind=8), parameter,optional :: e0=8.854187817e-12
+            real(kind=8), parameter,optional :: pi_d=3.141592653589793
+            real(kind=8), parameter,optional :: zerodbl=0.0d0
+            real(kind=4), parameter,optional :: pio2=1.5707963267948966
+            real(kind=8), parameter,optional :: pio2_d=1.5707963267948966
+            integer, parameter,optional :: short_bn=selected_int_kind(4)
+            real(kind=8), parameter,optional :: euler_d=0.5772156649015329
+            integer, parameter,optional :: dbl=selected_real_kind(p=15,r=307)
+            integer, parameter,optional :: vshort=selected_int_kind(2)
+            real(kind=8), parameter,optional :: sqrt2_d=1.4142135623730951
+        end module kinds
+        module vec_trans ! in :gmm:vec_trans.f90
+            use sing_part
+            use shared_data
+            use kinds
+            use basicsubs
+            function j3minimum(j1,j2,m1,m2) ! in :gmm:vec_trans.f90:vec_trans
+                real(kind=8) intent(in) :: j1
+                real(kind=8) intent(in) :: j2
+                real(kind=8) intent(in) :: m1
+                real(kind=8) intent(in) :: m2
+                integer(kind=4) :: j3minimum
+            end function j3minimum
+            function nw(j1,j2,m1,m2) ! in :gmm:vec_trans.f90:vec_trans
+                real(kind=8) intent(in) :: j1
+                real(kind=8) intent(in) :: j2
+                real(kind=8) intent(in) :: m1
+                real(kind=8) intent(in) :: m2
+                real(kind=8) :: nw
+            end function nw
+            function wdown0(j1,j2,m1,m2) ! in :gmm:vec_trans.f90:vec_trans
+                real(kind=8) intent(in) :: j1
+                real(kind=8) intent(in) :: j2
+                real(kind=8) intent(in) :: m1
+                real(kind=8) intent(in) :: m2
+                real(kind=8) :: wdown0
+            end function wdown0
+            function wup0(j1,j2,m1,m2) ! in :gmm:vec_trans.f90:vec_trans
+                real(kind=8) intent(in) :: j1
+                real(kind=8) intent(in) :: j2
+                real(kind=8) intent(in) :: m1
+                real(kind=8) intent(in) :: m2
+                real(kind=8) :: wup0
+            end function wup0
+            function cr(j1,j2,j3,m1,m2,m3) ! in :gmm:vec_trans.f90:vec_trans
+                real(kind=8) :: j1
+                real(kind=8) :: j2
+                real(kind=8) :: j3
+                real(kind=8) :: m1
+                real(kind=8) :: m2
+                real(kind=8) :: m3
+                real(kind=8) :: cr
+            end function cr
+            function dr(j1,j2,j3,m1,m2,m3) ! in :gmm:vec_trans.f90:vec_trans
+                real(kind=8) :: j1
+                real(kind=8) :: j2
+                real(kind=8) :: j3
+                real(kind=8) :: m1
+                real(kind=8) :: m2
+                real(kind=8) :: m3
+                real(kind=8) :: dr
+            end function dr
+            subroutine wigner3jm(j1,j2,m1,m2,j3min,j3max,v_w3jm) ! in :gmm:vec_trans.f90:vec_trans
+                real(kind=8) intent(in) :: j1
+                real(kind=8) intent(in) :: j2
+                real(kind=8) intent(in) :: m1
+                real(kind=8) intent(in) :: m2
+                integer(kind=4) intent(in) :: j3min
+                integer(kind=4) intent(in) :: j3max
+                real(kind=8) dimension(j3max-j3min+1),depend(j3min,j3max) :: v_w3jm
+            end subroutine wigner3jm
+            subroutine gaunt_cz(m,n,mu,nu,qmaxa,v_aq,error) ! in :gmm:vec_trans.f90:vec_trans
+                real(kind=8) intent(in) :: m
+                real(kind=8) intent(in) :: n
+                real(kind=8) intent(in) :: mu
+                real(kind=8) intent(in) :: nu
+                integer(kind=4) intent(in) :: qmaxa
+                real(kind=8) dimension(qmaxa + 1),depend(qmaxa) :: v_aq
+                integer(kind=4) :: error
+            end subroutine gaunt_cz
+            subroutine aqbq_cz(m,n,mu,nu,qmaxa,v_aq,qmaxb,v_bq,error) ! in :gmm:vec_trans.f90:vec_trans
+                real(kind=8) intent(in) :: m
+                real(kind=8) intent(in) :: n
+                real(kind=8) intent(in) :: mu
+                real(kind=8) intent(in) :: nu
+                integer(kind=4) intent(in) :: qmaxa
+                real(kind=8) dimension(qmaxa + 1),depend(qmaxa) :: v_aq
+                integer(kind=4) intent(in) :: qmaxb
+                real(kind=8) dimension() :: v_bq
+                integer(kind=4) :: error
+            end subroutine aqbq_cz
+            function f_alpha(n,nu,p) ! in :gmm:vec_trans.f90:vec_trans
+                real(kind=8) intent(in) :: n
+                real(kind=8) intent(in) :: nu
+                real(kind=8) intent(in) :: p
+                real(kind=8) :: f_alpha
+            end function f_alpha
+            function f_ap(m,n,mu,nu,p) ! in :gmm:vec_trans.f90:vec_trans
+                real(kind=8) intent(in) :: m
+                real(kind=8) intent(in) :: n
+                real(kind=8) intent(in) :: mu
+                real(kind=8) intent(in) :: nu
+                real(kind=8) intent(in) :: p
+                real(kind=8) :: f_ap
+            end function f_ap
+            function f_a0(m,n,mu,nu) ! in :gmm:vec_trans.f90:vec_trans
+                real(kind=8) intent(in) :: m
+                real(kind=8) intent(in) :: n
+                real(kind=8) intent(in) :: mu
+                real(kind=8) intent(in) :: nu
+                real(kind=8) :: f_a0
+            end function f_a0
+            function f_a1norm(m,n,mu,nu) ! in :gmm:vec_trans.f90:vec_trans
+                real(kind=8) intent(in) :: m
+                real(kind=8) intent(in) :: n
+                real(kind=8) intent(in) :: mu
+                real(kind=8) intent(in) :: nu
+                real(kind=8) :: f_a1norm
+            end function f_a1norm
+            function f_a2norm(m,n,mu,nu) ! in :gmm:vec_trans.f90:vec_trans
+                real(kind=8) intent(in) :: m
+                real(kind=8) intent(in) :: n
+                real(kind=8) intent(in) :: mu
+                real(kind=8) intent(in) :: nu
+                real(kind=8) :: f_a2norm
+            end function f_a2norm
+            function f_a2normr(m,n,mu,nu,a1norm) ! in :gmm:vec_trans.f90:vec_trans
+                real(kind=8) intent(in) :: m
+                real(kind=8) intent(in) :: n
+                real(kind=8) intent(in) :: mu
+                real(kind=8) intent(in) :: nu
+                real(kind=8) intent(in) :: a1norm
+                real(kind=8) :: f_a2normr
+            end function f_a2normr
+            function f_aqmax(m,n,mu,nu,qmax) ! in :gmm:vec_trans.f90:vec_trans
+                real(kind=8) intent(in) :: m
+                real(kind=8) intent(in) :: n
+                real(kind=8) intent(in) :: mu
+                real(kind=8) intent(in) :: nu
+                integer(kind=4) intent(in) :: qmax
+                real(kind=8) :: f_aqmax
+            end function f_aqmax
+            function f_aqmax_1(m,n,mu,nu,qmax) ! in :gmm:vec_trans.f90:vec_trans
+                real(kind=8) intent(in) :: m
+                real(kind=8) intent(in) :: n
+                real(kind=8) intent(in) :: mu
+                real(kind=8) intent(in) :: nu
+                integer(kind=4) intent(in) :: qmax
+                real(kind=8) :: f_aqmax_1
+            end function f_aqmax_1
+            subroutine gaunt_xu2(m,n,mu,nu,qmax,v_aq,error) ! in :gmm:vec_trans.f90:vec_trans
+                real(kind=8) intent(in) :: m
+                real(kind=8) intent(in) :: n
+                real(kind=8) intent(in) :: mu
+                real(kind=8) intent(in) :: nu
+                integer(kind=4) intent(in) :: qmax
+                real(kind=8) intent(out),dimension(qmax + 1),depend(qmax) :: v_aq
+                integer(kind=4) intent(out) :: error
+            end subroutine gaunt_xu2
+            subroutine gaunt_xu(m,n,mu,nu,qmax,v_aq,error) ! in :gmm:vec_trans.f90:vec_trans
+                real(kind=8) intent(in) :: m
+                real(kind=8) intent(in) :: n
+                real(kind=8) intent(in) :: mu
+                real(kind=8) intent(in) :: nu
+                integer(kind=4) intent(in) :: qmax
+                real(kind=8) intent(out),dimension(qmax + 1),depend(qmax) :: v_aq
+                integer(kind=4) intent(out) :: error
+            end subroutine gaunt_xu
+            subroutine legendre(nmin,nmax,m,mm,theta,v_leg,error) ! in :gmm:vec_trans.f90:vec_trans
+                integer(kind=4) intent(in) :: nmin
+                integer(kind=4) intent(in) :: nmax
+                integer(kind=4) intent(in) :: m
+                integer(kind=4) intent(in) :: mm
+                real(kind=8) intent(in) :: theta
+                real(kind=8) intent(out)dimension(nmax-nmin+1),depend(nmin,nmax) :: v_leg
+                integer(kind=4) intent(out) :: error
+            end subroutine legendre
+            subroutine pi_mn(nstop,theta,v_pimn,error) ! in :gmm:vec_trans.f90:vec_trans
+                integer(kind=4) intent(in) :: nstop
+                real(kind=8) intent(in) :: theta
+                real(kind=8) dimension(:) :: v_pimn
+                integer(kind=4) :: error
+            end subroutine pi_mn
+            subroutine tau_mn(nstop,theta,v_pimn,v_taumn,error) ! in :gmm:vec_trans.f90:vec_trans
+                integer(kind=4) intent(in) :: nstop
+                real(kind=8) intent(in) :: theta
+                real(kind=8) dimension(:),intent(in) :: v_pimn
+                real(kind=8) dimension(:) :: v_taumn
+                integer(kind=4) :: error
+            end subroutine tau_mn
+            subroutine pi_mnsca(nstop,theta,v_pimn,error) ! in :gmm:vec_trans.f90:vec_trans
+                integer(kind=4) intent(in) :: nstop
+                real(kind=8) intent(in) :: theta
+                real(kind=8) dimension(:) :: v_pimn
+                integer(kind=4) :: error
+            end subroutine pi_mnsca
+            subroutine tau_mnsca(nstop,theta,v_pimn,v_taumn,error) ! in :gmm:vec_trans.f90:vec_trans
+                integer(kind=4) intent(in) :: nstop
+                real(kind=8) intent(in) :: theta
+                real(kind=8) dimension(:),intent(in) :: v_pimn
+                real(kind=8) dimension(:) :: v_taumn
+                integer(kind=4) :: error
+            end subroutine tau_mnsca
+            subroutine leg_mn(nstop,theta,v_legmn,error) ! in :gmm:vec_trans.f90:vec_trans
+                integer(kind=4) intent(in) :: nstop
+                real(kind=8) intent(in) :: theta
+                real(kind=8) dimension(:) :: v_legmn
+                integer(kind=4) :: error
+            end subroutine leg_mn
+            subroutine d_nmk(nstop,m,k,beta,v_d,error) ! in :gmm:vec_trans.f90:vec_trans
+                integer(kind=4) intent(in) :: nstop
+                integer(kind=4) intent(in) :: m
+                integer(kind=4) intent(in) :: k
+                real(kind=8) intent(in) :: beta
+                real(kind=8) dimension(nstop + 1),depend(nstop) :: v_d
+                integer(kind=4) :: error
+            end subroutine d_nmk
+            subroutine d_n_km(nstop,k,m,beta,v_d,error) ! in :gmm:vec_trans.f90:vec_trans
+                integer(kind=4) intent(in) :: nstop
+                integer(kind=4) intent(in) :: k
+                integer(kind=4) intent(in) :: m
+                real(kind=8) intent(in) :: beta
+                real(kind=8) dimension(nstop + 1),depend(nstop) :: v_d
+                integer(kind=4) :: error
+            end subroutine d_n_km
+            subroutine d_nm12(nstop,beta,v_dnm1,v_dnm2,error) ! in :gmm:vec_trans.f90:vec_trans
+                integer(kind=4) intent(in) :: nstop
+                real(kind=8) intent(in) :: beta
+                real(kind=8) dimension(:) :: v_dnm1
+                real(kind=8) dimension(:) :: v_dnm2
+                integer(kind=4) :: error
+            end subroutine d_nm12
+            subroutine field_exprandom_sub(nstop,ns,k,betap,m_xyz,alpha,beta,gamma,v_p,error) ! in :gmm:vec_trans.f90:vec_trans
+                integer(kind=4) intent(in) :: nstop
+                integer(kind=4) intent(in) :: ns
+                real(kind=8) intent(in) :: k
+                real(kind=8) intent(in) :: betap
+                real(kind=8) dimension(:,:),intent(in) :: m_xyz
+                real(kind=8) intent(in) :: alpha
+                real(kind=8) intent(in) :: beta
+                real(kind=8) intent(in) :: gamma
+                complex(kind=8) dimension(:) :: v_p
+                integer(kind=4) :: error
+            end subroutine field_exprandom_sub
+            subroutine field_exprandom_shell_sub(nstop,ns,k,betap,v_xyz,alpha,beta,gamma,v_p,error) ! in :gmm:vec_trans.f90:vec_trans
+                integer(kind=4) intent(in) :: nstop
+                integer(kind=4) intent(in) :: ns
+                real(kind=8) intent(in) :: k
+                real(kind=8) intent(in) :: betap
+                real(kind=8) dimension(:),intent(in) :: v_xyz
+                real(kind=8) intent(in) :: alpha
+                real(kind=8) intent(in) :: beta
+                real(kind=8) intent(in) :: gamma
+                complex(kind=8) dimension(:) :: v_p
+                integer(kind=4) :: error
+            end subroutine field_exprandom_shell_sub
+            subroutine field_exprandom_dip_sub(nstop,ns,v_p,error) ! in :gmm:vec_trans.f90:vec_trans
+                integer(kind=4) intent(in) :: nstop
+                integer(kind=4) intent(in) :: ns
+                complex(kind=8) dimension(:) :: v_p
+                integer(kind=4) :: error
+            end subroutine field_exprandom_dip_sub
+            subroutine field_expphased_dip_sub(nstop,ns,k,betap,alpha,beta,gamma,v_p,error) ! in :gmm:vec_trans.f90:vec_trans
+                integer(kind=4) intent(in) :: nstop
+                integer(kind=4) intent(in) :: ns
+                real(kind=8) intent(in) :: k
+                real(kind=8) intent(in) :: betap
+                real(kind=8) intent(in) :: alpha
+                real(kind=8) intent(in) :: beta
+                real(kind=8) intent(in) :: gamma
+                complex(kind=8) dimension(:) :: v_p
+                integer(kind=4) :: error
+            end subroutine field_expphased_dip_sub
+            subroutine fmnp_sub(nstop,alpha,beta,v_fnmp1,v_fnmp2,error) ! in :gmm:vec_trans.f90:vec_trans
+                integer(kind=4) intent(in) :: nstop
+                real(kind=8) intent(in) :: alpha
+                real(kind=8) intent(in) :: beta
+                complex(kind=8) dimension(:) :: v_fnmp1
+                complex(kind=8) dimension(:) :: v_fnmp2
+                integer(kind=4) :: error
+            end subroutine fmnp_sub
+            subroutine field_expfnmp_sub(nstop,ns,k,m_xyz,alpha,beta,v_fnmp,v_p,error) ! in :gmm:vec_trans.f90:vec_trans
+                integer(kind=4) intent(in) :: nstop
+                integer(kind=4) intent(in) :: ns
+                real(kind=8) intent(in) :: k
+                real(kind=8) dimension(:,:),intent(in) :: m_xyz
+                real(kind=8) intent(in) :: alpha
+                real(kind=8) intent(in) :: beta
+                complex(kind=8) dimension(:),intent(in) :: v_fnmp
+                complex(kind=8) dimension(:) :: v_p
+                integer(kind=4) :: error
+            end subroutine field_expfnmp_sub
+            subroutine cext_sub(nstop,ns,k,beta,v_z,v_ab,norm,v_cext) ! in :gmm:vec_trans.f90:vec_trans
+                integer(kind=4) intent(in) :: nstop
+                integer(kind=4) intent(in) :: ns
+                real(kind=8) intent(in) :: k
+                real(kind=8) intent(in) :: beta
+                real(kind=8) dimension(:),intent(in) :: v_z
+                complex(kind=8) dimension(:),intent(in) :: v_ab
+                character*3 intent(in) :: norm
+                real(kind=8) dimension(:) :: v_cext
+            end subroutine cext_sub
+            subroutine cext_random_sub(nstop,ns,k,v_p,v_ab,v_cext) ! in :gmm:vec_trans.f90:vec_trans
+                integer(kind=4) intent(in) :: nstop
+                integer(kind=4) intent(in) :: ns
+                real(kind=8) intent(in) :: k
+                complex(kind=8) dimension(:),intent(in) :: v_p
+                complex(kind=8) dimension(:),intent(in) :: v_ab
+                real(kind=8) dimension(:) :: v_cext
+            end subroutine cext_random_sub
+            subroutine csca_random_sub(nstop,ns,k,v_ab_sca,v_ab,v_csca) ! in :gmm:vec_trans.f90:vec_trans
+                integer(kind=4) intent(in) :: nstop
+                integer(kind=4) intent(in) :: ns
+                real(kind=8) intent(in) :: k
+                complex(kind=8) dimension(:),intent(in) :: v_ab_sca
+                complex(kind=8) dimension(:),intent(in) :: v_ab
+                real(kind=8) dimension(:) :: v_csca
+            end subroutine csca_random_sub
+            subroutine cabs_random_sub(ref_index,nstop,ns,k,v_dc,v_req,m_epseq,v_cabs) ! in :gmm:vec_trans.f90:vec_trans
+                real(kind=8) intent(in) :: ref_index
+                integer(kind=4) intent(in) :: nstop
+                integer(kind=4) intent(in) :: ns
+                real(kind=8) intent(in) :: k
+                complex(kind=8) dimension(:),intent(in) :: v_dc
+                real(kind=8) dimension(:),intent(in) :: v_req
+                real(kind=8) dimension(:,:),intent(in) :: m_epseq
+                real(kind=8) dimension(:) :: v_cabs
+            end subroutine cabs_random_sub
+            subroutine cabs_random_sub_dip(ref_index,nstop,ns_ant,k,v_dc,v_req,m_epseq,v_cabs) ! in :gmm:vec_trans.f90:vec_trans
+                real(kind=8) intent(in) :: ref_index
+                integer(kind=4) intent(in) :: nstop
+                integer(kind=4) intent(in) :: ns_ant
+                real(kind=8) intent(in) :: k
+                complex(kind=8) dimension(:),intent(in) :: v_dc
+                real(kind=8) dimension(:),intent(in) :: v_req
+                real(kind=8) dimension(:,:),intent(in) :: m_epseq
+                real(kind=8) dimension(:) :: v_cabs
+            end subroutine cabs_random_sub_dip
+            subroutine cabs_random_sub1(ref_index,nstop,ns,k,v_ab,v_req,m_epseq,v_cabs) ! in :gmm:vec_trans.f90:vec_trans
+                real(kind=8) intent(in) :: ref_index
+                integer(kind=4) intent(in) :: nstop
+                integer(kind=4) intent(in) :: ns
+                real(kind=8) intent(in) :: k
+                complex(kind=8) dimension(:),intent(in) :: v_ab
+                real(kind=8) dimension(:),intent(in) :: v_req
+                real(kind=8) dimension(:,:),intent(in) :: m_epseq
+                real(kind=8) dimension(:) :: v_cabs
+            end subroutine cabs_random_sub1
+            subroutine cext_rm_sub(nstop,ns,dimvp,k,m_p,m_ab,v_cext) ! in :gmm:vec_trans.f90:vec_trans
+                integer(kind=4) intent(in) :: nstop
+                integer(kind=4) intent(in) :: ns
+                integer(kind=4) intent(in) :: dimvp
+                real(kind=8) intent(in) :: k
+                complex(kind=8) dimension(:,:),intent(in) :: m_p
+                complex(kind=8) dimension(:,:),intent(in) :: m_ab
+                real(kind=8) dimension(:) :: v_cext
+            end subroutine cext_rm_sub
+            subroutine cext_tot_sub(nalpha,nbeta,v_walpha,v_wbeta,v_cext,cext) ! in :gmm:vec_trans.f90:vec_trans
+                integer(kind=4) intent(in) :: nalpha
+                integer(kind=4) intent(in) :: nbeta
+                real(kind=8) dimension(:),intent(in) :: v_walpha
+                real(kind=8) dimension(:),intent(in) :: v_wbeta
+                real(kind=8) dimension(:),intent(in) :: v_cext
+                real(kind=8) :: cext
+            end subroutine cext_tot_sub
+            subroutine cext_nopol_sub(nstop,ns,k,v_p1,v_p2,v_ab1,v_ab2,v_cext) ! in :gmm:vec_trans.f90:vec_trans
+                integer(kind=4) intent(in) :: nstop
+                integer(kind=4) intent(in) :: ns
+                real(kind=8) intent(in) :: k
+                complex(kind=8) dimension(:),intent(in) :: v_p1
+                complex(kind=8) dimension(:),intent(in) :: v_p2
+                complex(kind=8) dimension(:),intent(in) :: v_ab1
+                complex(kind=8) dimension(:),intent(in) :: v_ab2
+                real(kind=8) dimension(:) :: v_cext
+            end subroutine cext_nopol_sub
+            subroutine cext_sub_exp(nstop,ns,k,beta,v_z,v_ab,norm,m_cext) ! in :gmm:vec_trans.f90:vec_trans
+                integer(kind=4) intent(in) :: nstop
+                integer(kind=4) intent(in) :: ns
+                real(kind=8) intent(in) :: k
+                real(kind=8) intent(in) :: beta
+                real(kind=8) dimension(:),intent(in) :: v_z
+                complex(kind=8) dimension(:),intent(in) :: v_ab
+                character*3 intent(in) :: norm
+                real(kind=8) dimension(:,:) :: m_cext
+            end subroutine cext_sub_exp
+            subroutine dmncmn_sub(nstop,ns,v_patt,m_da,m_cb,v_amnbmn,v_dmncmn) ! in :gmm:vec_trans.f90:vec_trans
+                integer(kind=4) intent(in) :: nstop
+                integer(kind=4) intent(in) :: ns
+                integer(kind=4) dimension(:),intent(in) :: v_patt
+                complex(kind=8) dimension(:,:),intent(in) :: m_da
+                complex(kind=8) dimension(:,:),intent(in) :: m_cb
+                complex(kind=8) dimension(:),intent(in) :: v_amnbmn
+                complex(kind=8) dimension(:) :: v_dmncmn
+            end subroutine dmncmn_sub
+            subroutine dmncmn_sub_dip(nstop,ns,v_patt,m_da,m_cb,v_amnbmn,v_dmncmn) ! in :gmm:vec_trans.f90:vec_trans
+                integer(kind=4) intent(in) :: nstop
+                integer(kind=4) intent(in) :: ns
+                integer(kind=4) dimension(:),intent(in) :: v_patt
+                complex(kind=8) dimension(:,:),intent(in) :: m_da
+                complex(kind=8) dimension(:,:),intent(in) :: m_cb
+                complex(kind=8) dimension(:),intent(in) :: v_amnbmn
+                complex(kind=8) dimension(:) :: v_dmncmn
+            end subroutine dmncmn_sub_dip
+            subroutine qsum_sparse(nstop,sumq,sumqq) ! in :gmm:vec_trans.f90:vec_trans
+                integer(kind=4) intent(in) :: nstop
+                integer(kind=4) :: sumq
+                integer(kind=4) :: sumqq
+            end subroutine qsum_sparse
+            subroutine cgsum_sparse(nstop,sumcg) ! in :gmm:vec_trans.f90:vec_trans
+                integer(kind=4) intent(in) :: nstop
+                integer(kind=4) :: sumcg
+            end subroutine cgsum_sparse
+            subroutine fill_aqbq_sparse(nstop,v_aq_long,v_bq_long) ! in :gmm:vec_trans.f90:vec_trans
+                integer(kind=4) intent(in) :: nstop
+                real(kind=8) dimension(:) :: v_aq_long
+                real(kind=8) dimension(:) :: v_bq_long
+            end subroutine fill_aqbq_sparse
+            subroutine fill_index(nstop,m_index,m_apmn,v_jabij_template,v_iabij_template,v_mask,error) ! in :gmm:vec_trans.f90:vec_trans
+                integer(kind=4) intent(in) :: nstop
+                integer(kind=4) dimension(:,:) :: m_index
+                real(kind=4) dimension(:,:) :: m_apmn
+                integer(kind=4) dimension(:) :: v_jabij_template
+                integer(kind=4) dimension(:) :: v_iabij_template
+                complex(kind=8) dimension(:) :: v_mask
+                integer(kind=4) :: error
+            end subroutine fill_index
+            subroutine fill_index_tu(nstop,m_index,m_index_tu,m_apmn,v_jabij,v_iabij,v_jtuij,v_ituij,error) ! in :gmm:vec_trans.f90:vec_trans
+                integer(kind=4) intent(in) :: nstop
+                integer(kind=4) dimension(:,:) :: m_index
+                integer(kind=4) dimension(:,:) :: m_index_tu
+                real(kind=4) dimension(:,:) :: m_apmn
+                integer(kind=4) dimension(:) :: v_jabij
+                integer(kind=4) dimension(:) :: v_iabij
+                integer(kind=4) dimension(:) :: v_jtuij
+                integer(kind=4) dimension(:) :: v_ituij
+                integer(kind=4) :: error
+            end subroutine fill_index_tu
+            subroutine c0_sparse(nstop,v_c0_sparse) ! in :gmm:vec_trans.f90:vec_trans
+                integer(kind=4) intent(in) :: nstop
+                real(kind=8) dimension(:) :: v_c0_sparse
+            end subroutine c0_sparse
+            subroutine fillblock_sparse(nstop,v_c0,v_aq,v_bq,kr,v_aij,v_bij,v_jabij,v_iabij,error) ! in :gmm:vec_trans.f90:vec_trans
+                integer(kind=4) intent(in) :: nstop
+                real(kind=8) dimension(:),intent(in) :: v_c0
+                real(kind=8) dimension(:),intent(in) :: v_aq
+                real(kind=8) dimension(:),intent(in) :: v_bq
+                real(kind=8) intent(in) :: kr
+                complex(kind=8) dimension(:) :: v_aij
+                complex(kind=8) dimension(:) :: v_bij
+                integer(kind=4) dimension(:) :: v_jabij
+                integer(kind=4) dimension(:) :: v_iabij
+                integer(kind=4) :: error
+            end subroutine fillblock_sparse
+            subroutine fillblock_sparse_dip(nstop,v_c0,v_aq,v_bq,kr,v_aij,v_bij,v_aij_sca,v_bij_sca,v_jabij,v_iabij,error) ! in :gmm:vec_trans.f90:vec_trans
+                integer(kind=4) intent(in) :: nstop
+                real(kind=8) dimension(:),intent(in) :: v_c0
+                real(kind=8) dimension(:),intent(in) :: v_aq
+                real(kind=8) dimension(:),intent(in) :: v_bq
+                real(kind=8) intent(in) :: kr
+                complex(kind=8) dimension(:) :: v_aij
+                complex(kind=8) dimension(:) :: v_bij
+                complex(kind=8) dimension(:) :: v_aij_sca
+                complex(kind=8) dimension(:) :: v_bij_sca
+                integer(kind=4) dimension(:) :: v_jabij
+                integer(kind=4) dimension(:) :: v_iabij
+                integer(kind=4) :: error
+            end subroutine fillblock_sparse_dip
+            subroutine fillblock_sparse_dip_nosca(nstop,v_c0,v_aq,v_bq,kr,v_aij,v_bij,v_jabij,v_iabij,error) ! in :gmm:vec_trans.f90:vec_trans
+                integer(kind=4) intent(in) :: nstop
+                real(kind=8) dimension(:),intent(in) :: v_c0
+                real(kind=8) dimension(:),intent(in) :: v_aq
+                real(kind=8) dimension(:),intent(in) :: v_bq
+                real(kind=8) intent(in) :: kr
+                complex(kind=8) dimension(:) :: v_aij
+                complex(kind=8) dimension(:) :: v_bij
+                integer(kind=4) dimension(:) :: v_jabij
+                integer(kind=4) dimension(:) :: v_iabij
+                integer(kind=4) :: error
+            end subroutine fillblock_sparse_dip_nosca
+            subroutine fillblock_sparse_sca(nstop,v_c0,v_aq,v_bq,kr,v_aij,v_bij,v_aij_sca,v_bij_sca,v_jabij,v_iabij,error) ! in :gmm:vec_trans.f90:vec_trans
+                integer(kind=4) intent(in) :: nstop
+                real(kind=8) dimension(:),intent(in) :: v_c0
+                real(kind=8) dimension(:),intent(in) :: v_aq
+                real(kind=8) dimension(:),intent(in) :: v_bq
+                real(kind=8) intent(in) :: kr
+                complex(kind=8) dimension(:) :: v_aij
+                complex(kind=8) dimension(:) :: v_bij
+                complex(kind=8) dimension(:) :: v_aij_sca
+                complex(kind=8) dimension(:) :: v_bij_sca
+                integer(kind=4) dimension(:) :: v_jabij
+                integer(kind=4) dimension(:) :: v_iabij
+                integer(kind=4) :: error
+            end subroutine fillblock_sparse_sca
+            subroutine fillblock_sparse_sca_fast(nstop,v_c0,v_aq,v_bq,kr,m_index,m_apmn,v_jabij_template,v_iabij_template,v_aij,v_bij,v_aij_sca,v_bij_sca,v_jabij,v_iabij,error) ! in :gmm:vec_trans.f90:vec_trans
+                integer(kind=4) intent(in) :: nstop
+                real(kind=8) dimension(:),intent(in) :: v_c0
+                real(kind=8) dimension(:),intent(in) :: v_aq
+                real(kind=8) dimension(:),intent(in) :: v_bq
+                real(kind=8) intent(in) :: kr
+                integer(kind=4) dimension(:,:),intent(in) :: m_index
+                real(kind=4) dimension(:,:),intent(in) :: m_apmn
+                integer(kind=4) dimension(:),intent(in) :: v_jabij_template
+                integer(kind=4) dimension(:),intent(in) :: v_iabij_template
+                complex(kind=8) dimension(:) :: v_aij
+                complex(kind=8) dimension(:) :: v_bij
+                complex(kind=8) dimension(:) :: v_aij_sca
+                complex(kind=8) dimension(:) :: v_bij_sca
+                integer(kind=4) dimension(:) :: v_jabij
+                integer(kind=4) dimension(:) :: v_iabij
+                integer(kind=4) :: error
+            end subroutine fillblock_sparse_sca_fast
+            subroutine fillblock_sparse_fast(nstop,v_c0,v_aq,v_bq,kr,m_index,m_apmn,v_jabij_template,v_iabij_template,v_aij,v_bij,v_jabij,v_iabij,error) ! in :gmm:vec_trans.f90:vec_trans
+                integer(kind=4) intent(in) :: nstop
+                real(kind=8) dimension(:),intent(in) :: v_c0
+                real(kind=8) dimension(:),intent(in) :: v_aq
+                real(kind=8) dimension(:),intent(in) :: v_bq
+                real(kind=8) intent(in) :: kr
+                integer(kind=4) dimension(:,:),intent(in) :: m_index
+                real(kind=4) dimension(:,:),intent(in) :: m_apmn
+                integer(kind=4) dimension(:),intent(in) :: v_jabij_template
+                integer(kind=4) dimension(:),intent(in) :: v_iabij_template
+                complex(kind=8) dimension(:) :: v_aij
+                complex(kind=8) dimension(:) :: v_bij
+                integer(kind=4) dimension(:) :: v_jabij
+                integer(kind=4) dimension(:) :: v_iabij
+                integer(kind=4) :: error
+            end subroutine fillblock_sparse_fast
+            subroutine fillblock_sparse_onlysca(nstop,v_c0,v_aq,v_bq,kr,v_aij_sca,v_bij_sca,v_jabij,v_iabij,error) ! in :gmm:vec_trans.f90:vec_trans
+                integer(kind=4) intent(in) :: nstop
+                real(kind=8) dimension(:),intent(in) :: v_c0
+                real(kind=8) dimension(:),intent(in) :: v_aq
+                real(kind=8) dimension(:),intent(in) :: v_bq
+                real(kind=8) intent(in) :: kr
+                complex(kind=8) dimension(:) :: v_aij_sca
+                complex(kind=8) dimension(:) :: v_bij_sca
+                integer(kind=4) dimension(:) :: v_jabij
+                integer(kind=4) dimension(:) :: v_iabij
+                integer(kind=4) :: error
+            end subroutine fillblock_sparse_onlysca
+            subroutine fillblock_sparse_onlysca_fast(nstop,v_c0,v_aq,v_bq,kr,m_index,m_apmn,v_jabij_template,v_iabij_template,v_aij,v_bij,v_jabij,v_iabij,error) ! in :gmm:vec_trans.f90:vec_trans
+                integer(kind=4) intent(in) :: nstop
+                real(kind=8) dimension(:),intent(in) :: v_c0
+                real(kind=8) dimension(:),intent(in) :: v_aq
+                real(kind=8) dimension(:),intent(in) :: v_bq
+                real(kind=8) intent(in) :: kr
+                integer(kind=4) dimension(:,:),intent(in) :: m_index
+                real(kind=4) dimension(:,:),intent(in) :: m_apmn
+                integer(kind=4) dimension(:),intent(in) :: v_jabij_template
+                integer(kind=4) dimension(:),intent(in) :: v_iabij_template
+                complex(kind=8) dimension(:) :: v_aij
+                complex(kind=8) dimension(:) :: v_bij
+                integer(kind=4) dimension(:) :: v_jabij
+                integer(kind=4) dimension(:) :: v_iabij
+                integer(kind=4) :: error
+            end subroutine fillblock_sparse_onlysca_fast
+            function id(n,m,k) ! in :gmm:vec_trans.f90:vec_trans
+                integer(kind=4) intent(in) :: n
+                integer(kind=4) intent(in) :: m
+                integer(kind=4) intent(in) :: k
+                integer(kind=4) :: id
+            end function id
+            subroutine fillblock_dkmn(nstop,theta,v_dkmn,v_jdkmn,v_idkmn,error) ! in :gmm:vec_trans.f90:vec_trans
+                integer(kind=4) intent(in) :: nstop
+                real(kind=8) intent(in) :: theta
+                real(kind=8) dimension(:) :: v_dkmn
+                integer(kind=4) dimension(:) :: v_jdkmn
+                integer(kind=4) dimension(:) :: v_idkmn
+                integer(kind=4) :: error
+            end subroutine fillblock_dkmn
+            subroutine nnb_sparse(ns,m_xyz,v_r,fint,nnb) ! in :gmm:vec_trans.f90:vec_trans
+                integer(kind=4) intent(in) :: ns
+                real(kind=8) dimension(:,:),intent(in) :: m_xyz
+                real(kind=8) dimension(:),intent(in) :: v_r
+                real(kind=8) intent(in) :: fint
+                integer(kind=4) :: nnb
+            end subroutine nnb_sparse
+            subroutine nnb_sparse_ant(ns,ns_ant,m_xyz,v_r,fint,nnb_ant) ! in :gmm:vec_trans.f90:vec_trans
+                integer(kind=4) intent(in) :: ns
+                integer(kind=4) intent(in) :: ns_ant
+                real(kind=8) dimension(:,:),intent(in) :: m_xyz
+                real(kind=8) dimension(:),intent(in) :: v_r
+                real(kind=8) intent(in) :: fint
+                integer(kind=4) :: nnb_ant
+            end subroutine nnb_sparse_ant
+            subroutine nnb_sparse_dip_per(ns,ndip,m_xyz,v_r,fint,nnb) ! in :gmm:vec_trans.f90:vec_trans
+                integer(kind=4) intent(in) :: ns
+                integer(kind=4) intent(in) :: ndip
+                real(kind=8) dimension(:,:),intent(in) :: m_xyz
+                real(kind=8) dimension(:),intent(in) :: v_r
+                real(kind=8) intent(in) :: fint
+                integer(kind=4) :: nnb
+            end subroutine nnb_sparse_dip_per
+            subroutine nnb_sparse_dip_real(ns,ndip,nnb) ! in :gmm:vec_trans.f90:vec_trans
+                integer(kind=4) intent(in) :: ns
+                integer(kind=4) intent(in) :: ndip
+                integer(kind=4) :: nnb
+            end subroutine nnb_sparse_dip_real
+            subroutine fill_jblock_iblock_sparse(ns,m_xyz,v_r,fint,v_jblock,v_iblock) ! in :gmm:vec_trans.f90:vec_trans
+                integer(kind=4) intent(in) :: ns
+                real(kind=8) dimension(:,:),intent(in) :: m_xyz
+                real(kind=8) dimension(:),intent(in) :: v_r
+                real(kind=8) intent(in) :: fint
+                integer(kind=4) dimension(:) :: v_jblock
+                integer(kind=4) dimension(:) :: v_iblock
+            end subroutine fill_jblock_iblock_sparse
+            subroutine fill_jblock_iblock_sparse_dip(ns,ndip,m_xyz,v_r,fint,v_jblock,v_iblock) ! in :gmm:vec_trans.f90:vec_trans
+                integer(kind=4) intent(in) :: ns
+                integer(kind=4) intent(in) :: ndip
+                real(kind=8) dimension(:,:),intent(in) :: m_xyz
+                real(kind=8) dimension(:),intent(in) :: v_r
+                real(kind=8) intent(in) :: fint
+                integer(kind=4) dimension(:) :: v_jblock
+                integer(kind=4) dimension(:) :: v_iblock
+            end subroutine fill_jblock_iblock_sparse_dip
+            subroutine fill_jblock_iblock_sparse_dip_per(ns,ndip,m_xyz,v_r,fint,v_jblock,v_iblock) ! in :gmm:vec_trans.f90:vec_trans
+                integer(kind=4) intent(in) :: ns
+                integer(kind=4) intent(in) :: ndip
+                real(kind=8) dimension(:,:),intent(in) :: m_xyz
+                real(kind=8) dimension(:),intent(in) :: v_r
+                real(kind=8) intent(in) :: fint
+                integer(kind=4) dimension(:) :: v_jblock
+                integer(kind=4) dimension(:) :: v_iblock
+            end subroutine fill_jblock_iblock_sparse_dip_per
+            subroutine fill_jblock_iblock_sparse_dip_real(ns,ndip,v_jblock,v_iblock) ! in :gmm:vec_trans.f90:vec_trans
+                integer(kind=4) intent(in) :: ns
+                integer(kind=4) intent(in) :: ndip
+                integer(kind=4) dimension(:) :: v_jblock
+                integer(kind=4) dimension(:) :: v_iblock
+            end subroutine fill_jblock_iblock_sparse_dip_real
+            subroutine fill_d_phi_sparse(ns,nstop,nnb,m_xyz,v_jblock,v_iblock,m_dnkm,m_jdnkm,m_idnkm,m_exphi) ! in :gmm:vec_trans.f90:vec_trans
+                integer(kind=4) intent(in) :: ns
+                integer(kind=4) intent(in) :: nstop
+                integer(kind=4) intent(in) :: nnb
+                real(kind=8) dimension(:,:),intent(in) :: m_xyz
+                integer(kind=4) dimension(:),intent(in) :: v_jblock
+                integer(kind=4) dimension(:),intent(in) :: v_iblock
+                real(kind=8) dimension(:,:) :: m_dnkm
+                integer(kind=4) dimension(:,:) :: m_jdnkm
+                integer(kind=4) dimension(:,:) :: m_idnkm
+                complex(kind=8) dimension(2 * nstop + 1,nnb),depend(nstop,nnb) :: m_exphi
+            end subroutine fill_d_phi_sparse
+            subroutine update_d_phi_sparse(ns,nstop,nnb,m_xyz,v_jblock,v_iblock,m_dnkm,m_jdnkm,m_idnkm,m_exphi) ! in :gmm:vec_trans.f90:vec_trans
+                integer(kind=4) intent(in) :: ns
+                integer(kind=4) intent(in) :: nstop
+                integer(kind=4) intent(in) :: nnb
+                real(kind=8) dimension(:,:),intent(in) :: m_xyz
+                integer(kind=4) dimension(:),intent(in) :: v_jblock
+                integer(kind=4) dimension(:),intent(in) :: v_iblock
+                real(kind=8) dimension(:,:) :: m_dnkm
+                integer(kind=4) dimension(:,:) :: m_jdnkm
+                integer(kind=4) dimension(:,:) :: m_idnkm
+                complex(kind=8) dimension(2 * nstop + 1,nnb),depend(nstop,nnb) :: m_exphi
+            end subroutine update_d_phi_sparse
+            subroutine fill_d_phi_sparse_singleblock(nstop,theta,phi,v_dnkm,v_jdnkm,v_idnkm,v_exphi,error) ! in :gmm:vec_trans.f90:vec_trans
+                integer(kind=4) intent(in) :: nstop
+                real(kind=8) intent(in) :: theta
+                real(kind=8) intent(in) :: phi
+                real(kind=8) dimension(:) :: v_dnkm
+                integer(kind=4) dimension(:) :: v_jdnkm
+                integer(kind=4) dimension(:) :: v_idnkm
+                complex(kind=8) dimension(2 * nstop + 1),depend(nstop) :: v_exphi
+                integer(kind=4) :: error
+            end subroutine fill_d_phi_sparse_singleblock
+            subroutine fill_d_phi_sparse_rhs(ns,nstop,nnb,m_xyz,v_xyz_dip,v_jblock,v_iblock,m_dnkm,m_jdnkm,m_idnkm,m_exphi) ! in :gmm:vec_trans.f90:vec_trans
+                integer(kind=4) intent(in) :: ns
+                integer(kind=4) intent(in) :: nstop
+                integer(kind=4) intent(in) :: nnb
+                real(kind=8) dimension(:,:),intent(in) :: m_xyz
+                real(kind=8) dimension(:),intent(in) :: v_xyz_dip
+                integer(kind=4) dimension(:),intent(in) :: v_jblock
+                integer(kind=4) dimension(:),intent(in) :: v_iblock
+                real(kind=8) dimension(:,:) :: m_dnkm
+                integer(kind=4) dimension(:,:) :: m_jdnkm
+                integer(kind=4) dimension(:,:) :: m_idnkm
+                complex(kind=8) dimension(2 * nstop + 1,nnb),depend(nstop,nnb) :: m_exphi
+            end subroutine fill_d_phi_sparse_rhs
+            subroutine fill_ab_sparse(ns,nstop,k,m_xyz,v_c0,v_aq,v_bq,v_jblock,v_iblock,m_aij,m_bij,m_jabij,m_iabij) ! in :gmm:vec_trans.f90:vec_trans
+                integer(kind=4) intent(in) :: ns
+                integer(kind=4) intent(in) :: nstop
+                real(kind=8) intent(in) :: k
+                real(kind=8) dimension(:,:),intent(in) :: m_xyz
+                real(kind=8) dimension(:),intent(in) :: v_c0
+                real(kind=8) dimension(:),intent(in) :: v_aq
+                real(kind=8) dimension(:),intent(in) :: v_bq
+                integer(kind=4) dimension(:),intent(in) :: v_jblock
+                integer(kind=4) dimension(:),intent(in) :: v_iblock
+                complex(kind=8) dimension(:,:) :: m_aij
+                complex(kind=8) dimension(:,:) :: m_bij
+                integer(kind=4) dimension(:,:) :: m_jabij
+                integer(kind=4) dimension(:,:) :: m_iabij
+            end subroutine fill_ab_sparse
+            subroutine fill_ab_sparse_rhs(ns,nstop,k,m_xyz,v_xyz_dip,v_c0,v_aq,v_bq,v_jblock,v_iblock,m_aij,m_bij,m_jabij,m_iabij) ! in :gmm:vec_trans.f90:vec_trans
+                integer(kind=4) intent(in) :: ns
+                integer(kind=4) intent(in) :: nstop
+                real(kind=8) intent(in) :: k
+                real(kind=8) dimension(:,:),intent(in) :: m_xyz
+                real(kind=8) dimension(:),intent(in) :: v_xyz_dip
+                real(kind=8) dimension(:),intent(in) :: v_c0
+                real(kind=8) dimension(:),intent(in) :: v_aq
+                real(kind=8) dimension(:),intent(in) :: v_bq
+                integer(kind=4) dimension(:),intent(in) :: v_jblock
+                integer(kind=4) dimension(:),intent(in) :: v_iblock
+                complex(kind=8) dimension(:,:) :: m_aij
+                complex(kind=8) dimension(:,:) :: m_bij
+                integer(kind=4) dimension(:,:) :: m_jabij
+                integer(kind=4) dimension(:,:) :: m_iabij
+            end subroutine fill_ab_sparse_rhs
+            subroutine fill_ab_sparse_dip(ns,ndip,nstop,k,m_xyz,v_c0,v_aq,v_bq,v_jblock,v_iblock,m_aij,m_bij,m_aij_sca,m_bij_sca,m_jabij,m_iabij) ! in :gmm:vec_trans.f90:vec_trans
+                integer(kind=4) intent(in) :: ns
+                integer(kind=4) intent(in) :: ndip
+                integer(kind=4) intent(in) :: nstop
+                real(kind=8) intent(in) :: k
+                real(kind=8) dimension(:,:),intent(in) :: m_xyz
+                real(kind=8) dimension(:),intent(in) :: v_c0
+                real(kind=8) dimension(:),intent(in) :: v_aq
+                real(kind=8) dimension(:),intent(in) :: v_bq
+                integer(kind=4) dimension(:),intent(in) :: v_jblock
+                integer(kind=4) dimension(:),intent(in) :: v_iblock
+                complex(kind=8) dimension(:,:) :: m_aij
+                complex(kind=8) dimension(:,:) :: m_bij
+                complex(kind=8) dimension(:,:) :: m_aij_sca
+                complex(kind=8) dimension(:,:) :: m_bij_sca
+                integer(kind=4) dimension(:,:) :: m_jabij
+                integer(kind=4) dimension(:,:) :: m_iabij
+            end subroutine fill_ab_sparse_dip
+            subroutine fill_ab_sparse_dip_fast(ns,ns_ant,nstop,k,m_xyz,v_c0,v_aq,v_bq,m_index,m_apmn,v_jabij_template,v_iabij_template,v_jblock,v_iblock,m_aij,m_bij,m_aij_sca,m_bij_sca,m_jabij,m_iabij) ! in :gmm:vec_trans.f90:vec_trans
+                integer(kind=4) intent(in) :: ns
+                integer(kind=4) intent(in) :: ns_ant
+                integer(kind=4) intent(in) :: nstop
+                real(kind=8) intent(in) :: k
+                real(kind=8) dimension(:,:),intent(in) :: m_xyz
+                real(kind=8) dimension(:),intent(in) :: v_c0
+                real(kind=8) dimension(:),intent(in) :: v_aq
+                real(kind=8) dimension(:),intent(in) :: v_bq
+                integer(kind=4) dimension(:,:),intent(in) :: m_index
+                real(kind=4) dimension(:,:),intent(in) :: m_apmn
+                integer(kind=4) dimension(:),intent(in) :: v_jabij_template
+                integer(kind=4) dimension(:),intent(in) :: v_iabij_template
+                integer(kind=4) dimension(:),intent(in) :: v_jblock
+                integer(kind=4) dimension(:),intent(in) :: v_iblock
+                complex(kind=8) dimension(:,:) :: m_aij
+                complex(kind=8) dimension(:,:) :: m_bij
+                complex(kind=8) dimension(:,:) :: m_aij_sca
+                complex(kind=8) dimension(:,:) :: m_bij_sca
+                integer(kind=4) dimension(:,:) :: m_jabij
+                integer(kind=4) dimension(:,:) :: m_iabij
+            end subroutine fill_ab_sparse_dip_fast
+            subroutine update_ab_sparse_dip_fast(ns,ns_ant,nstop,k,m_xyz,v_c0,v_aq,v_bq,m_index,m_apmn,v_jabij_template,v_iabij_template,v_jblock,v_iblock,m_aij,m_bij,m_aij_sca,m_bij_sca,m_jabij,m_iabij) ! in :gmm:vec_trans.f90:vec_trans
+                integer(kind=4) intent(in) :: ns
+                integer(kind=4) intent(in) :: ns_ant
+                integer(kind=4) intent(in) :: nstop
+                real(kind=8) intent(in) :: k
+                real(kind=8) dimension(:,:),intent(in) :: m_xyz
+                real(kind=8) dimension(:),intent(in) :: v_c0
+                real(kind=8) dimension(:),intent(in) :: v_aq
+                real(kind=8) dimension(:),intent(in) :: v_bq
+                integer(kind=4) dimension(:,:),intent(in) :: m_index
+                real(kind=4) dimension(:,:),intent(in) :: m_apmn
+                integer(kind=4) dimension(:),intent(in) :: v_jabij_template
+                integer(kind=4) dimension(:),intent(in) :: v_iabij_template
+                integer(kind=4) dimension(:),intent(in) :: v_jblock
+                integer(kind=4) dimension(:),intent(in) :: v_iblock
+                complex(kind=8) dimension(:,:) :: m_aij
+                complex(kind=8) dimension(:,:) :: m_bij
+                complex(kind=8) dimension(:,:) :: m_aij_sca
+                complex(kind=8) dimension(:,:) :: m_bij_sca
+                integer(kind=4) dimension(:,:) :: m_jabij
+                integer(kind=4) dimension(:,:) :: m_iabij
+            end subroutine update_ab_sparse_dip_fast
+            subroutine fill_ab_sparse_dip_per(ns,ndip,nstop,k,fint,v_r,m_xyz,v_c0,v_aq,v_bq,v_jblock,v_iblock,m_aij,m_bij,m_aij_sca,m_bij_sca,m_jabij,m_iabij) ! in :gmm:vec_trans.f90:vec_trans
+                integer(kind=4) intent(in) :: ns
+                integer(kind=4) intent(in) :: ndip
+                integer(kind=4) intent(in) :: nstop
+                real(kind=8) intent(in) :: k
+                real(kind=8) intent(in) :: fint
+                real(kind=8) dimension(:),intent(in) :: v_r
+                real(kind=8) dimension(:,:),intent(in) :: m_xyz
+                real(kind=8) dimension(:),intent(in) :: v_c0
+                real(kind=8) dimension(:),intent(in) :: v_aq
+                real(kind=8) dimension(:),intent(in) :: v_bq
+                integer(kind=4) dimension(:),intent(in) :: v_jblock
+                integer(kind=4) dimension(:),intent(in) :: v_iblock
+                complex(kind=8) dimension(:,:) :: m_aij
+                complex(kind=8) dimension(:,:) :: m_bij
+                complex(kind=8) dimension(:,:) :: m_aij_sca
+                complex(kind=8) dimension(:,:) :: m_bij_sca
+                integer(kind=4) dimension(:,:) :: m_jabij
+                integer(kind=4) dimension(:,:) :: m_iabij
+            end subroutine fill_ab_sparse_dip_per
+            subroutine fill_ab_sparse_dip_nosca(ns,nstop,k,m_xyz,v_c0,v_aq,v_bq,v_jblock,v_iblock,m_aij,m_bij,m_jabij,m_iabij) ! in :gmm:vec_trans.f90:vec_trans
+                integer(kind=4) intent(in) :: ns
+                integer(kind=4) intent(in) :: nstop
+                real(kind=8) intent(in) :: k
+                real(kind=8) dimension(:,:),intent(in) :: m_xyz
+                real(kind=8) dimension(:),intent(in) :: v_c0
+                real(kind=8) dimension(:),intent(in) :: v_aq
+                real(kind=8) dimension(:),intent(in) :: v_bq
+                integer(kind=4) dimension(:),intent(in) :: v_jblock
+                integer(kind=4) dimension(:),intent(in) :: v_iblock
+                complex(kind=8) dimension(:,:) :: m_aij
+                complex(kind=8) dimension(:,:) :: m_bij
+                integer(kind=4) dimension(:,:) :: m_jabij
+                integer(kind=4) dimension(:,:) :: m_iabij
+            end subroutine fill_ab_sparse_dip_nosca
+            subroutine fill_ab_sparse_sca(ns,nstop,k,m_xyz,v_c0,v_aq,v_bq,v_jblock,v_iblock,m_aij,m_bij,m_aij_sca,m_bij_sca,m_jabij,m_iabij) ! in :gmm:vec_trans.f90:vec_trans
+                integer(kind=4) intent(in) :: ns
+                integer(kind=4) intent(in) :: nstop
+                real(kind=8) intent(in) :: k
+                real(kind=8) dimension(:,:),intent(in) :: m_xyz
+                real(kind=8) dimension(:),intent(in) :: v_c0
+                real(kind=8) dimension(:),intent(in) :: v_aq
+                real(kind=8) dimension(:),intent(in) :: v_bq
+                integer(kind=4) dimension(:),intent(in) :: v_jblock
+                integer(kind=4) dimension(:),intent(in) :: v_iblock
+                complex(kind=8) dimension(:,:) :: m_aij
+                complex(kind=8) dimension(:,:) :: m_bij
+                complex(kind=8) dimension(:,:) :: m_aij_sca
+                complex(kind=8) dimension(:,:) :: m_bij_sca
+                integer(kind=4) dimension(:,:) :: m_jabij
+                integer(kind=4) dimension(:,:) :: m_iabij
+            end subroutine fill_ab_sparse_sca
+            subroutine fill_ab_sparse_sca_fast(ns,nstop,k,m_xyz,v_c0,v_aq,v_bq,m_index,m_apmn,v_jabij_template,v_iabij_template,v_jblock,v_iblock,m_aij,m_bij,m_aij_sca,m_bij_sca,m_jabij,m_iabij) ! in :gmm:vec_trans.f90:vec_trans
+                integer(kind=4) intent(in) :: ns
+                integer(kind=4) intent(in) :: nstop
+                real(kind=8) intent(in) :: k
+                real(kind=8) dimension(:,:),intent(in) :: m_xyz
+                real(kind=8) dimension(:),intent(in) :: v_c0
+                real(kind=8) dimension(:),intent(in) :: v_aq
+                real(kind=8) dimension(:),intent(in) :: v_bq
+                integer(kind=4) dimension(:,:),intent(in) :: m_index
+                real(kind=4) dimension(:,:),intent(in) :: m_apmn
+                integer(kind=4) dimension(:),intent(in) :: v_jabij_template
+                integer(kind=4) dimension(:),intent(in) :: v_iabij_template
+                integer(kind=4) dimension(:),intent(in) :: v_jblock
+                integer(kind=4) dimension(:),intent(in) :: v_iblock
+                complex(kind=8) dimension(:,:) :: m_aij
+                complex(kind=8) dimension(:,:) :: m_bij
+                complex(kind=8) dimension(:,:) :: m_aij_sca
+                complex(kind=8) dimension(:,:) :: m_bij_sca
+                integer(kind=4) dimension(:,:) :: m_jabij
+                integer(kind=4) dimension(:,:) :: m_iabij
+            end subroutine fill_ab_sparse_sca_fast
+            subroutine fill_ab_sparse_fast(ns,nstop,k,m_xyz,v_c0,v_aq,v_bq,m_index,m_apmn,v_jabij_template,v_iabij_template,v_jblock,v_iblock,m_aij,m_bij,m_jabij,m_iabij) ! in :gmm:vec_trans.f90:vec_trans
+                integer(kind=4) intent(in) :: ns
+                integer(kind=4) intent(in) :: nstop
+                real(kind=8) intent(in) :: k
+                real(kind=8) dimension(:,:),intent(in) :: m_xyz
+                real(kind=8) dimension(:),intent(in) :: v_c0
+                real(kind=8) dimension(:),intent(in) :: v_aq
+                real(kind=8) dimension(:),intent(in) :: v_bq
+                integer(kind=4) dimension(:,:),intent(in) :: m_index
+                real(kind=4) dimension(:,:),intent(in) :: m_apmn
+                integer(kind=4) dimension(:),intent(in) :: v_jabij_template
+                integer(kind=4) dimension(:),intent(in) :: v_iabij_template
+                integer(kind=4) dimension(:),intent(in) :: v_jblock
+                integer(kind=4) dimension(:),intent(in) :: v_iblock
+                complex(kind=8) dimension(:,:) :: m_aij
+                complex(kind=8) dimension(:,:) :: m_bij
+                integer(kind=4) dimension(:,:) :: m_jabij
+                integer(kind=4) dimension(:,:) :: m_iabij
+            end subroutine fill_ab_sparse_fast
+            subroutine nnb_sparse_per(ns,m_xyz,v_r,fint,nnb) ! in :gmm:vec_trans.f90:vec_trans
+                integer(kind=4) intent(in) :: ns
+                real(kind=8) dimension(:,:),intent(in) :: m_xyz
+                real(kind=8) dimension(:),intent(in) :: v_r
+                real(kind=8) intent(in) :: fint
+                integer(kind=4) :: nnb
+            end subroutine nnb_sparse_per
+            subroutine fill_jblock_iblock_sparse_per(ns,m_xyz,v_r,fint,v_jblock,v_iblock) ! in :gmm:vec_trans.f90:vec_trans
+                integer(kind=4) intent(in) :: ns
+                real(kind=8) dimension(:,:),intent(in) :: m_xyz
+                real(kind=8) dimension(:),intent(in) :: v_r
+                real(kind=8) intent(in) :: fint
+                integer(kind=4) dimension(:) :: v_jblock
+                integer(kind=4) dimension(:) :: v_iblock
+            end subroutine fill_jblock_iblock_sparse_per
+            subroutine fill_d_phi_sparse_per(ns,nstop,nnb,m_xyz,fint,v_r,v_jblock,v_iblock,m_dnkm,m_jdnkm,m_idnkm,m_exphi) ! in :gmm:vec_trans.f90:vec_trans
+                integer(kind=4) intent(in) :: ns
+                integer(kind=4) intent(in) :: nstop
+                integer(kind=4) intent(in) :: nnb
+                real(kind=8) dimension(:,:),intent(in) :: m_xyz
+                real(kind=8) intent(in) :: fint
+                real(kind=8) dimension(:),intent(in) :: v_r
+                integer(kind=4) dimension(:),intent(in) :: v_jblock
+                integer(kind=4) dimension(:),intent(in) :: v_iblock
+                real(kind=8) dimension(:,:) :: m_dnkm
+                integer(kind=4) dimension(:,:) :: m_jdnkm
+                integer(kind=4) dimension(:,:) :: m_idnkm
+                complex(kind=8) dimension(2 * nstop + 1,nnb),depend(nstop,nnb) :: m_exphi
+            end subroutine fill_d_phi_sparse_per
+            subroutine fill_ab_sparse_per_sca(ns,nstop,k,fint,v_r,m_xyz,v_c0,v_aq,v_bq,v_jblock,v_iblock,m_aij,m_bij,m_aij_sca,m_bij_sca,m_jabij,m_iabij) ! in :gmm:vec_trans.f90:vec_trans
+                integer(kind=4) intent(in) :: ns
+                integer(kind=4) intent(in) :: nstop
+                real(kind=8) intent(in) :: k
+                real(kind=8) intent(in) :: fint
+                real(kind=8) dimension(:),intent(in) :: v_r
+                real(kind=8) dimension(:,:),intent(in) :: m_xyz
+                real(kind=8) dimension(:),intent(in) :: v_c0
+                real(kind=8) dimension(:),intent(in) :: v_aq
+                real(kind=8) dimension(:),intent(in) :: v_bq
+                integer(kind=4) dimension(:),intent(in) :: v_jblock
+                integer(kind=4) dimension(:),intent(in) :: v_iblock
+                complex(kind=8) dimension(:,:) :: m_aij
+                complex(kind=8) dimension(:,:) :: m_bij
+                complex(kind=8) dimension(:,:) :: m_aij_sca
+                complex(kind=8) dimension(:,:) :: m_bij_sca
+                integer(kind=4) dimension(:,:) :: m_jabij
+                integer(kind=4) dimension(:,:) :: m_iabij
+            end subroutine fill_ab_sparse_per_sca
+            subroutine fill_ab_per(k,fint,v_r,m_xyz,v_c0,v_aq,v_bq,m_a,m_b,m_ab) ! in :gmm:vec_trans.f90:vec_trans
+                real(kind=8) intent(in) :: k
+                real(kind=8) intent(in) :: fint
+                real(kind=8) dimension(:),intent(in) :: v_r
+                real(kind=8) dimension(:,:),intent(in) :: m_xyz
+                real(kind=8) dimension(:),intent(in) :: v_c0
+                real(kind=8) dimension(:),intent(in) :: v_aq
+                real(kind=8) dimension(:),intent(in) :: v_bq
+                complex(kind=8) dimension(:,:),intent(in) :: m_a
+                complex(kind=8) dimension(:,:),intent(in) :: m_b
+                complex(kind=8) dimension(:,:) :: m_ab
+            end subroutine fill_ab_per
+            subroutine fill_ab_per_sca_old(k,fint,v_r,m_xyz,v_c0,v_aq,v_bq,m_a,m_b,m_ab,m_abj) ! in :gmm:vec_trans.f90:vec_trans
+                real(kind=8) intent(in) :: k
+                real(kind=8) intent(in) :: fint
+                real(kind=8) dimension(:),intent(in) :: v_r
+                real(kind=8) dimension(:,:),intent(in) :: m_xyz
+                real(kind=8) dimension(:),intent(in) :: v_c0
+                real(kind=8) dimension(:),intent(in) :: v_aq
+                real(kind=8) dimension(:),intent(in) :: v_bq
+                complex(kind=8) dimension(:,:),intent(in) :: m_a
+                complex(kind=8) dimension(:,:),intent(in) :: m_b
+                complex(kind=8) dimension(:,:) :: m_ab
+                complex(kind=8) dimension(:,:) :: m_abj
+            end subroutine fill_ab_per_sca_old
+            subroutine fillblock_sparse_per_sca(nstop,v_c0,v_aq,v_bq,kr,m_index,m_apmn,v_jabij_template,v_iabij_template,v_aij,v_bij,v_aij_sca,v_bij_sca,v_jabij,v_iabij,error) ! in :gmm:vec_trans.f90:vec_trans
+                integer(kind=4) intent(in) :: nstop
+                real(kind=8) dimension(:),intent(in) :: v_c0
+                real(kind=8) dimension(:),intent(in) :: v_aq
+                real(kind=8) dimension(:),intent(in) :: v_bq
+                real(kind=8) intent(in) :: kr
+                integer(kind=4) dimension(:,:),intent(in) :: m_index
+                real(kind=4) dimension(:,:),intent(in) :: m_apmn
+                integer(kind=4) dimension(:),intent(in) :: v_jabij_template
+                integer(kind=4) dimension(:),intent(in) :: v_iabij_template
+                complex(kind=8) dimension(:) :: v_aij
+                complex(kind=8) dimension(:) :: v_bij
+                complex(kind=8) dimension(:) :: v_aij_sca
+                complex(kind=8) dimension(:) :: v_bij_sca
+                integer(kind=4) dimension(:) :: v_jabij
+                integer(kind=4) dimension(:) :: v_iabij
+                integer(kind=4) :: error
+            end subroutine fillblock_sparse_per_sca
+            subroutine fillblock_dense_per_sca(k,fint,v_r,m_xyz,v_c0,v_aq,v_bq,m_index,m_apmn,v_jabij_template,v_iabij_template,na,nb,nacell,nbcell,icell,jcell,f,m_block,m_block_sca) ! in :gmm:vec_trans.f90:vec_trans
+                real(kind=8) intent(in) :: k
+                real(kind=8) intent(in) :: fint
+                real(kind=8) dimension(:),intent(in) :: v_r
+                real(kind=8) dimension(:,:),intent(in) :: m_xyz
+                real(kind=8) dimension(:),intent(in) :: v_c0
+                real(kind=8) dimension(:),intent(in) :: v_aq
+                real(kind=8) dimension(:),intent(in) :: v_bq
+                integer(kind=4) dimension(:,:),intent(in) :: m_index
+                real(kind=4) dimension(:,:),intent(in) :: m_apmn
+                integer(kind=4) dimension(:),intent(in) :: v_jabij_template
+                integer(kind=4) dimension(:),intent(in) :: v_iabij_template
+                integer(kind=4) intent(in) :: na
+                integer(kind=4) intent(in) :: nb
+                integer(kind=4) intent(in) :: nacell
+                integer(kind=4) intent(in) :: nbcell
+                integer(kind=4) intent(in) :: icell
+                integer(kind=4) intent(in) :: jcell
+                real(kind=8) :: f
+                complex(kind=8) dimension(:,:) :: m_block
+                complex(kind=8) dimension(:,:) :: m_block_sca
+            end subroutine fillblock_dense_per_sca
+            subroutine fillblock_dense_per_sca_asym(k,v_r,m_xyz,v_c0,v_aq,v_bq,m_index,m_apmn,v_jabij_template,v_iabij_template,na,nb,icell,jcell,m_block,m_block_sca) ! in :gmm:vec_trans.f90:vec_trans
+                real(kind=8) intent(in) :: k
+                real(kind=8) dimension(:),intent(in) :: v_r
+                real(kind=8) dimension(:,:),intent(in) :: m_xyz
+                real(kind=8) dimension(:),intent(in) :: v_c0
+                real(kind=8) dimension(:),intent(in) :: v_aq
+                real(kind=8) dimension(:),intent(in) :: v_bq
+                integer(kind=4) dimension(:,:),intent(in) :: m_index
+                real(kind=4) dimension(:,:),intent(in) :: m_apmn
+                integer(kind=4) dimension(:),intent(in) :: v_jabij_template
+                integer(kind=4) dimension(:),intent(in) :: v_iabij_template
+                integer(kind=4) intent(in) :: na
+                integer(kind=4) intent(in) :: nb
+                integer(kind=4) intent(in) :: icell
+                integer(kind=4) intent(in) :: jcell
+                complex(kind=8) dimension(:,:) :: m_block
+                complex(kind=8) dimension(:,:) :: m_block_sca
+            end subroutine fillblock_dense_per_sca_asym
+            subroutine fill_ab_per_sca(k,fint,v_r,m_xyz,v_c0,v_aq,v_bq,m_a,m_b,m_ab,m_abj) ! in :gmm:vec_trans.f90:vec_trans
+                real(kind=8) intent(in) :: k
+                real(kind=8) intent(in) :: fint
+                real(kind=8) dimension(:),intent(in) :: v_r
+                real(kind=8) dimension(:,:),intent(in) :: m_xyz
+                real(kind=8) dimension(:),intent(in) :: v_c0
+                real(kind=8) dimension(:),intent(in) :: v_aq
+                real(kind=8) dimension(:),intent(in) :: v_bq
+                complex(kind=8) dimension(:,:),intent(in) :: m_a
+                complex(kind=8) dimension(:,:),intent(in) :: m_b
+                complex(kind=8) dimension(:,:) :: m_ab
+                complex(kind=8) dimension(:,:) :: m_abj
+            end subroutine fill_ab_per_sca
+            subroutine fill_ab_per_sca_fast(k,m_fint,v_r,m_xyz,v_c0,v_aq,v_bq,m_index,m_apmn,v_jabij_template,v_iabij_template,m_a,m_b,m_ab,m_ab_sca) ! in :gmm:vec_trans.f90:vec_trans
+                real(kind=8) intent(in) :: k
+                real(kind=8) dimension(:,:),intent(in) :: m_fint
+                real(kind=8) dimension(:),intent(in) :: v_r
+                real(kind=8) dimension(:,:),intent(in) :: m_xyz
+                real(kind=8) dimension(:),intent(in) :: v_c0
+                real(kind=8) dimension(:),intent(in) :: v_aq
+                real(kind=8) dimension(:),intent(in) :: v_bq
+                integer(kind=4) dimension(:,:),intent(in) :: m_index
+                real(kind=4) dimension(:,:),intent(in) :: m_apmn
+                integer(kind=4) dimension(:),intent(in) :: v_jabij_template
+                integer(kind=4) dimension(:),intent(in) :: v_iabij_template
+                complex(kind=8) dimension(:,:),intent(in) :: m_a
+                complex(kind=8) dimension(:,:),intent(in) :: m_b
+                complex(kind=8) dimension(:,:) :: m_ab
+                complex(kind=8) dimension(:,:) :: m_ab_sca
+            end subroutine fill_ab_per_sca_fast
+            subroutine fill_ab_per_sca_fast_asym(k,v_r,m_xyz,v_c0,v_aq,v_bq,m_index,m_apmn,v_jabij_template,v_iabij_template,m_a,m_b,m_ab,m_ab_sca) ! in :gmm:vec_trans.f90:vec_trans
+                real(kind=8) intent(in) :: k
+                real(kind=8) dimension(:),intent(in) :: v_r
+                real(kind=8) dimension(:,:),intent(in) :: m_xyz
+                real(kind=8) dimension(:),intent(in) :: v_c0
+                real(kind=8) dimension(:),intent(in) :: v_aq
+                real(kind=8) dimension(:),intent(in) :: v_bq
+                integer(kind=4) dimension(:,:),intent(in) :: m_index
+                real(kind=4) dimension(:,:),intent(in) :: m_apmn
+                integer(kind=4) dimension(:),intent(in) :: v_jabij_template
+                integer(kind=4) dimension(:),intent(in) :: v_iabij_template
+                complex(kind=8) dimension(:,:),intent(in) :: m_a
+                complex(kind=8) dimension(:,:),intent(in) :: m_b
+                complex(kind=8) dimension(:,:) :: m_ab
+                complex(kind=8) dimension(:,:) :: m_ab_sca
+            end subroutine fill_ab_per_sca_fast_asym
+            subroutine fill_ab_per_sca_fast_asym_dip(k,v_r,m_xyz,v_c0,v_aq,v_bq,m_index,m_apmn,v_jabij_template,v_iabij_template,m_a,m_b,m_ab,m_ab_sca) ! in :gmm:vec_trans.f90:vec_trans
+                real(kind=8) intent(in) :: k
+                real(kind=8) dimension(:),intent(in) :: v_r
+                real(kind=8) dimension(:,:),intent(in) :: m_xyz
+                real(kind=8) dimension(:),intent(in) :: v_c0
+                real(kind=8) dimension(:),intent(in) :: v_aq
+                real(kind=8) dimension(:),intent(in) :: v_bq
+                integer(kind=4) dimension(:,:),intent(in) :: m_index
+                real(kind=4) dimension(:,:),intent(in) :: m_apmn
+                integer(kind=4) dimension(:),intent(in) :: v_jabij_template
+                integer(kind=4) dimension(:),intent(in) :: v_iabij_template
+                complex(kind=8) dimension(:,:),intent(in) :: m_a
+                complex(kind=8) dimension(:,:),intent(in) :: m_b
+                complex(kind=8) dimension(:,:) :: m_ab
+                complex(kind=8) dimension(:,:) :: m_ab_sca
+            end subroutine fill_ab_per_sca_fast_asym_dip
+            subroutine update_ab_per_sca_fast_asym_dip(k,v_r,m_xyz,v_c0,v_aq,v_bq,m_index,m_apmn,v_jabij_template,v_iabij_template,m_a,m_b,m_ab,m_ab_sca) ! in :gmm:vec_trans.f90:vec_trans
+                real(kind=8) intent(in) :: k
+                real(kind=8) dimension(:),intent(in) :: v_r
+                real(kind=8) dimension(:,:),intent(in) :: m_xyz
+                real(kind=8) dimension(:),intent(in) :: v_c0
+                real(kind=8) dimension(:),intent(in) :: v_aq
+                real(kind=8) dimension(:),intent(in) :: v_bq
+                integer(kind=4) dimension(:,:),intent(in) :: m_index
+                real(kind=4) dimension(:,:),intent(in) :: m_apmn
+                integer(kind=4) dimension(:),intent(in) :: v_jabij_template
+                integer(kind=4) dimension(:),intent(in) :: v_iabij_template
+                complex(kind=8) dimension(:,:),intent(in) :: m_a
+                complex(kind=8) dimension(:,:),intent(in) :: m_b
+                complex(kind=8) dimension(:,:) :: m_ab
+                complex(kind=8) dimension(:,:) :: m_ab_sca
+            end subroutine update_ab_per_sca_fast_asym_dip
+            subroutine fill_ab_per_dip(k,fint,v_r,m_xyz,v_c0,v_aq,v_bq,m_a,m_b,m_ab,m_abj) ! in :gmm:vec_trans.f90:vec_trans
+                real(kind=8) intent(in) :: k
+                real(kind=8) intent(in) :: fint
+                real(kind=8) dimension(:),intent(in) :: v_r
+                real(kind=8) dimension(:,:),intent(in) :: m_xyz
+                real(kind=8) dimension(:),intent(in) :: v_c0
+                real(kind=8) dimension(:),intent(in) :: v_aq
+                real(kind=8) dimension(:),intent(in) :: v_bq
+                complex(kind=8) dimension(:,:),intent(in) :: m_a
+                complex(kind=8) dimension(:,:),intent(in) :: m_b
+                complex(kind=8) dimension(:,:) :: m_ab
+                complex(kind=8) dimension(:,:) :: m_abj
+            end subroutine fill_ab_per_dip
+            function getelm(i,j,a,ja,ia,iadd,sorted) ! in :gmm:vec_trans.f90:vec_trans
+                integer(kind=4) :: i
+                integer(kind=4) :: j
+                complex(kind=8) dimension(:) :: a
+                integer(kind=4) dimension(:) :: ja
+                integer(kind=4) dimension(:) :: ia
+                integer(kind=4) :: iadd
+                logical :: sorted
+                complex(kind=8) :: getelm
+            end function getelm
+            subroutine amudd(n,x,y,a,ja,ia) ! in :gmm:vec_trans.f90:vec_trans
+                integer(kind=4) :: n
+                real(kind=8) dimension(:) :: x
+                real(kind=8) dimension(:) :: y
+                real(kind=8) dimension(:) :: a
+                integer(kind=4) dimension(:) :: ja
+                integer(kind=4) dimension(:) :: ia
+            end subroutine amudd
+            subroutine amuzz(n,x,y,a,ja,ia) ! in :gmm:vec_trans.f90:vec_trans
+                integer(kind=4) :: n
+                complex(kind=8) dimension(:) :: x
+                complex(kind=8) dimension(:) :: y
+                complex(kind=8) dimension(:) :: a
+                integer(kind=4) dimension(:) :: ja
+                integer(kind=4) dimension(:) :: ia
+            end subroutine amuzz
+            subroutine amudz(n,x,y,a,ja,ia) ! in :gmm:vec_trans.f90:vec_trans
+                integer(kind=4) :: n
+                complex(kind=8) dimension(:) :: x
+                complex(kind=8) dimension(:) :: y
+                real(kind=8) dimension(:) :: a
+                integer(kind=4) dimension(:) :: ja
+                integer(kind=4) dimension(:) :: ia
+            end subroutine amudz
+            function zdot_bcg(n,zx,zy) ! in :gmm:vec_trans.f90:vec_trans
+                integer, optional,intent(in),check(len(zx)>=n),depend(zx) :: n=len(zx)
+                complex(kind=8) dimension(n),intent(in) :: zx
+                complex(kind=8) dimension(n),intent(in),depend(n) :: zy
+                complex(kind=8) :: zdot_bcg
+            end function zdot_bcg
+            function dnorm2_bcg(n,zx) ! in :gmm:vec_trans.f90:vec_trans
+                integer, optional,intent(in),check(len(zx)>=n),depend(zx) :: n=len(zx)
+                complex(kind=8) dimension(n),intent(in) :: zx
+                real(kind=8) :: dnorm2_bcg
+            end function dnorm2_bcg
+            subroutine submatc(n,job,i1,i2,j1,j2,a,ja,ia,nr,nc,ao,jao,iao) ! in :gmm:vec_trans.f90:vec_trans
+                integer(kind=4) :: n
+                integer(kind=4) :: job
+                integer(kind=4) :: i1
+                integer(kind=4) :: i2
+                integer(kind=4) :: j1
+                integer(kind=4) :: j2
+                complex(kind=8) dimension(:) :: a
+                integer(kind=4) dimension(:) :: ja
+                integer(kind=4) dimension(:) :: ia
+                integer(kind=4) :: nr
+                integer(kind=4) :: nc
+                complex(kind=8) dimension(:) :: ao
+                integer(kind=4) dimension(:) :: jao
+                integer(kind=4) dimension(:) :: iao
+            end subroutine submatc
+            subroutine c0xusub(nstop,v_c0xu) ! in :gmm:vec_trans.f90:vec_trans
+                integer(kind=4) intent(in) :: nstop
+                real(kind=8) dimension(:) :: v_c0xu
+            end subroutine c0xusub
+            subroutine qmaxsub(nstop,v_qmax) ! in :gmm:vec_trans.f90:vec_trans
+                integer(kind=4) intent(in) :: nstop
+                integer(kind=4) dimension(:) :: v_qmax
+            end subroutine qmaxsub
+            subroutine qqmaxsub(nstop,v_qqmax) ! in :gmm:vec_trans.f90:vec_trans
+                integer(kind=4) intent(in) :: nstop
+                integer(kind=4) dimension(:) :: v_qqmax
+            end subroutine qqmaxsub
+            subroutine fill_aqbq_sub2(nstop,sumq,sumqq,elem2,v_qmax,v_qqmax,v_aq_long,v_bq_long) ! in :gmm:vec_trans.f90:vec_trans
+                integer(kind=4) intent(in) :: nstop
+                integer(kind=4) intent(in) :: sumq
+                integer(kind=4) intent(in) :: sumqq
+                integer(kind=4), optional,intent(in),check(len(v_qmax)>=elem2),depend(v_qmax) :: elem2=len(v_qmax)
+                integer(kind=4) dimension(elem2),intent(in) :: v_qmax
+                integer(kind=4) dimension(elem2),intent(in),depend(elem2) :: v_qqmax
+                real(kind=8) dimension(sumq),depend(sumq) :: v_aq_long
+                real(kind=8) dimension(sumqq),depend(sumqq) :: v_bq_long
+            end subroutine fill_aqbq_sub2
+            subroutine fillblock_sub2(nstop,v_qmax,v_qqmax,v_c0,v_aq_long,v_bq_long,kr,theta,phi,m_aij,m_bij,error) ! in :gmm:vec_trans.f90:vec_trans
+                integer(kind=4) intent(in) :: nstop
+                integer(kind=4) dimension(:),intent(in) :: v_qmax
+                integer(kind=4) dimension(:),intent(in) :: v_qqmax
+                real(kind=8) dimension(:),intent(in) :: v_c0
+                real(kind=8) dimension(:),intent(in) :: v_aq_long
+                real(kind=8) dimension(:),intent(in) :: v_bq_long
+                real(kind=8) intent(in) :: kr
+                real(kind=8) intent(in) :: theta
+                real(kind=8) intent(in) :: phi
+                complex(kind=8) dimension(:,:) :: m_aij
+                complex(kind=8) dimension(:,:) :: m_bij
+                integer(kind=4) :: error
+            end subroutine fillblock_sub2
+            subroutine clebsch_mk_sub(m,n,k,l,nmin,nmax,v_cg,error) ! in :gmm:vec_trans.f90:vec_trans
+                integer(kind=4) intent(in) :: m
+                integer(kind=4) intent(in) :: n
+                integer(kind=4) intent(in) :: k
+                integer(kind=4) intent(in) :: l
+                integer(kind=4) intent(in) :: nmin
+                integer(kind=4) intent(in) :: nmax
+                real(kind=8) dimension(nmax-nmin+1),depend(nmin,nmax) :: v_cg
+                integer(kind=4) :: error
+            end subroutine clebsch_mk_sub
+            subroutine fillblock_sparse_mk(nstop,v_cg,kr,v_aij,v_bij,v_aij_sca,v_bij_sca,v_jabij,v_iabij,error) ! in :gmm:vec_trans.f90:vec_trans
+                integer(kind=4) intent(in) :: nstop
+                real(kind=8) dimension(:),intent(in) :: v_cg
+                real(kind=8) intent(in) :: kr
+                complex(kind=8) dimension(:) :: v_aij
+                complex(kind=8) dimension(:) :: v_bij
+                complex(kind=8) dimension(:) :: v_aij_sca
+                complex(kind=8) dimension(:) :: v_bij_sca
+                integer(kind=4) dimension(:) :: v_jabij
+                integer(kind=4) dimension(:) :: v_iabij
+                integer(kind=4) :: error
+            end subroutine fillblock_sparse_mk
+            subroutine fill_ab_sparse_sca_mk(ns,nstop,k,m_xyz,v_cg,v_jblock,v_iblock,m_aij,m_bij,m_aij_sca,m_bij_sca,m_jabij,m_iabij) ! in :gmm:vec_trans.f90:vec_trans
+                integer(kind=4) intent(in) :: ns
+                integer(kind=4) intent(in) :: nstop
+                real(kind=8) intent(in) :: k
+                real(kind=8) dimension(:,:),intent(in) :: m_xyz
+                real(kind=8) dimension(:),intent(in) :: v_cg
+                integer(kind=4) dimension(:),intent(in) :: v_jblock
+                integer(kind=4) dimension(:),intent(in) :: v_iblock
+                complex(kind=8) dimension(:,:) :: m_aij
+                complex(kind=8) dimension(:,:) :: m_bij
+                complex(kind=8) dimension(:,:) :: m_aij_sca
+                complex(kind=8) dimension(:,:) :: m_bij_sca
+                integer(kind=4) dimension(:,:) :: m_jabij
+                integer(kind=4) dimension(:,:) :: m_iabij
+            end subroutine fill_ab_sparse_sca_mk
+            subroutine d_k_mn(nstop,m,k,beta,v_d,error) ! in :gmm:vec_trans.f90:vec_trans
+                integer(kind=4) intent(in) :: nstop
+                integer(kind=4) intent(in) :: m
+                integer(kind=4) intent(in) :: k
+                real(kind=8) intent(in) :: beta
+                real(kind=8) dimension(nstop + 1),depend(nstop) :: v_d
+                integer(kind=4) :: error
+            end subroutine d_k_mn
+            subroutine fillblock_dkmn_mk(nstop,theta,v_dkmn,v_jdkmn,v_idkmn,error) ! in :gmm:vec_trans.f90:vec_trans
+                integer(kind=4) intent(in) :: nstop
+                real(kind=8) intent(in) :: theta
+                real(kind=8) dimension(:) :: v_dkmn
+                integer(kind=4) dimension(:) :: v_jdkmn
+                integer(kind=4) dimension(:) :: v_idkmn
+                integer(kind=4) :: error
+            end subroutine fillblock_dkmn_mk
+            subroutine fill_d_phi_sparse_mk(ns,nstop,nnb,m_xyz,v_jblock,v_iblock,m_dnkm,m_jdnkm,m_idnkm,m_exphi) ! in :gmm:vec_trans.f90:vec_trans
+                integer(kind=4) intent(in) :: ns
+                integer(kind=4) intent(in) :: nstop
+                integer(kind=4) intent(in) :: nnb
+                real(kind=8) dimension(:,:),intent(in) :: m_xyz
+                integer(kind=4) dimension(:),intent(in) :: v_jblock
+                integer(kind=4) dimension(:),intent(in) :: v_iblock
+                real(kind=8) dimension(:,:) :: m_dnkm
+                integer(kind=4) dimension(:,:) :: m_jdnkm
+                integer(kind=4) dimension(:,:) :: m_idnkm
+                complex(kind=8) dimension(2 * nstop + 1,nnb),depend(nstop,nnb) :: m_exphi
+            end subroutine fill_d_phi_sparse_mk
+            subroutine d_nm12_mk(nstop,beta,v_dnm1,v_dnm2,error) ! in :gmm:vec_trans.f90:vec_trans
+                integer(kind=4) intent(in) :: nstop
+                real(kind=8) intent(in) :: beta
+                real(kind=8) dimension(:) :: v_dnm1
+                real(kind=8) dimension(:) :: v_dnm2
+                integer(kind=4) :: error
+            end subroutine d_nm12_mk
+            subroutine field_exprandom_sub_mk(nstop,ns,k,betap,m_xyz,alpha,beta,gamma,v_p,error) ! in :gmm:vec_trans.f90:vec_trans
+                integer(kind=4) intent(in) :: nstop
+                integer(kind=4) intent(in) :: ns
+                real(kind=8) intent(in) :: k
+                real(kind=8) intent(in) :: betap
+                real(kind=8) dimension(:,:),intent(in) :: m_xyz
+                real(kind=8) intent(in) :: alpha
+                real(kind=8) intent(in) :: beta
+                real(kind=8) intent(in) :: gamma
+                complex(kind=8) dimension(:) :: v_p
+                integer(kind=4) :: error
+            end subroutine field_exprandom_sub_mk
+            subroutine fill_cg_sparse(nstop,v_cg_long) ! in :gmm:vec_trans.f90:vec_trans
+                integer(kind=4) intent(in) :: nstop
+                real(kind=8) dimension(:) :: v_cg_long
+            end subroutine fill_cg_sparse
+            subroutine fill_cg_sparse_norm(nstop,v_cg_long) ! in :gmm:vec_trans.f90:vec_trans
+                integer(kind=4) intent(in) :: nstop
+                real(kind=8) dimension(:) :: v_cg_long
+            end subroutine fill_cg_sparse_norm
+            subroutine cext_random_sub_mk(nstop,ns,k,v_p,v_ab,v_cext) ! in :gmm:vec_trans.f90:vec_trans
+                integer(kind=4) intent(in) :: nstop
+                integer(kind=4) intent(in) :: ns
+                real(kind=8) intent(in) :: k
+                complex(kind=8) dimension(:),intent(in) :: v_p
+                complex(kind=8) dimension(:),intent(in) :: v_ab
+                real(kind=8) dimension(:) :: v_cext
+            end subroutine cext_random_sub_mk
+            subroutine cabs_random_sub_mk(nstop,ns,k,v_ab,v_cabs) ! in :gmm:vec_trans.f90:vec_trans
+                integer(kind=4) intent(in) :: nstop
+                integer(kind=4) intent(in) :: ns
+                real(kind=8) intent(in) :: k
+                complex(kind=8) dimension(:),intent(in) :: v_ab
+                real(kind=8) dimension(:) :: v_cabs
+            end subroutine cabs_random_sub_mk
+            subroutine fill_tu_sparse(nstop,v_c0,v_aq,v_bq,m_t1,m_u1,m_t2,m_u2,kr,v_precond_shell,v_saij,v_sbij,v_st1ij,v_st2ij,v_su1ij,v_su2ij,v_jtuij,v_ituij,error) ! in :gmm:vec_trans.f90:vec_trans
+                integer(kind=4) intent(in) :: nstop
+                real(kind=8) dimension(:),intent(in) :: v_c0
+                real(kind=8) dimension(:),intent(in) :: v_aq
+                real(kind=8) dimension(:),intent(in) :: v_bq
+                complex(kind=8) dimension(:,:),intent(in) :: m_t1
+                complex(kind=8) dimension(:,:),intent(in) :: m_u1
+                complex(kind=8) dimension(:,:),intent(in) :: m_t2
+                complex(kind=8) dimension(:,:),intent(in) :: m_u2
+                complex(kind=8) intent(in) :: kr
+                complex(kind=8) dimension(:) :: v_precond_shell
+                complex(kind=8) dimension(:) :: v_saij
+                complex(kind=8) dimension(:) :: v_sbij
+                complex(kind=8) dimension(:) :: v_st1ij
+                complex(kind=8) dimension(:) :: v_st2ij
+                complex(kind=8) dimension(:) :: v_su1ij
+                complex(kind=8) dimension(:) :: v_su2ij
+                integer(kind=4) dimension(:) :: v_jtuij
+                integer(kind=4) dimension(:) :: v_ituij
+                integer(kind=4) :: error
+            end subroutine fill_tu_sparse
+            subroutine fill_tu_sparse_pardiso(nstop,v_c0,v_aq,v_bq,m_t1,m_u1,m_t2,m_u2,kr,v_saij,v_sbij,v_jabij,v_iabij,v_stuij,v_jtuij,v_ituij,error) ! in :gmm:vec_trans.f90:vec_trans
+                integer(kind=4) intent(in) :: nstop
+                real(kind=8) dimension(:),intent(in) :: v_c0
+                real(kind=8) dimension(:),intent(in) :: v_aq
+                real(kind=8) dimension(:),intent(in) :: v_bq
+                complex(kind=8) dimension(:,:),intent(in) :: m_t1
+                complex(kind=8) dimension(:,:),intent(in) :: m_u1
+                complex(kind=8) dimension(:,:),intent(in) :: m_t2
+                complex(kind=8) dimension(:,:),intent(in) :: m_u2
+                complex(kind=8) intent(in) :: kr
+                complex(kind=8) dimension(:) :: v_saij
+                complex(kind=8) dimension(:) :: v_sbij
+                integer(kind=4) dimension(:) :: v_jabij
+                integer(kind=4) dimension(:) :: v_iabij
+                complex(kind=8) dimension(:) :: v_stuij
+                integer(kind=4) dimension(:) :: v_jtuij
+                integer(kind=4) dimension(:) :: v_ituij
+                integer(kind=4) :: error
+            end subroutine fill_tu_sparse_pardiso
+            subroutine fill_tu_sparse_pardiso_fast(nstop,v_c0,v_aq,v_bq,m_t1,m_u1,m_t2,m_u2,kr,m_index,m_index_tu,m_apmn,v_saij,v_sbij,v_stuij,error) ! in :gmm:vec_trans.f90:vec_trans
+                integer(kind=4) intent(in) :: nstop
+                real(kind=8) dimension(:),intent(in) :: v_c0
+                real(kind=8) dimension(:),intent(in) :: v_aq
+                real(kind=8) dimension(:),intent(in) :: v_bq
+                complex(kind=8) dimension(:,:),intent(in) :: m_t1
+                complex(kind=8) dimension(:,:),intent(in) :: m_u1
+                complex(kind=8) dimension(:,:),intent(in) :: m_t2
+                complex(kind=8) dimension(:,:),intent(in) :: m_u2
+                complex(kind=8) intent(in) :: kr
+                integer(kind=4) dimension(:,:),intent(in) :: m_index
+                integer(kind=4) dimension(:,:),intent(in) :: m_index_tu
+                real(kind=4) dimension(:,:),intent(in) :: m_apmn
+                complex(kind=8) dimension(:) :: v_saij
+                complex(kind=8) dimension(:) :: v_sbij
+                complex(kind=8) dimension(:) :: v_stuij
+                integer(kind=4) :: error
+            end subroutine fill_tu_sparse_pardiso_fast
+            subroutine fill_jblock_iblock_sparse_ss_dip_rhs(ndip,v_jblock_rhs,v_iblock_rhs) ! in :gmm:vec_trans.f90:vec_trans
+                integer(kind=4) intent(in) :: ndip
+                integer(kind=4) dimension(:) :: v_jblock_rhs
+                integer(kind=4) dimension(:) :: v_iblock_rhs
+            end subroutine fill_jblock_iblock_sparse_ss_dip_rhs
+            subroutine fill_d_phi_sparse_ss_dip_rhs(ndip,nstop,nnb_rhs,m_xyz,v_jblock_rhs,v_iblock_rhs,dip_flag,m_dnkm,m_jdnkm,m_idnkm,m_exphi) ! in :gmm:vec_trans.f90:vec_trans
+                integer(kind=4) intent(in) :: ndip
+                integer(kind=4) intent(in) :: nstop
+                integer(kind=4) intent(in) :: nnb_rhs
+                real(kind=8) dimension(:,:),intent(in) :: m_xyz
+                integer(kind=4) dimension(:),intent(in) :: v_jblock_rhs
+                integer(kind=4) dimension(:),intent(in) :: v_iblock_rhs
+                integer(kind=4) intent(in) :: dip_flag
+                real(kind=8) dimension(:,:) :: m_dnkm
+                integer(kind=4) dimension(:,:) :: m_jdnkm
+                integer(kind=4) dimension(:,:) :: m_idnkm
+                complex(kind=8) dimension(2 * nstop + 1,nnb_rhs),depend(nstop,nnb_rhs) :: m_exphi
+            end subroutine fill_d_phi_sparse_ss_dip_rhs
+            subroutine fill_ab_sparse_ss_dip_rhs(ndip,nstop,k,m_xyz,v_c0,v_aq,v_bq,v_jblock_rhs,v_iblock_rhs,dip_flag,m_aij,m_bij,m_aij_sca,m_bij_sca,m_jabij,m_iabij) ! in :gmm:vec_trans.f90:vec_trans
+                integer(kind=4) intent(in) :: ndip
+                integer(kind=4) intent(in) :: nstop
+                real(kind=8) intent(in) :: k
+                real(kind=8) dimension(:,:),intent(in) :: m_xyz
+                real(kind=8) dimension(:),intent(in) :: v_c0
+                real(kind=8) dimension(:),intent(in) :: v_aq
+                real(kind=8) dimension(:),intent(in) :: v_bq
+                integer(kind=4) dimension(:),intent(in) :: v_jblock_rhs
+                integer(kind=4) dimension(:),intent(in) :: v_iblock_rhs
+                integer(kind=4) intent(in) :: dip_flag
+                complex(kind=8) dimension(:,:) :: m_aij
+                complex(kind=8) dimension(:,:) :: m_bij
+                complex(kind=8) dimension(:,:) :: m_aij_sca
+                complex(kind=8) dimension(:,:) :: m_bij_sca
+                integer(kind=4) dimension(:,:) :: m_jabij
+                integer(kind=4) dimension(:,:) :: m_iabij
+            end subroutine fill_ab_sparse_ss_dip_rhs
+            subroutine fill_tu_sparse_pardiso_dip(nstop,v_c0,v_aq,v_bq,v_qa,v_qb,m_t1,m_u1,m_t2,m_u2,kr,tflag,v_saij,v_sbij,v_saijh,v_sbijh,v_jabij,v_iabij,v_stuij,v_jtuij,v_ituij,error) ! in :gmm:vec_trans.f90:vec_trans
+                integer(kind=4) intent(in) :: nstop
+                real(kind=8) dimension(:),intent(in) :: v_c0
+                real(kind=8) dimension(:),intent(in) :: v_aq
+                real(kind=8) dimension(:),intent(in) :: v_bq
+                complex(kind=8) dimension(:),intent(in) :: v_qa
+                complex(kind=8) dimension(:),intent(in) :: v_qb
+                complex(kind=8) dimension(:,:),intent(in) :: m_t1
+                complex(kind=8) dimension(:,:),intent(in) :: m_u1
+                complex(kind=8) dimension(:,:),intent(in) :: m_t2
+                complex(kind=8) dimension(:,:),intent(in) :: m_u2
+                complex(kind=8) intent(in) :: kr
+                integer(kind=4) intent(in) :: tflag
+                complex(kind=8) dimension(:) :: v_saij
+                complex(kind=8) dimension(:) :: v_sbij
+                complex(kind=8) dimension(:) :: v_saijh
+                complex(kind=8) dimension(:) :: v_sbijh
+                integer(kind=4) dimension(:) :: v_jabij
+                integer(kind=4) dimension(:) :: v_iabij
+                complex(kind=8) dimension(:) :: v_stuij
+                integer(kind=4) dimension(:) :: v_jtuij
+                integer(kind=4) dimension(:) :: v_ituij
+                integer(kind=4) :: error
+            end subroutine fill_tu_sparse_pardiso_dip
+            subroutine csca_shell_sub(nstop,ns,k,v_ab_host,v_csca) ! in :gmm:vec_trans.f90:vec_trans
+                integer(kind=4) intent(in) :: nstop
+                integer(kind=4) intent(in) :: ns
+                real(kind=8) intent(in) :: k
+                complex(kind=8) dimension(:),intent(in) :: v_ab_host
+                real(kind=8) dimension(:) :: v_csca
+            end subroutine csca_shell_sub
+            subroutine cabs_shell_sub(lambda,k,ref_index,v_req,m_epseq,nstop,neq,blockside,matrixside,v_ab_shell1,v_dc_shell1,v_dc_core,v_cabs,error,v_cabs_n) ! in :gmm:vec_trans.f90:vec_trans
+                real(kind=8) intent(in) :: lambda
+                real(kind=8) intent(in) :: k
+                real(kind=8) intent(in) :: ref_index
+                real(kind=8) dimension(:),intent(in) :: v_req
+                real(kind=8) dimension(:,:),intent(in) :: m_epseq
+                integer(kind=4) intent(in) :: nstop
+                integer(kind=4) intent(in) :: neq
+                integer(kind=4) intent(in) :: blockside
+                integer(kind=4) intent(in) :: matrixside
+                complex(kind=8) dimension(:),intent(in) :: v_ab_shell1
+                complex(kind=8) dimension(:),intent(in) :: v_dc_shell1
+                complex(kind=8) dimension(:),intent(in) :: v_dc_core
+                real(kind=8) dimension(:) :: v_cabs
+                integer(kind=4) :: error
+                real(kind=8), optional,dimension(:) :: v_cabs_n
+            end subroutine cabs_shell_sub
+            subroutine rad_shell_sub_dip(nstop,ns,k,v_ab_host,v_csca) ! in :gmm:vec_trans.f90:vec_trans
+                integer(kind=4) intent(in) :: nstop
+                integer(kind=4) intent(in) :: ns
+                real(kind=8) intent(in) :: k
+                complex(kind=8) dimension(:),intent(in) :: v_ab_host
+                real(kind=8) dimension(:) :: v_csca
+            end subroutine rad_shell_sub_dip
+            subroutine cabs_shell_sub_dip(lambda,k,ref_index,v_req,m_epseq,nstop,neq,blockside,matrixside,v_ab_shell1,v_dc_shell1,v_ab_shell2,v_dc_shell2,v_cabs,error) ! in :gmm:vec_trans.f90:vec_trans
+                real(kind=8) intent(in) :: lambda
+                real(kind=8) intent(in) :: k
+                real(kind=8) intent(in) :: ref_index
+                real(kind=8) dimension(:),intent(in) :: v_req
+                real(kind=8) dimension(:,:),intent(in) :: m_epseq
+                integer(kind=4) intent(in) :: nstop
+                integer(kind=4) intent(in) :: neq
+                integer(kind=4) intent(in) :: blockside
+                integer(kind=4) intent(in) :: matrixside
+                complex(kind=8) dimension(:),intent(in) :: v_ab_shell1
+                complex(kind=8) dimension(:),intent(in) :: v_dc_shell1
+                complex(kind=8) dimension(:),intent(in) :: v_ab_shell2
+                complex(kind=8) dimension(:),intent(in) :: v_dc_shell2
+                real(kind=8) dimension(:) :: v_cabs
+                integer(kind=4) :: error
+            end subroutine cabs_shell_sub_dip
+            subroutine cabs_shell_sub_coredip(lambda,k,ref_index,v_req,m_epseq,nstop,neq,blockside,matrixside,v_p,v_dc_core,v_cabs,error) ! in :gmm:vec_trans.f90:vec_trans
+                real(kind=8) intent(in) :: lambda
+                real(kind=8) intent(in) :: k
+                real(kind=8) intent(in) :: ref_index
+                real(kind=8) dimension(:),intent(in) :: v_req
+                real(kind=8) dimension(:,:),intent(in) :: m_epseq
+                integer(kind=4) intent(in) :: nstop
+                integer(kind=4) intent(in) :: neq
+                integer(kind=4) intent(in) :: blockside
+                integer(kind=4) intent(in) :: matrixside
+                complex(kind=8) dimension(:),intent(in) :: v_p
+                complex(kind=8) dimension(:),intent(in) :: v_dc_core
+                real(kind=8) dimension(:) :: v_cabs
+                integer(kind=4) :: error
+            end subroutine cabs_shell_sub_coredip
+            subroutine field_exprandom_dip_ss_sub(nstop,ns,v_alpha,v_beta,v_gamma,v_kd,v_p,error) ! in :gmm:vec_trans.f90:vec_trans
+                integer(kind=4) intent(in) :: nstop
+                integer(kind=4) intent(in) :: ns
+                real(kind=8) dimension(:) :: v_alpha
+                real(kind=8) dimension(:) :: v_beta
+                real(kind=8) dimension(:) :: v_gamma
+                real(kind=8) dimension(:) :: v_kd
+                complex(kind=8) dimension(:) :: v_p
+                integer(kind=4) :: error
+            end subroutine field_exprandom_dip_ss_sub
+            subroutine fill_index_ab(nstop,m_index,m_index_aabb,m_apmn,v_jab,v_iab,v_jaabb,v_iaabb,error) ! in :gmm:vec_trans.f90:vec_trans
+                integer(kind=4) intent(in) :: nstop
+                integer(kind=4) dimension(:,:) :: m_index
+                integer(kind=4) dimension(:,:) :: m_index_aabb
+                real(kind=4) dimension(:,:) :: m_apmn
+                integer(kind=4) dimension(:) :: v_jab
+                integer(kind=4) dimension(:) :: v_iab
+                integer(kind=4) dimension(:) :: v_jaabb
+                integer(kind=4) dimension(:) :: v_iaabb
+                integer(kind=4) :: error
+            end subroutine fill_index_ab
+            subroutine fill_m(nstop,kr,m_xyz,v_c0,v_aq,v_bq,v_rn,v_vn,v_zn,m_index,m_index_aabb,m_apmn,v_iab,v_jab,v_iaabb,v_jaabb,v_sa,v_sb,v_saabb,v_im,v_jm,v_sm,error) ! in :gmm:vec_trans.f90:vec_trans
+                integer(kind=4) intent(in) :: nstop
+                complex(kind=8) intent(in) :: kr
+                real(kind=8) dimension(:,:),intent(in) :: m_xyz
+                real(kind=8) dimension(:),intent(in) :: v_c0
+                real(kind=8) dimension(:),intent(in) :: v_aq
+                real(kind=8) dimension(:),intent(in) :: v_bq
+                complex(kind=8) dimension(:),intent(in) :: v_rn
+                complex(kind=8) dimension(:),intent(in) :: v_vn
+                complex(kind=8) dimension(:),intent(in) :: v_zn
+                integer(kind=4) dimension(:,:),intent(in) :: m_index
+                integer(kind=4) dimension(:,:),intent(in) :: m_index_aabb
+                real(kind=4) dimension(:,:),intent(in) :: m_apmn
+                integer(kind=4) dimension(:),intent(in) :: v_iab
+                integer(kind=4) dimension(:),intent(in) :: v_jab
+                integer(kind=4) dimension(:),intent(in) :: v_iaabb
+                integer(kind=4) dimension(:),intent(in) :: v_jaabb
+                complex(kind=8) dimension(:) :: v_sa
+                complex(kind=8) dimension(:) :: v_sb
+                complex(kind=8) dimension(:) :: v_saabb
+                integer(kind=4) dimension(:) :: v_im
+                integer(kind=4) dimension(:) :: v_jm
+                complex(kind=8) dimension(:) :: v_sm
+                integer(kind=4) :: error
+            end subroutine fill_m
+            subroutine fill_m_dip(nstop,kr,m_xyz,v_c0,v_aq,v_bq,v_rn,v_vn,v_zn,m_index,m_index_aabb,m_apmn,v_iab,v_jab,v_iaabb,v_jaabb,v_sa,v_sb,v_saabb,v_im,v_jm,v_sm,error) ! in :gmm:vec_trans.f90:vec_trans
+                integer(kind=4) intent(in) :: nstop
+                complex(kind=8) intent(in) :: kr
+                real(kind=8) dimension(:,:),intent(in) :: m_xyz
+                real(kind=8) dimension(:),intent(in) :: v_c0
+                real(kind=8) dimension(:),intent(in) :: v_aq
+                real(kind=8) dimension(:),intent(in) :: v_bq
+                complex(kind=8) dimension(:),intent(in) :: v_rn
+                complex(kind=8) dimension(:),intent(in) :: v_vn
+                complex(kind=8) dimension(:),intent(in) :: v_zn
+                integer(kind=4) dimension(:,:),intent(in) :: m_index
+                integer(kind=4) dimension(:,:),intent(in) :: m_index_aabb
+                real(kind=4) dimension(:,:),intent(in) :: m_apmn
+                integer(kind=4) dimension(:),intent(in) :: v_iab
+                integer(kind=4) dimension(:),intent(in) :: v_jab
+                integer(kind=4) dimension(:),intent(in) :: v_iaabb
+                integer(kind=4) dimension(:),intent(in) :: v_jaabb
+                complex(kind=8) dimension(:) :: v_sa
+                complex(kind=8) dimension(:) :: v_sb
+                complex(kind=8) dimension(:) :: v_saabb
+                integer(kind=4) dimension(:) :: v_im
+                integer(kind=4) dimension(:) :: v_jm
+                complex(kind=8) dimension(:) :: v_sm
+                integer(kind=4) :: error
+            end subroutine fill_m_dip
+            subroutine field_exp_shell_borghese(nstop,neq,matrixside,lambda,ref_index,r_ih,v_req,m_epseq,v_p,v_ab_shell2,v_dc_shell1,v_rn,v_vn,v_zn,v_ab_shell1,v_dc_shell2,v_dc_core,v_ab_host,error) ! in :gmm:vec_trans.f90:vec_trans
+                integer(kind=4) intent(in) :: nstop
+                integer(kind=4) intent(in) :: neq
+                integer(kind=4) intent(in) :: matrixside
+                real(kind=8) intent(in) :: lambda
+                real(kind=8) intent(in) :: ref_index
+                real(kind=8) intent(in) :: r_ih
+                real(kind=8) dimension(:),intent(in) :: v_req
+                real(kind=8) dimension(:,:),intent(in) :: m_epseq
+                complex(kind=8) dimension(:),intent(in) :: v_p
+                complex(kind=8) dimension(:),intent(in) :: v_ab_shell2
+                complex(kind=8) dimension(:),intent(in) :: v_dc_shell1
+                complex(kind=8) dimension(:),intent(in) :: v_rn
+                complex(kind=8) dimension(:),intent(in) :: v_vn
+                complex(kind=8) dimension(:),intent(in) :: v_zn
+                complex(kind=8) dimension(:) :: v_ab_shell1
+                complex(kind=8) dimension(:) :: v_dc_shell2
+                complex(kind=8) dimension(:) :: v_dc_core
+                complex(kind=8) dimension(:) :: v_ab_host
+                integer(kind=4) :: error
+            end subroutine field_exp_shell_borghese
+            subroutine field_exp_shell_dip_borghese(nstop,neq,matrixside,lambda,ref_index,r_ih,v_req,m_epseq,v_p,v_ab_shell2,v_dc_shell1,v_rn,v_vn,v_zn,v_ab_shell1,v_dc_shell2,v_dc_core,v_ab_host,error) ! in :gmm:vec_trans.f90:vec_trans
+                integer(kind=4) intent(in) :: nstop
+                integer(kind=4) intent(in) :: neq
+                integer(kind=4) intent(in) :: matrixside
+                real(kind=8) intent(in) :: lambda
+                real(kind=8) intent(in) :: ref_index
+                real(kind=8) intent(in) :: r_ih
+                real(kind=8) dimension(:),intent(in) :: v_req
+                real(kind=8) dimension(:,:),intent(in) :: m_epseq
+                complex(kind=8) dimension(:),intent(in) :: v_p
+                complex(kind=8) dimension(:),intent(in) :: v_ab_shell2
+                complex(kind=8) dimension(:),intent(in) :: v_dc_shell1
+                complex(kind=8) dimension(:),intent(in) :: v_rn
+                complex(kind=8) dimension(:),intent(in) :: v_vn
+                complex(kind=8) dimension(:),intent(in) :: v_zn
+                complex(kind=8) dimension(:) :: v_ab_shell1
+                complex(kind=8) dimension(:) :: v_dc_shell2
+                complex(kind=8) dimension(:) :: v_dc_core
+                complex(kind=8) dimension(:) :: v_ab_host
+                integer(kind=4) :: error
+            end subroutine field_exp_shell_dip_borghese
+        end module vec_trans
+    end interface 
+end python module gmm
+
+! This file was auto-generated with f2py (version:2).
+! See http://cens.ioc.ee/projects/f2py2e/

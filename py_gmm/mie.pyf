@@ -1,0 +1,49 @@
+!    -*- f90 -*-
+! Note: the context of this file is case sensitive.
+
+python module mie ! in 
+    interface  ! in :mie
+        module localkinds ! in :mie:sing_part.f90
+            integer, parameter,optional :: long_bn=selected_int_kind(9)
+            integer, parameter,optional :: lo=selected_int_kind(9)
+            integer, parameter,optional :: dbl=selected_real_kind(p=15,r=307)
+            real(kind=8), parameter,optional :: euler_d=0.5772156649015329
+            real(kind=8), parameter,optional :: pio2_d=1.5707963267948966
+            real(kind=4), parameter,optional :: euler=0.5772156649015329
+            real(kind=4), parameter,optional :: twopi=6.283185307179586
+            real(kind=8), parameter,optional :: e=1.6021765314e-19
+            real(kind=4), parameter,optional :: pio2=1.5707963267948966
+            real(kind=8), parameter,optional :: zerodbl=0.0d0
+            real(kind=8), parameter,optional :: twopi_d=6.283185307179586
+            real(kind=8), parameter,optional :: pi_d=3.141592653589793
+            real(kind=8), parameter,optional :: c=299792458.0
+            integer, parameter,optional :: sgl=selected_real_kind(p=6,r=37)
+            real(kind=4), parameter,optional :: pi=3.141592653589793
+            real(kind=8), parameter,optional :: e0=8.854187817e-12
+            real(kind=4), parameter,optional :: sqrt2=1.4142135623730951
+            integer, parameter,optional :: vshort=selected_int_kind(2)
+            real(kind=8), parameter,optional :: sqrt2_d=1.4142135623730951
+            integer, parameter,optional :: length=30
+            integer, parameter,optional :: short_bn=selected_int_kind(4)
+            real(kind=8), parameter,optional :: me=9.109382616e-31
+        end module localkinds
+        module sing_part ! in :mie:sing_part.f90
+            use localkinds
+            use basicsubs
+            subroutine coeff_sp2(lambda,ref_index,v_req,m_epseq,nstop,neq,m_a,m_b,error) ! in :mie:sing_part.f90:sing_part
+                real(kind=8) intent(in) :: lambda
+                real(kind=8) intent(in) :: ref_index
+                real(kind=8) dimension(:),intent(in) :: v_req
+                real(kind=8) dimension(:,:),intent(in) :: m_epseq
+                integer(kind=4) intent(in) :: nstop
+                integer(kind=4) intent(in) :: neq
+                complex(kind=8) dimension(:,:),intent(out) :: m_a
+                complex(kind=8) dimension(:,:),intent(out) :: m_b
+                integer(kind=4) intent(out) :: error
+            end subroutine coeff_sp2
+        end module sing_part
+    end interface 
+end python module mie
+
+! This file was auto-generated with f2py (version:2).
+! See http://cens.ioc.ee/projects/f2py2e/
