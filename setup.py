@@ -28,5 +28,5 @@ setup(name='py_gmm',
       license='GPLv3',
       packages=['py_gmm'],
       ext_modules = [fortran_ext_gmm,],
-      install_requires=['numpy',]
+      install_requires=['numpy',],
       zip_safe=False)
