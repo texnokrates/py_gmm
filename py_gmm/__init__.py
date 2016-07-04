@@ -11,7 +11,7 @@ Materials Science and Engineering: C 27:1347–1350.
 doi:10.1016/j.msec.2006.07.025"
 """
 
-import py_gmm.gmm_py as gmm_py
-import py_gmm.mat as mat
-import py_gmm.gaunt as gaunt
+#import py_gmm.gmm_py as gmm_py
+#import py_gmm.mat as mat
+#import py_gmm.gaunt as gaunt
 import py_gmm.gmm as gmm

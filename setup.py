@@ -3,7 +3,7 @@ from setuptools import setup
 
 from numpy.distutils.core import Extension, setup
 
-fortran_ext_gmm = Extension(name = 'gmm', 
+fortran_ext_gmm = Extension(name = 'py_gmm.gmm', 
         sources=['py_gmm/gmm.pyf',
             'py_gmm/kinds.f90',
             'py_gmm/datatypes.f90',
